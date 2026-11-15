@@ -35,11 +35,11 @@ npx expo start
 [![Build Android APK](https://github.com/AhmedRafique/ORRALI/actions/workflows/build-android.yml/badge.svg)](https://github.com/AhmedRafique/ORRALI/actions/workflows/build-android.yml)
 
 The verified Android APK is generated via GitHub Actions and available for direct installation:
-- **Direct Download:** [ORRALI-1.1.1.apk](https://github.com/AhmedRafique/ORRALI/releases/download/v1.1.1/ORRALI-1.1.1.apk)
-- **Release Page:** [ORRALI v1.1.1 — Stability Release](https://github.com/AhmedRafique/ORRALI/releases/tag/v1.1.1)
+- **Direct Download:** [ORRALI-1.1.2.apk](https://github.com/AhmedRafique/ORRALI/releases/download/v1.1.2/ORRALI-1.1.2.apk)
+- **Release Page:** [ORRALI v1.1.2 — Standalone Android Release](https://github.com/AhmedRafique/ORRALI/releases/tag/v1.1.2)
 
 ### Installation Instructions
-1. Download `ORRALI-1.1.1.apk` directly onto your Android device (e.g. Redmi Note 14 Pro+).
+1. Download `ORRALI-1.1.2.apk` directly onto your Android device (e.g. Redmi Note 14 Pro+).
 2. Tap the APK file to install (enable "Install unknown apps" if prompted).
 3. Open ORRALI and start learning!
 
