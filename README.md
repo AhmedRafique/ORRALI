@@ -31,18 +31,17 @@ npm run typecheck
 # Start Expo development server
 npx expo start
 ```
+## Android APK Download
+[![Build Android APK](https://github.com/AhmedRafique/ORRALI/actions/workflows/build-android.yml/badge.svg)](https://github.com/AhmedRafique/ORRALI/actions/workflows/build-android.yml)
 
-## Android APK Build
-The EAS preview profile is configured to produce an APK (`eas.json`):
-```bash
-npx eas-cli login
-npm run build:preview
-```
-Or with an environment token:
-```bash
-$env:EXPO_TOKEN = "your-expo-token"
-npm run build:preview
-```
+The verified Android APK is generated via GitHub Actions and available for direct installation:
+- **Direct Download:** [ORRALI-1.1.1.apk](https://github.com/AhmedRafique/ORRALI/releases/download/v1.1.1/ORRALI-1.1.1.apk)
+- **Release Page:** [ORRALI v1.1.1 — Stability Release](https://github.com/AhmedRafique/ORRALI/releases/tag/v1.1.1)
+
+### Installation Instructions
+1. Download `ORRALI-1.1.1.apk` directly onto your Android device (e.g. Redmi Note 14 Pro+).
+2. Tap the APK file to install (enable "Install unknown apps" if prompted).
+3. Open ORRALI and start learning!
 
 ## Documentation & Artifacts
 - `BUILD_STATUS.md`: Build readiness and status matrix.
