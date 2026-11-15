@@ -1,0 +1,60 @@
+@startuml ORRALI_Architecture
+!theme plain
+skinparam backgroundColor #F8F6F1
+skinparam defaultFontName Arial
+skinparam packageBackgroundColor #FFFFFF
+skinparam packageBorderColor #1B1536
+skinparam componentStyle uml2
+
+title ORRALI Architecture (Version 1.1.1)
+
+package "Presentation Layer (React Native / Expo)" {
+  [App.tsx
+Root & Orchestrator] as App
+  
+  package "Screens" {
+    [HomeScreen
+Dashboard & Path] as HomeScreen
+    [ProgressScreen
+Journey & SRS Stats] as ProgressScreen
+    [ProfileScreen
+Preferences & Goals] as ProfileScreen
+    [LessonScreen
+Interactive Learning] as LessonScreen
+  }
+}
+
+package "Domain & Learning Engine" {
+  [exercises.ts
+Exercise Builder & Norm] as Exercises
+  [srs.ts
+SM-2 Spaced Repetition] as SRS
+  [content.ts
+Curriculum (FR & DE)] as Content
+  [store.ts
+State, Streak & Persistence] as Store
+}
+
+package "Platform & Native Services" {
+  [expo-speech
+TTS with Lifecycle Guard] as Speech
+  [AsyncStorage
+Local Storage Engine] as Storage
+}
+
+App --> HomeScreen : displays
+App --> ProgressScreen : displays
+App --> ProfileScreen : displays
+App --> LessonScreen : manages active session
+
+LessonScreen --> Exercises : builds exercises
+LessonScreen --> Speech : speak() & stop() lifecycle
+LessonScreen --> App : onFinish(correctIds, wrongIds)
+
+App --> SRS : review(cards, isCorrect)
+App --> Store : touchStreak(), saveProgress()
+Store --> Storage : read/write progress & language
+HomeScreen --> Content : course catalog & chapters
+HomeScreen --> SRS : isDue() for review deck
+
+@enduml

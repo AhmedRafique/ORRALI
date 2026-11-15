@@ -1,0 +1,60 @@
+@startuml Lesson_Flow_and_Speech_Lifecycle
+!theme plain
+skinparam backgroundColor #F8F6F1
+skinparam defaultFontName Arial
+skinparam sequenceParticipantBackgroundColor #FFFFFF
+skinparam sequenceParticipantBorderColor #1B1536
+
+title Lesson Flow, Answer Reconciliation & Speech Lifecycle (ORRALI 1.1.1)
+
+actor Learner
+participant "LessonScreen" as Lesson
+participant "expo-speech" as Speech
+participant "App (Root)" as App
+participant "srs.ts" as SRS
+participant "store.ts" as Store
+
+== Exercise Interaction & Audio Playback ==
+Learner -> Lesson : Press "Play audio" / Open listen exercise
+Lesson -> Speech : Speech.stop() [Halt prior playback]
+Lesson -> Speech : Speech.speak(target, { language, rate: 0.88 })
+
+== Answer Evaluation (Mutually Exclusive State) ==
+Learner -> Lesson : Submit answer & click "Check answer"
+alt Answer is Correct (ok == true)
+  Lesson -> Lesson : correctIds.add(itemId)
+wrongIds.remove(itemId)
+  Lesson -> Speech : Speech.stop()
+  Lesson -> Speech : Speech.speak(target) [Pronounce correct answer]
+else Answer is Incorrect (ok == false)
+  Lesson -> Lesson : wrongIds.add(itemId)
+correctIds.remove(itemId)
+end
+
+== Navigation Between Exercises ==
+Learner -> Lesson : Click "Continue" (next exercise)
+Lesson -> Speech : Speech.stop() [Prevent speech carryover]
+Lesson -> Lesson : Increment index, reset input state
+
+== Lesson Finish & Results Reconciliation ==
+Learner -> Lesson : Click "Finish lesson" on final exercise
+Lesson -> Speech : Speech.stop()
+Lesson -> App : onFinish({ correctIds, wrongIds }) [Strictly disjoint]
+
+App -> App : Ensure disjoint sets (finalCorrectIds, finalWrongIds)
+App -> App : Calculate earnedXp = finalCorrectIds.length * 5
+loop For each answered item
+  App -> SRS : review(card, !wrong.has(id))
+  SRS --> App : Updated SM-2 card (interval, reps, ease)
+end
+App -> Store : touchStreak(progress) & saveProgress(p)
+App -> Learner : Return to HomeScreen with updated XP & Streak
+
+== Early Exit (Cancellation) ==
+opt Learner presses "×" (close) or screen unmounts
+  Learner -> Lesson : Click close (onExit)
+  Lesson -> Speech : Speech.stop()
+  Lesson -> App : setSession(null)
+end
+
+@enduml
