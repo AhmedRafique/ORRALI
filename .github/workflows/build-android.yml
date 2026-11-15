@@ -50,19 +50,22 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
 
-      - name: Build Android APK
+      - name: Build Android Release APK (Standalone Offline Bundle)
         run: |
           cd android
           chmod +x gradlew
-          ./gradlew assembleDebug --no-daemon --stacktrace
+          ./gradlew assembleRelease --no-daemon --stacktrace
 
       - name: Prepare APK Deliverable
         run: |
           mkdir -p dist-apk
-          APK_PATH=$(find android/app/build/outputs/apk/debug -name "*.apk" | head -n 1)
+          APK_PATH=$(find android/app/build/outputs/apk -name "*release*.apk" | head -n 1)
+          if [ -z "$APK_PATH" ]; then
+            APK_PATH=$(find android/app/build/outputs/apk -name "*.apk" | head -n 1)
+          fi
           if [ -f "$APK_PATH" ]; then
-            echo "Found APK at: $APK_PATH"
-            cp "$APK_PATH" dist-apk/ORRALI-1.1.1.apk
+            echo "Found Standalone Release APK at: $APK_PATH"
+            cp "$APK_PATH" dist-apk/ORRALI-1.1.2.apk
             ls -la dist-apk/
           else
             echo "Error: No APK file found!"
@@ -73,18 +76,18 @@ jobs:
       - name: Upload APK as Workflow Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ORRALI-1.1.1-Android-APK
-          path: dist-apk/ORRALI-1.1.1.apk
+          name: ORRALI-1.1.2-Android-APK
+          path: dist-apk/ORRALI-1.1.2.apk
           retention-days: 30
 
       - name: Create GitHub Release
         if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: v1.1.1
-          name: ORRALI v1.1.1 — Stability Release
+          tag_name: v1.1.2
+          name: ORRALI v1.1.2 — Standalone Android Release
           body_path: RELEASE_NOTES.md
-          files: dist-apk/ORRALI-1.1.1.apk
+          files: dist-apk/ORRALI-1.1.2.apk
           draft: false
           prerelease: false
         env:

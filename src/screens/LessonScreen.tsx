@@ -1,5 +1,16 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import {
+  Alert,
+  BackHandler,
+  KeyboardAvoidingView,
+  Platform,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from 'react-native';
 import * as Speech from 'expo-speech';
 import { buildExercises, norm } from '../exercises';
 import { Course, Item } from '../types';
@@ -37,31 +48,63 @@ export default function LessonScreen({ course, title, items, onFinish, onExit }:
   const ex = exercises[index];
   const progress = (index + (feedback ? 1 : 0)) / Math.max(1, exercises.length);
 
-  // Bug 2 fix: Stop speech on unmount
+  // Stop speech on unmount
   useEffect(() => {
     return () => {
       void Speech.stop();
     };
   }, []);
 
-  // Bug 2 fix: Stop speech when exercise changes
+  // Stop speech when exercise changes
   useEffect(() => {
     void Speech.stop();
   }, [index]);
 
-  // Bug 2 fix: Stop any ongoing speech before starting new speech
-  const speak = (text: string) => {
-    void Speech.stop();
-    Speech.speak(text, { language: course.speechLang, rate: 0.88 });
-  };
-
-  // Bug 2 fix: Stop speech when user exits lesson
+  // Handle exit with audio stop
   const handleExit = () => {
     void Speech.stop();
     onExit();
   };
 
-  // Bug 1 fix: Mutually exclusive correct/wrong answer status
+  // Android hardware back press interception
+  useEffect(() => {
+    const onBackPress = () => {
+      Alert.alert(
+        'Leave Lesson?',
+        'Your current lesson progress will not be saved.',
+        [
+          { text: 'Keep Learning', style: 'cancel' },
+          { text: 'Leave', style: 'destructive', onPress: handleExit },
+        ],
+        { cancelable: true }
+      );
+      return true;
+    };
+
+    const backSub = BackHandler.addEventListener('hardwareBackPress', onBackPress);
+    return () => {
+      backSub.remove();
+    };
+  }, []);
+
+  const confirmExit = () => {
+    Alert.alert(
+      'Leave Lesson?',
+      'Your current lesson progress will not be saved.',
+      [
+        { text: 'Keep Learning', style: 'cancel' },
+        { text: 'Leave', style: 'destructive', onPress: handleExit },
+      ],
+      { cancelable: true }
+    );
+  };
+
+  const speak = (text: string) => {
+    void Speech.stop();
+    Speech.speak(text, { language: course.speechLang, rate: 0.88 });
+  };
+
+  // Mutually exclusive correct/wrong answer status
   const check = () => {
     if (feedback) return;
     const given = ex.kind === 'choice' ? picked ?? '' : answer;
@@ -78,7 +121,6 @@ export default function LessonScreen({ course, title, items, onFinish, onExit }:
     }
   };
 
-  // Bug 2 fix: Stop speech when navigating or finishing
   const next = () => {
     void Speech.stop();
     if (index + 1 >= exercises.length) {
@@ -100,107 +142,117 @@ export default function LessonScreen({ course, title, items, onFinish, onExit }:
       : `Translate into ${course.name}`;
 
   return (
-    <View style={s.screen}>
-      <View style={s.top}>
-        <Pressable onPress={handleExit} style={s.close}>
-          <Text style={s.closeText}>×</Text>
-        </Pressable>
-        <View style={s.progressTrack}>
-          <View style={[s.progressFill, { width: `${progress * 100}%` }]} />
-        </View>
-        <Text style={s.counter}>
-          {index + 1}/{exercises.length}
-        </Text>
-      </View>
-
-      <Text style={s.chapter}>{title.toUpperCase()}</Text>
-      <Text style={s.prompt}>{prompt}</Text>
-      {ex.kind !== 'listen' && <Text style={s.meaning}>{ex.item.en}</Text>}
-
-      {ex.kind === 'choice' && (
-        <View style={s.options}>
-          {ex.options!.map((o, i) => (
-            <Pressable
-              key={`${ex.item.id}-${o}-${i}`}
-              disabled={!!feedback}
-              onPress={() => setPicked(o)}
-              style={[
-                s.option,
-                picked === o && s.optionPicked,
-                feedback && o === ex.item.target && s.optionCorrect,
-                feedback && picked === o && o !== ex.item.target && s.optionWrong,
-              ]}
-            >
-              <Text style={[s.optionText, picked === o && s.optionTextPicked]}>{o}</Text>
-              <Text style={s.optionLetter}>{String.fromCharCode(65 + i)}</Text>
-            </Pressable>
-          ))}
-        </View>
-      )}
-
-      {ex.kind === 'listen' && (
-        <View style={s.listenPanel}>
-          <Pressable style={s.playButton} onPress={() => speak(ex.item.target)}>
-            <Text style={s.playIcon}>▶</Text>
-            <Text style={s.playText}>Play audio</Text>
+    <KeyboardAvoidingView
+      style={s.keyboardView}
+      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+    >
+      <ScrollView
+        contentContainerStyle={s.scrollContent}
+        keyboardShouldPersistTaps="handled"
+        showsVerticalScrollIndicator={false}
+      >
+        <View style={s.top}>
+          <Pressable onPress={confirmExit} style={s.close}>
+            <Text style={s.closeText}>×</Text>
           </Pressable>
-          <Text style={s.listenHint}>Listen to the pronunciation, then write the phrase.</Text>
-          <TextInput
-            style={s.input}
-            value={answer}
-            onChangeText={setAnswer}
-            editable={!feedback}
-            autoCapitalize="none"
-            autoCorrect={false}
-            placeholder="Type what you hear…"
-            placeholderTextColor="#A49CAA"
-          />
+          <View style={s.progressTrack}>
+            <View style={[s.progressFill, { width: `${progress * 100}%` }]} />
+          </View>
+          <Text style={s.counter}>
+            {index + 1}/{exercises.length}
+          </Text>
         </View>
-      )}
 
-      {ex.kind === 'type' && (
-        <View style={s.listenPanel}>
-          <TextInput
-            style={s.input}
-            value={answer}
-            onChangeText={setAnswer}
-            editable={!feedback}
-            autoCapitalize="none"
-            autoCorrect={false}
-            placeholder={`Write in ${course.name}…`}
-            placeholderTextColor="#A49CAA"
-          />
-        </View>
-      )}
+        <Text style={s.chapter}>{title.toUpperCase()}</Text>
+        <Text style={s.prompt}>{prompt}</Text>
+        {ex.kind !== 'listen' && <Text style={s.meaning}>{ex.item.en}</Text>}
 
-      <View style={s.bottom}>
-        {feedback && (
-          <View style={[s.feedbackBox, feedback.ok ? s.feedbackGood : s.feedbackBad]}>
-            <Text style={[s.feedbackTitle, { color: feedback.ok ? C.green : C.red }]}>
-              {feedback.ok ? 'Beautifully done!' : 'Not quite — keep going'}
-            </Text>
-            <Text style={s.feedbackAnswer}>
-              {feedback.ok ? 'Your answer is correct.' : `Correct answer: ${feedback.expected}`}
-            </Text>
+        {ex.kind === 'choice' && (
+          <View style={s.options}>
+            {ex.options!.map((o, i) => (
+              <Pressable
+                key={`${ex.item.id}-${o}-${i}`}
+                disabled={!!feedback}
+                onPress={() => setPicked(o)}
+                style={[
+                  s.option,
+                  picked === o && s.optionPicked,
+                  feedback && o === ex.item.target && s.optionCorrect,
+                  feedback && picked === o && o !== ex.item.target && s.optionWrong,
+                ]}
+              >
+                <Text style={[s.optionText, picked === o && s.optionTextPicked]}>{o}</Text>
+                <Text style={s.optionLetter}>{String.fromCharCode(65 + i)}</Text>
+              </Pressable>
+            ))}
           </View>
         )}
-        <Pressable
-          disabled={!feedback && !canCheck}
-          onPress={feedback ? next : check}
-          style={[s.cta, !feedback && !canCheck && s.ctaDisabled]}
-        >
-          <Text style={s.ctaText}>
-            {feedback ? (index + 1 === exercises.length ? 'Finish lesson' : 'Continue') : 'Check answer'}
-          </Text>
-        </Pressable>
-        <Text style={s.encouragement}>ONE STEP CLOSER TO A NEW WORLD</Text>
-      </View>
-    </View>
+
+        {ex.kind === 'listen' && (
+          <View style={s.listenPanel}>
+            <Pressable style={s.playButton} onPress={() => speak(ex.item.target)}>
+              <Text style={s.playIcon}>▶</Text>
+              <Text style={s.playText}>Play audio</Text>
+            </Pressable>
+            <Text style={s.listenHint}>Listen to the pronunciation, then write the phrase.</Text>
+            <TextInput
+              style={s.input}
+              value={answer}
+              onChangeText={setAnswer}
+              editable={!feedback}
+              autoCapitalize="none"
+              autoCorrect={false}
+              placeholder="Type what you hear…"
+              placeholderTextColor="#A49CAA"
+            />
+          </View>
+        )}
+
+        {ex.kind === 'type' && (
+          <View style={s.listenPanel}>
+            <TextInput
+              style={s.input}
+              value={answer}
+              onChangeText={setAnswer}
+              editable={!feedback}
+              autoCapitalize="none"
+              autoCorrect={false}
+              placeholder={`Write in ${course.name}…`}
+              placeholderTextColor="#A49CAA"
+            />
+          </View>
+        )}
+
+        <View style={s.bottom}>
+          {feedback && (
+            <View style={[s.feedbackBox, feedback.ok ? s.feedbackGood : s.feedbackBad]}>
+              <Text style={[s.feedbackTitle, { color: feedback.ok ? C.green : C.red }]}>
+                {feedback.ok ? 'Beautifully done!' : 'Not quite — keep going'}
+              </Text>
+              <Text style={s.feedbackAnswer}>
+                {feedback.ok ? 'Your answer is correct.' : `Correct answer: ${feedback.expected}`}
+              </Text>
+            </View>
+          )}
+          <Pressable
+            disabled={!feedback && !canCheck}
+            onPress={feedback ? next : check}
+            style={[s.cta, !feedback && !canCheck && s.ctaDisabled]}
+          >
+            <Text style={s.ctaText}>
+              {feedback ? (index + 1 === exercises.length ? 'Finish lesson' : 'Continue') : 'Check answer'}
+            </Text>
+          </Pressable>
+          <Text style={s.encouragement}>ONE STEP CLOSER TO A NEW WORLD</Text>
+        </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
 
 const s = StyleSheet.create({
-  screen: { flex: 1, padding: 22, paddingTop: 25, backgroundColor: C.ivory },
+  keyboardView: { flex: 1, backgroundColor: C.ivory },
+  scrollContent: { flexGrow: 1, padding: 22, paddingTop: 25, paddingBottom: 15 },
   top: { flexDirection: 'row', alignItems: 'center', gap: 12 },
   close: {
     width: 34,
@@ -258,7 +310,7 @@ const s = StyleSheet.create({
     fontSize: 17,
     color: C.ink,
   },
-  bottom: { marginTop: 'auto', paddingBottom: 10 },
+  bottom: { marginTop: 'auto', paddingTop: 25, paddingBottom: 10 },
   feedbackBox: { padding: 14, borderRadius: 15, marginBottom: 12 },
   feedbackGood: { backgroundColor: '#EAF2EC' },
   feedbackBad: { backgroundColor: '#F8EDEE' },
