@@ -133,8 +133,7 @@ export default function ProfileScreen({ courses, code, progress, onPickCourse, o
         <Text style={s.aboutBrand}>ORRALI</Text>
         <Text style={s.tagline}>Beyond the familiar.</Text>
         <Text style={s.aboutText}>A new world of possibilities. Discover · Connect · Grow.</Text>
-        <Text style={s.version}>LEARNING WORLD & TROPHIES · 1.6.0</Text>
-      </View>
+        <Text style={s.version}>STUDIO NATIVE AUDIO · 1.7.0</Text></View>
     </ScrollView>
   );
 }

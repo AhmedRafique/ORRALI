@@ -1,5 +1,6 @@
 import * as Speech from 'expo-speech';
 import { createAudioPlayer, AudioPlayer } from 'expo-audio';
+import { AUDIO_ASSETS } from './audioMap';
 import { Item } from './types';
 
 let currentPlayer: AudioPlayer | null = null;
@@ -60,7 +61,7 @@ export async function findBestVoiceForLanguage(langCode: string): Promise<string
 
 /**
  * Play an item's phrase:
- * 1. Uses pre-rendered high-fidelity human studio audio if item.audio is present.
+ * 1. Uses pre-rendered high-fidelity human studio audio if available in bundle.
  * 2. Falls back to high-definition neural TTS speech synthesis.
  */
 export async function playPhraseAudio(
@@ -70,10 +71,11 @@ export async function playPhraseAudio(
 ): Promise<void> {
   await stopAllAudio();
 
-  // 1. Play embedded studio human audio if available
-  if (item.audio) {
+  // 1. Play pre-rendered studio human audio from bundled assets
+  const audioSource = item.audio ?? AUDIO_ASSETS[item.id];
+  if (audioSource) {
     try {
-      const player = createAudioPlayer(item.audio);
+      const player = createAudioPlayer(audioSource);
       currentPlayer = player;
       player.play();
       return;
@@ -82,7 +84,7 @@ export async function playPhraseAudio(
     }
   }
 
-  // 2. Play using enhanced speech synthesizer
+  // 2. Play using enhanced speech synthesizer fallback
   Speech.speak(item.target, {
     language: langCode,
     voice: preferredVoiceId,
