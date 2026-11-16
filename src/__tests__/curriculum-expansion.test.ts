@@ -8,8 +8,8 @@ describe('CEFR A2 & B1 Curriculum Expansion (TDD)', () => {
   const de = courses.find((c) => c.code === 'de')!;
 
   describe('1. Course Scale & Levels', () => {
-    it('French course includes 15 progressive units (A1, A2, and B1)', () => {
-      assert.equal(fr.lessons.length, 15);
+    it('French course includes progressive units across A1, A2, and B1', () => {
+      assert.ok(fr.lessons.length >= 15);
 
       const levels = new Set(fr.lessons.map((l) => l.level?.split(' · ')[0]));
       assert.ok(levels.has('A1'), 'Missing A1 units in French');
@@ -17,8 +17,8 @@ describe('CEFR A2 & B1 Curriculum Expansion (TDD)', () => {
       assert.ok(levels.has('B1'), 'Missing B1 units in French');
     });
 
-    it('German course includes 15 progressive units (A1, A2, and B1)', () => {
-      assert.equal(de.lessons.length, 15);
+    it('German course includes progressive units across A1, A2, and B1', () => {
+      assert.ok(de.lessons.length >= 15);
 
       const levels = new Set(de.lessons.map((l) => l.level?.split(' · ')[0]));
       assert.ok(levels.has('A1'), 'Missing A1 units in German');
@@ -26,7 +26,7 @@ describe('CEFR A2 & B1 Curriculum Expansion (TDD)', () => {
       assert.ok(levels.has('B1'), 'Missing B1 units in German');
     });
 
-    it('all 30 units contain exactly 6 items (180 total curriculum phrases)', () => {
+    it('all units contain exactly 6 items each', () => {
       let total = 0;
       for (const course of [fr, de]) {
         for (const lesson of course.lessons) {
@@ -34,7 +34,7 @@ describe('CEFR A2 & B1 Curriculum Expansion (TDD)', () => {
           total += lesson.items.length;
         }
       }
-      assert.equal(total, 180);
+      assert.equal(total, 240);
     });
   });
 

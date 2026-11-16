@@ -17,6 +17,7 @@ import ProfileScreen from './src/screens/ProfileScreen';
 import { review, isDue } from './src/srs';
 import { recordAttemptToDb } from './src/db';
 import { evaluateBadges } from './src/badges';
+import { getThemeColors, toggleTheme, ThemeMode } from './src/theme';
 import {
   dayKey,
   emptyProgress,
@@ -53,6 +54,13 @@ export default function App() {
   const [code, setCode] = useState<LangCode>('fr');
   const [session, setSession] = useState<Session>(null);
   const [tab, setTab] = useState<Tab>('home');
+  const [themeMode, setThemeMode] = useState<ThemeMode>('light');
+  const theme = getThemeColors(themeMode);
+
+  const toggleActiveTheme = useCallback(() => {
+    setThemeMode((m) => toggleTheme(m));
+  }, []);
+
   const [resumeTarget, setResumeTarget] = useState<{
     lesson: { id: string; title: string; items: Item[] };
     checkpoint: LessonCheckpoint;
@@ -229,8 +237,8 @@ export default function App() {
   };
 
   return (
-    <SafeAreaView style={s.root}>
-      <StatusBar style="dark" />
+    <SafeAreaView style={[s.root, { backgroundColor: theme.ivory }]}>
+      <StatusBar style={themeMode === 'dark' ? 'light' : 'dark'} />
       {session ? (
         <LessonScreen
           course={course}
@@ -274,8 +282,10 @@ export default function App() {
                 courses={courses}
                 code={code}
                 progress={progress}
+                themeMode={themeMode}
                 onPickCourse={pickCourse}
                 onSetDailyGoal={(goal) => updateProgress({ ...progress, dailyGoal: goal })}
+                onToggleTheme={toggleActiveTheme}
               />
             )}
           </View>

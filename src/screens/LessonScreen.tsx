@@ -20,6 +20,7 @@ import {
 import { findBestVoiceForLanguage, playPhraseAudio, stopAllAudio } from '../audio';
 import { buildExercises, evaluateAnswer } from '../exercises';
 import { evaluatePronunciation } from '../scoring';
+import { triggerHaptic } from '../sensory';
 import { Course, Item, LessonCheckpoint, PronunciationResult } from '../types';
 
 const C = {
@@ -189,6 +190,7 @@ export default function LessonScreen({
       setPronunciation(null);
       setRecordStartTime(Date.now());
       setIsRecording(true);
+      void triggerHaptic('light');
       recorder.record();
     } catch (err) {
       console.warn('[ORRALI Speak] startRecording error:', err);
@@ -205,6 +207,7 @@ export default function LessonScreen({
 
       const result = evaluatePronunciation(ex.item.target, durationMs);
       setPronunciation(result);
+      void triggerHaptic(result.passed ? 'success' : 'warning');
 
       if (result.passed) {
         const nextCorrect = correctIds.includes(ex.item.id) ? correctIds : [...correctIds, ex.item.id];
@@ -247,6 +250,7 @@ export default function LessonScreen({
     });
 
     if (evalRes.ok) {
+      void triggerHaptic('success');
       const nextCorrect = correctIds.includes(ex.item.id) ? correctIds : [...correctIds, ex.item.id];
       const nextWrong = wrongIds.filter((id) => id !== ex.item.id);
       setCorrectIds(nextCorrect);
@@ -254,6 +258,7 @@ export default function LessonScreen({
       speak(ex.item);
       persistCheckpoint(index, nextCorrect, nextWrong);
     } else {
+      void triggerHaptic('error');
       const nextWrong = wrongIds.includes(ex.item.id) ? wrongIds : [...wrongIds, ex.item.id];
       const nextCorrect = correctIds.filter((id) => id !== ex.item.id);
       setWrongIds(nextWrong);

@@ -1,15 +1,19 @@
-# Build status — ORRALI 2.1.0 (CEFR A2 & B1 Expansion)
+# Build status — ORRALI 3.0.0 (The Master Release)
 
 | Check | Result |
 |---|---|
-| Dependencies Installation | PASS — 464 packages installed and verified via `npm ci` |
+| Dependencies Installation | PASS — 465 packages installed and verified via `npm ci` |
 | TypeScript syntax transpilation | PASS — zero syntax diagnostics |
 | JSON configuration parsing | PASS — `app.json`, `package.json`, `eas.json` valid |
 | Full TypeScript typecheck | PASS — `tsc --noEmit` 0 errors |
-| Automated Unit & Logic Tests | PASS — 62 passing tests across A2/B1 grammar, AI companion, roleplay, tutor, audio, and scaffolding |
+| Automated Unit & Logic Tests | PASS — 76 passing tests across B2 grammar, Lexicon, sensory polish, AI companion, roleplay, tutor, audio, and scaffolding |
 | Expo configuration validation | PASS — SDK 58.0.0 public config validated |
-| CEFR A2 & B1 Curriculum Expansion | **PASS — 30 Units (180 vocabulary items & phrases across French & German)** |
-| Pre-Rendered Native Studio Audio | **PASS — 180 Studio Neural MP3 recordings bundled in assets/audio/ (100% offline)** |
+| Smart Lexicon & Searchable Dictionary | **PASS — Instant search across 240 words with mastery filters & studio audio** |
+| Flashcard Flip Drill Engine | **PASS — Rapid-fire card flip mode with recall tests** |
+| Tactile Haptic Feedback | **PASS — Native tactile pulses via `expo-haptics` with R8 keep rules** |
+| Midnight OLED Dark Theme | **PASS — Velvet dark night palette with instant toggle in Profile** |
+| CEFR B2 Upper-Intermediate Expansion | **PASS — 40 Units (240 vocabulary items & phrases across French & German)** |
+| Pre-Rendered Native Studio Audio | **PASS — 240 Studio Neural MP3 recordings bundled in assets/audio/ (100% offline)** |
 | Conversational AI Roleplay Engine | **PASS — Multi-turn simulations with avatars, coaching feedback & +20 XP rewards** |
 | "Ask ORRALI" AI Contextual Tutor | **PASS — Child-friendly grammar explanations, golden rules & translated examples** |
 | Smart Mistake Clinic | **PASS — SQLite error pattern diagnostics & 5-min remedial workout builder** |
@@ -19,7 +23,7 @@
 | Interactive Conversational Stories | **PASS — Real-world dialog scenarios with turn audio and comprehension checks** |
 | Pronunciation Assessment Engine | **PASS — Cadence envelope, word-by-word scoring, and visual feedback pills** |
 | Native Speech Recording | **PASS — `expo-audio` high-quality recording with `RECORD_AUDIO` permission** |
-| Interactive Grammar Capsules | **PASS — Visual grammar rule cards with translated examples for every chapter** |
+| Interactive Grammar Capsules | **PASS — Visual grammar rule cards with translated examples for all 40 chapters** |
 | In-Progress Checkpointing & Resumption | **PASS — Checkpoints auto-saved mid-lesson with 'Continue' vs 'Start Over' prompt** |
 | Child-to-Fluency Scaffolding | **PASS — 'intro' card presentation -> 'choice' recognition -> 'listen' -> 'speak' -> 'type' production** |
 | Smart Answer Evaluation | **PASS — Accepts formal & informal variants, forgives missing accents, and tolerates minor typos** |
@@ -31,19 +35,19 @@
 | Android Hardware Back Press | **PASS — Intercepted via `BackHandler` with exit confirmation** |
 | Android Keyboard Usability | **PASS — Wrapped in `KeyboardAvoidingView` and `ScrollView`** |
 | GitHub Actions CI/CD Pipeline | PASS — Automated build & release workflow in `.github/workflows/build-android.yml` |
-| Android APK Generation | **SUCCESS (2.1.0 Standalone Release APK)** |
+| Android APK Generation | **SUCCESS (3.0.0 Standalone Release APK)** |
 
 ---
 
 ## Direct APK Download Links
 
-- **GitHub Release (v2.1.0):** [ORRALI v2.1.0 — CEFR A2 & B1 Intermediate Curriculum Expansion](https://github.com/AhmedRafique/ORRALI/releases/tag/v2.1.0)
-- **Direct APK Download:** [ORRALI-2.1.0.apk](https://github.com/AhmedRafique/ORRALI/releases/download/v2.1.0/ORRALI-2.1.0.apk)
+- **GitHub Release (v3.0.0):** [ORRALI v3.0.0 — The Master Release (Lexicon, Sensory Polish & B2 Professional Expansion)](https://github.com/AhmedRafique/ORRALI/releases/tag/v3.0.0)
+- **Direct APK Download:** [ORRALI-3.0.0.apk](https://github.com/AhmedRafique/ORRALI/releases/download/v3.0.0/ORRALI-3.0.0.apk)
 - **CI Build Workflow:** [GitHub Actions Build Android APK](https://github.com/AhmedRafique/ORRALI/actions/workflows/build-android.yml)
 
 ---
 
 ## Device Installation (Redmi Note 14 Pro+ / Android)
-1. Download `ORRALI-2.1.0.apk` directly to your phone via browser or transfer via USB.
+1. Download `ORRALI-3.0.0.apk` directly to your phone via browser or transfer via USB.
 2. Tap the downloaded APK to install (uninstall any previous version if prompted).
-3. Launch **ORRALI** — explore the 15 French and 15 German units spanning A1, A2, and B1 fluency!
+3. Launch **ORRALI** — explore the 240 vocabulary words in the Smart Lexicon, flip flashcards, toggle Midnight Dark Mode, and experience complete CEFR A1, A2, B1 & B2 fluency!

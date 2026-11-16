@@ -1,5 +1,6 @@
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { getBadgesWithProgress } from '../badges';
+import { triggerHaptic } from '../sensory';
 import { Course, LangCode, Progress } from '../types';
 
 const C = {
@@ -18,11 +19,21 @@ type Props = {
   courses: Course[];
   code: LangCode;
   progress: Progress;
+  themeMode?: 'light' | 'dark';
   onPickCourse: (code: LangCode) => void;
   onSetDailyGoal: (goal: number) => void;
+  onToggleTheme?: () => void;
 };
 
-export default function ProfileScreen({ courses, code, progress, onPickCourse, onSetDailyGoal }: Props) {
+export default function ProfileScreen({
+  courses,
+  code,
+  progress,
+  themeMode = 'light',
+  onPickCourse,
+  onSetDailyGoal,
+  onToggleTheme,
+}: Props) {
   const badges = getBadgesWithProgress(progress, courses);
   const unlockedCount = badges.filter((b) => b.unlocked).length;
   const shields = progress.streakShields ?? 1;
@@ -113,6 +124,30 @@ export default function ProfileScreen({ courses, code, progress, onPickCourse, o
       </View>
 
       <View style={s.panel}>
+        <Text style={s.label}>APPEARANCE & THEME</Text>
+        <Pressable
+          style={[s.choice, themeMode === 'dark' && s.choiceActive]}
+          onPress={() => {
+            void triggerHaptic('selection');
+            onToggleTheme?.();
+          }}
+        >
+          <Text style={s.flag}>{themeMode === 'dark' ? '🌙' : '☀️'}</Text>
+          <View style={{ flex: 1 }}>
+            <Text style={s.choiceName}>Midnight Dark Mode (OLED)</Text>
+            <Text style={s.choiceMeta}>
+              {themeMode === 'dark' ? 'Active · Velvet dark night palette' : 'Off · Warm ivory day palette'}
+            </Text>
+          </View>
+          <View style={[s.themePill, themeMode === 'dark' && s.themePillActive]}>
+            <Text style={[s.themePillText, themeMode === 'dark' && s.themePillTextActive]}>
+              {themeMode === 'dark' ? 'ON' : 'OFF'}
+            </Text>
+          </View>
+        </Pressable>
+      </View>
+
+      <View style={s.panel}>
         <Text style={s.label}>DAILY LEARNING GOAL</Text>
         <Text style={s.goalTitle}>{progress.dailyGoal} XP per day</Text>
         <Text style={s.goalHint}>Choose a goal that feels achievable and enjoyable.</Text>
@@ -133,7 +168,7 @@ export default function ProfileScreen({ courses, code, progress, onPickCourse, o
         <Text style={s.aboutBrand}>ORRALI</Text>
         <Text style={s.tagline}>Beyond the familiar.</Text>
         <Text style={s.aboutText}>A new world of possibilities. Discover · Connect · Grow.</Text>
-        <Text style={s.version}>CEFR A1, A2 & B1 CURRICULUM · 2.1.0</Text></View>
+        <Text style={s.version}>ORRALI MASTER BUILD · 3.0.0</Text></View>
     </ScrollView>
   );
 }
@@ -222,6 +257,15 @@ const s = StyleSheet.create({
   label: { color: C.muted, fontSize: 9, letterSpacing: 1.4, fontWeight: '900', marginBottom: 12 },
   choice: { flexDirection: 'row', alignItems: 'center', gap: 11, padding: 11, borderRadius: 13, borderWidth: 1, borderColor: C.line, marginBottom: 8 },
   choiceActive: { backgroundColor: '#F0EBF7', borderColor: '#CFC0E0' },
+  themePill: {
+    backgroundColor: '#EAE5EE',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 10,
+  },
+  themePillActive: { backgroundColor: C.midnight },
+  themePillText: { color: C.muted, fontSize: 10, fontWeight: '800' },
+  themePillTextActive: { color: C.gold },
   flag: { fontSize: 25 },
   choiceName: { color: C.ink, fontSize: 13, fontWeight: '800' },
   choiceMeta: { color: C.muted, fontSize: 10, marginTop: 3 },

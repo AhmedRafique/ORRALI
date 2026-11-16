@@ -9,6 +9,7 @@ import { Course, Exercise, GrammarCapsule, LangCode, Progress, RoleplayScenario,
 import MistakeClinicModal from './MistakeClinicModal';
 import RoleplayModal from './RoleplayModal';
 import TutorModal from './TutorModal';
+import LexiconModal from './LexiconModal';
 
 const C = {
   midnight: '#1B1536',
@@ -54,6 +55,7 @@ export default function HomeScreen({
   const [activeStory, setActiveStory] = useState<StoryScenario | null>(null);
   const [isTutorOpen, setIsTutorOpen] = useState(false);
   const [isClinicOpen, setIsClinicOpen] = useState(false);
+  const [isLexiconOpen, setIsLexiconOpen] = useState(false);
   const [activeRoleplay, setActiveRoleplay] = useState<RoleplayScenario | null>(null);
   const [storyAnswer, setStoryAnswer] = useState<number | null>(null);
   const [storyCompleted, setStoryCompleted] = useState(false);
@@ -187,6 +189,15 @@ export default function HomeScreen({
           <View style={{ flex: 1 }}>
             <Text style={s.companionTitle}>Conversational AI Roleplay</Text>
             <Text style={s.companionSub}>Live bistros & train station simulations</Text>
+          </View>
+          <Text style={s.companionArrow}>›</Text>
+        </Pressable>
+
+        <Pressable style={s.companionBtn} onPress={() => setIsLexiconOpen(true)}>
+          <Text style={s.companionIcon}>📖</Text>
+          <View style={{ flex: 1 }}>
+            <Text style={s.companionTitle}>Smart Lexicon & Flashcards</Text>
+            <Text style={s.companionSub}>Search 240 words & flip drill cards</Text>
           </View>
           <Text style={s.companionArrow}>›</Text>
         </Pressable>
@@ -516,6 +527,14 @@ export default function HomeScreen({
           onClose={() => setActiveRoleplay(null)}
         />
       )}
+
+      {/* Lexicon Modal */}
+      <LexiconModal
+        visible={isLexiconOpen}
+        course={course}
+        progress={progress}
+        onClose={() => setIsLexiconOpen(false)}
+      />
     </ScrollView>
   );
 }

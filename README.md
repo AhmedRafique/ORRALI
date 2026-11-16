@@ -35,11 +35,11 @@ npx expo start
 [![Build Android APK](https://github.com/AhmedRafique/ORRALI/actions/workflows/build-android.yml/badge.svg)](https://github.com/AhmedRafique/ORRALI/actions/workflows/build-android.yml)
 
 The verified Android APK is generated via GitHub Actions and available for direct installation:
-- **Direct Download:** [ORRALI-2.1.0.apk](https://github.com/AhmedRafique/ORRALI/releases/download/v2.1.0/ORRALI-2.1.0.apk)
-- **Release Page:** [ORRALI v2.1.0 — CEFR A2 & B1 Intermediate Curriculum Expansion](https://github.com/AhmedRafique/ORRALI/releases/tag/v2.1.0)
+- **Direct Download:** [ORRALI-3.0.0.apk](https://github.com/AhmedRafique/ORRALI/releases/download/v3.0.0/ORRALI-3.0.0.apk)
+- **Release Page:** [ORRALI v3.0.0 — The Master Release (Lexicon, Sensory Polish & B2 Professional Expansion)](https://github.com/AhmedRafique/ORRALI/releases/tag/v3.0.0)
 
 ### Installation Instructions
-1. Download `ORRALI-2.1.0.apk` directly onto your Android device (e.g. Redmi Note 14 Pro+).
+1. Download `ORRALI-3.0.0.apk` directly onto your Android device (e.g. Redmi Note 14 Pro+).
 2. Tap the APK file to install (enable "Install unknown apps" if prompted).
 3. Open ORRALI and start learning!
 

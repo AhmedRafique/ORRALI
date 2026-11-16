@@ -21,7 +21,10 @@
 | **1.6.0** | Learning World & Retention | Trophy shelf, achievement badges, streak shields, conversational stories | **COMPLETED** |
 | **1.7.0** | Studio Human Audio | Pre-rendered studio neural voice recordings, 100% offline | **COMPLETED** |
 | **2.0.0** | AI Companion | Mistake Clinic, Conversational Roleplay, "Ask ORRALI" AI Tutor | **COMPLETED** |
-| **2.1.0** | A2 & B1 Curriculum Expansion | Past tenses (Passé Composé, Perfekt), future tenses, 20 intermediate units | **NEXT UP** |
+| **2.1.0** | A2 & B1 Curriculum Expansion | Past tenses (Passé Composé, Perfekt), future tenses, 20 intermediate units | **COMPLETED** |
+| **2.2.0** | Smart Lexicon & Dictionary | Searchable 240-word dictionary, mastery filters, flashcard flip drill mode | **COMPLETED** |
+| **2.3.0** | Sensory Polish & Themes | Tactile haptics (expo-haptics), Midnight OLED dark mode | **COMPLETED** |
+| **3.0.0** | Master Release & B2 Expansion | Full 40 units (240 phrases), 240 studio MP3s, professional & idiomatic B2 | **COMPLETED** |
 
 ---
 
