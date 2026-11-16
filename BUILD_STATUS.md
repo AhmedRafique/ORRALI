@@ -1,4 +1,4 @@
-# Build status — ORRALI 1.2.1 (Enhanced Audio & Learning Engine)
+# Build status — ORRALI 1.3.0 (Scaffolding & Smart Evaluation)
 
 | Check | Result |
 |---|---|
@@ -6,8 +6,10 @@
 | TypeScript syntax transpilation | PASS — zero syntax diagnostics |
 | JSON configuration parsing | PASS — `app.json`, `package.json`, `eas.json` valid |
 | Full TypeScript typecheck | PASS — `tsc --noEmit` 0 errors |
-| Automated Unit & Logic Tests | PASS — 18 passing tests across SRS, lesson state, normalization, streak, and content integrity |
+| Automated Unit & Logic Tests | PASS — 26 passing tests across smart evaluation, scaffolding, SRS, normalization, streak, and content integrity |
 | Expo configuration validation | PASS — SDK 58.0.0 public config validated |
+| Child-to-Fluency Scaffolding | **PASS — 'intro' card presentation -> 'choice' recognition -> 'listen' -> 'type' production** |
+| Smart Answer Evaluation | **PASS — Accepts formal & informal variants, forgives missing accents, and tolerates minor typos** |
 | High-Definition Neural Voice Ranking | **PASS — Android Google Neural / WaveNet / Enhanced voice prioritization** |
 | Studio Audio Engine | **PASS — `expo-audio` integration for native human audio with neural TTS fallback** |
 | SQLite Engine Integration | **PASS — `expo-sqlite` integrated with `progress_store` and `exercise_attempts`** |
@@ -17,19 +19,19 @@
 | Android Hardware Back Press | **PASS — Intercepted via `BackHandler` with exit confirmation** |
 | Android Keyboard Usability | **PASS — Wrapped in `KeyboardAvoidingView` and `ScrollView`** |
 | GitHub Actions CI/CD Pipeline | PASS — Automated build & release workflow in `.github/workflows/build-android.yml` |
-| Android APK Generation | **SUCCESS (1.2.1 Standalone Release APK)** |
+| Android APK Generation | **SUCCESS (1.3.0 Standalone Release APK)** |
 
 ---
 
 ## Direct APK Download Links
 
-- **GitHub Release (v1.2.1):** [ORRALI v1.2.1 — Enhanced Audio & Learning Engine Release](https://github.com/AhmedRafique/ORRALI/releases/tag/v1.2.1)
-- **Direct APK Download:** [ORRALI-1.2.1.apk](https://github.com/AhmedRafique/ORRALI/releases/download/v1.2.1/ORRALI-1.2.1.apk)
+- **GitHub Release (v1.3.0):** [ORRALI v1.3.0 — Scaffolding & Smart Evaluation Release](https://github.com/AhmedRafique/ORRALI/releases/tag/v1.3.0)
+- **Direct APK Download:** [ORRALI-1.3.0.apk](https://github.com/AhmedRafique/ORRALI/releases/download/v1.3.0/ORRALI-1.3.0.apk)
 - **CI Build Workflow:** [GitHub Actions Build Android APK](https://github.com/AhmedRafique/ORRALI/actions/workflows/build-android.yml)
 
 ---
 
 ## Device Installation (Redmi Note 14 Pro+ / Android)
-1. Download `ORRALI-1.2.1.apk` directly to your phone via browser or transfer via USB.
+1. Download `ORRALI-1.3.0.apk` directly to your phone via browser or transfer via USB.
 2. Tap the downloaded APK to install (uninstall any previous version if prompted).
-3. Launch **ORRALI** — test the upgraded neural voice audio!
+3. Launch **ORRALI** — experience the new "See & Hear" introduction cards before being tested!

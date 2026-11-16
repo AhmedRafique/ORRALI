@@ -93,7 +93,7 @@ export default function App() {
     <SafeAreaView style={s.root}>
       <StatusBar style="dark" />
       {session ? (
-        <LessonScreen course={course} title={session.title} items={session.items} onFinish={finish} onExit={() => setSession(null)} />
+        <LessonScreen course={course} title={session.title} items={session.items} isReview={!session.lessonId} onFinish={finish} onExit={() => setSession(null)} />
       ) : (
         <>
           <View style={s.content}>

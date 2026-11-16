@@ -12,7 +12,7 @@ import {
   View,
 } from 'react-native';
 import { findBestVoiceForLanguage, playPhraseAudio, stopAllAudio } from '../audio';
-import { buildExercises, norm } from '../exercises';
+import { buildExercises, evaluateAnswer } from '../exercises';
 import { Course, Item } from '../types';
 
 const C = {
@@ -32,16 +32,17 @@ interface Props {
   course: Course;
   title: string;
   items: Item[];
+  isReview?: boolean;
   onFinish: (result: { correctIds: string[]; wrongIds: string[] }) => void;
   onExit: () => void;
 }
 
-export default function LessonScreen({ course, title, items, onFinish, onExit }: Props) {
-  const exercises = useMemo(() => buildExercises(course, items), [course, items]);
+export default function LessonScreen({ course, title, items, isReview = false, onFinish, onExit }: Props) {
+  const exercises = useMemo(() => buildExercises(course, items, isReview), [course, items, isReview]);
   const [index, setIndex] = useState(0);
   const [answer, setAnswer] = useState('');
   const [picked, setPicked] = useState<string | null>(null);
-  const [feedback, setFeedback] = useState<null | { ok: boolean; expected: string }>(null);
+  const [feedback, setFeedback] = useState<null | { ok: boolean; expected: string; hint?: string }>(null);
   const [correctIds, setCorrectIds] = useState<string[]>([]);
   const [wrongIds, setWrongIds] = useState<string[]>([]);
   const [voiceId, setVoiceId] = useState<string | undefined>(undefined);
@@ -69,10 +70,16 @@ export default function LessonScreen({ course, title, items, onFinish, onExit }:
     };
   }, []);
 
-  // Stop audio when exercise changes
+  // Stop audio when exercise changes & auto-play if it's an intro card
   useEffect(() => {
     void stopAllAudio();
-  }, [index]);
+    if (ex?.kind === 'intro') {
+      const timer = setTimeout(() => {
+        void playPhraseAudio(ex.item, course.code, voiceId);
+      }, 250);
+      return () => clearTimeout(timer);
+    }
+  }, [index, ex?.kind, ex?.item, course.code, voiceId]);
 
   // Handle exit with audio stop
   const handleExit = () => {
@@ -117,14 +124,19 @@ export default function LessonScreen({ course, title, items, onFinish, onExit }:
     void playPhraseAudio(item, course.code, voiceId);
   };
 
-  // Mutually exclusive correct/wrong answer status
+  // Mutually exclusive correct/wrong answer status with smart evaluation
   const check = () => {
-    if (feedback) return;
+    if (feedback || ex.kind === 'intro') return;
     const given = ex.kind === 'choice' ? picked ?? '' : answer;
-    const ok = norm(given) === norm(ex.item.target);
-    setFeedback({ ok, expected: ex.item.target });
+    const evalRes = evaluateAnswer(given, ex.item);
 
-    if (ok) {
+    setFeedback({
+      ok: evalRes.ok,
+      expected: evalRes.expected,
+      hint: evalRes.hint,
+    });
+
+    if (evalRes.ok) {
       setCorrectIds((prev) => (prev.includes(ex.item.id) ? prev : [...prev, ex.item.id]));
       setWrongIds((prev) => prev.filter((id) => id !== ex.item.id));
       speak(ex.item);
@@ -148,7 +160,9 @@ export default function LessonScreen({ course, title, items, onFinish, onExit }:
 
   const canCheck = ex.kind === 'choice' ? !!picked : answer.trim().length > 0;
   const prompt =
-    ex.kind === 'choice'
+    ex.kind === 'intro'
+      ? 'Meet your new phrase'
+      : ex.kind === 'choice'
       ? 'Choose the translation of'
       : ex.kind === 'listen'
       ? 'Listen carefully and type what you hear'
@@ -178,7 +192,28 @@ export default function LessonScreen({ course, title, items, onFinish, onExit }:
 
         <Text style={s.chapter}>{title.toUpperCase()}</Text>
         <Text style={s.prompt}>{prompt}</Text>
-        {ex.kind !== 'listen' && <Text style={s.meaning}>{ex.item.en}</Text>}
+        {ex.kind !== 'listen' && ex.kind !== 'intro' && <Text style={s.meaning}>{ex.item.en}</Text>}
+
+        {ex.kind === 'intro' && (
+          <View style={s.introCard}>
+            <View style={s.introBadge}>
+              <Text style={s.introBadgeText}>NEW PHRASE</Text>
+            </View>
+            <Text style={s.introTarget}>{ex.item.target}</Text>
+            {ex.item.phonetic && <Text style={s.introPhonetic}>/{ex.item.phonetic}/</Text>}
+            <Text style={s.introMeaning}>{ex.item.en}</Text>
+            <Pressable style={s.playButton} onPress={() => speak(ex.item)}>
+              <Text style={s.playIcon}>▶</Text>
+              <Text style={s.playText}>Listen carefully</Text>
+            </Pressable>
+            {ex.item.notes && (
+              <View style={s.notesBox}>
+                <Text style={s.notesTitle}>CULTURAL & USAGE TIP</Text>
+                <Text style={s.notesText}>{ex.item.notes}</Text>
+              </View>
+            )}
+          </View>
+        )}
 
         {ex.kind === 'choice' && (
           <View style={s.options}>
@@ -240,20 +275,30 @@ export default function LessonScreen({ course, title, items, onFinish, onExit }:
           {feedback && (
             <View style={[s.feedbackBox, feedback.ok ? s.feedbackGood : s.feedbackBad]}>
               <Text style={[s.feedbackTitle, { color: feedback.ok ? C.green : C.red }]}>
-                {feedback.ok ? 'Beautifully done!' : 'Not quite — keep going'}
+                {feedback.ok ? (feedback.hint ? 'Spot on!' : 'Beautifully done!') : 'Not quite — keep going'}
               </Text>
               <Text style={s.feedbackAnswer}>
-                {feedback.ok ? 'Your answer is correct.' : `Correct answer: ${feedback.expected}`}
+                {feedback.ok
+                  ? feedback.hint ?? 'Your answer is correct.'
+                  : `Correct answer: ${feedback.expected}`}
               </Text>
             </View>
           )}
           <Pressable
-            disabled={!feedback && !canCheck}
-            onPress={feedback ? next : check}
-            style={[s.cta, !feedback && !canCheck && s.ctaDisabled]}
+            disabled={ex.kind !== 'intro' && !feedback && !canCheck}
+            onPress={ex.kind === 'intro' || feedback ? next : check}
+            style={[s.cta, ex.kind !== 'intro' && !feedback && !canCheck && s.ctaDisabled]}
           >
             <Text style={s.ctaText}>
-              {feedback ? (index + 1 === exercises.length ? 'Finish lesson' : 'Continue') : 'Check answer'}
+              {ex.kind === 'intro'
+                ? index + 1 === exercises.length
+                  ? 'Finish lesson'
+                  : 'I understand · Continue'
+                : feedback
+                ? index + 1 === exercises.length
+                  ? 'Finish lesson'
+                  : 'Continue'
+                : 'Check answer'}
             </Text>
           </Pressable>
           <Text style={s.encouragement}>ONE STEP CLOSER TO A NEW WORLD</Text>
@@ -282,6 +327,67 @@ const s = StyleSheet.create({
   chapter: { color: '#9B8CA9', fontSize: 9, letterSpacing: 1.8, fontWeight: '900', marginTop: 34 },
   prompt: { color: C.ink, fontSize: 21, lineHeight: 29, fontWeight: '800', marginTop: 12 },
   meaning: { color: C.midnight, fontSize: 29, fontWeight: '800', marginTop: 13, marginBottom: 23 },
+  introCard: {
+    backgroundColor: C.white,
+    borderRadius: 22,
+    padding: 22,
+    borderWidth: 1.5,
+    borderColor: C.line,
+    marginTop: 10,
+    marginBottom: 16,
+  },
+  introBadge: {
+    alignSelf: 'flex-start',
+    backgroundColor: C.lilac,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 8,
+    marginBottom: 14,
+  },
+  introBadgeText: {
+    color: C.midnight,
+    fontSize: 9,
+    fontWeight: '900',
+    letterSpacing: 1.2,
+  },
+  introTarget: {
+    color: C.midnight,
+    fontSize: 32,
+    fontWeight: '800',
+    marginBottom: 6,
+  },
+  introPhonetic: {
+    color: C.gold,
+    fontSize: 16,
+    fontWeight: '700',
+    marginBottom: 14,
+  },
+  introMeaning: {
+    color: C.ink,
+    fontSize: 18,
+    fontWeight: '600',
+    marginBottom: 20,
+  },
+  notesBox: {
+    backgroundColor: '#FBF9F4',
+    borderLeftWidth: 3,
+    borderLeftColor: C.gold,
+    padding: 12,
+    borderRadius: 10,
+    marginTop: 18,
+  },
+  notesTitle: {
+    color: '#8A7042',
+    fontSize: 9,
+    fontWeight: '900',
+    letterSpacing: 1,
+    marginBottom: 4,
+  },
+  notesText: {
+    color: C.ink,
+    fontSize: 12,
+    lineHeight: 18,
+  },
   options: { gap: 10 },
   option: {
     flexDirection: 'row',

@@ -4,6 +4,9 @@ export interface Item {
   id: string;
   target: string;
   en: string;
+  phonetic?: string;
+  notes?: string;
+  alternatives?: string[];
   audio?: any;
   audioUrl?: string;
 }
@@ -24,12 +27,20 @@ export interface Course {
   lessons: Lesson[];
 }
 
-export type ExerciseKind = 'choice' | 'type' | 'listen';
+export type ExerciseKind = 'intro' | 'choice' | 'listen' | 'type';
 
 export interface Exercise {
   kind: ExerciseKind;
   item: Item;
   options?: string[];
+}
+
+export interface AnswerEvaluation {
+  ok: boolean;
+  isClose?: boolean;
+  expected: string;
+  matchedVariant?: string;
+  hint?: string;
 }
 
 export interface Card {

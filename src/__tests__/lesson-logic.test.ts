@@ -1,6 +1,6 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { norm, buildExercises } from '../exercises';
+import { norm, stripAccents, evaluateAnswer, buildExercises } from '../exercises';
 import { newCard, review, isDue } from '../srs';
 import { emptyProgress, touchStreak, getEffectiveStreak, dayKey } from '../streak';
 import { courses } from '../content';
@@ -90,6 +90,55 @@ describe('ORRALI Learning Engine & Lesson State Logic', () => {
     it('handles curly and straight apostrophes identically', () => {
       assert.equal(norm("J'habite en Égypte"), "j'habite en égypte");
       assert.equal(norm("J’habite en Égypte"), "j'habite en égypte");
+    });
+
+    it('strips accents for forgiving comparison', () => {
+      assert.equal(stripAccents('café'), 'cafe');
+      assert.equal(stripAccents("s'il vous plaît"), "s'il vous plait");
+      assert.equal(stripAccents('Begrüßung'), 'Begrußung');
+    });
+  });
+
+  describe('Smart Pedagogical Answer Evaluation', () => {
+    const pleaseItem = courses[0].lessons[0].items.find((i) => i.id === 'fr-1-4')!;
+    const enchanteItem = { id: 'test-1', target: 'Enchanté', en: 'Nice to meet you' };
+
+    it('accepts exact formal target S\'il vous plaît', () => {
+      const res = evaluateAnswer("S'il vous plaît", pleaseItem);
+      assert.equal(res.ok, true);
+      assert.equal(res.expected, "S'il vous plaît");
+    });
+
+    it('accepts valid informal alternative S\'il te plaît', () => {
+      const res = evaluateAnswer("S'il te plaît", pleaseItem);
+      assert.equal(res.ok, true);
+      assert.ok(res.hint?.includes("S'il te plaît"));
+    });
+
+    it('accepts alternative S\'il tu plait as valid translation', () => {
+      const res = evaluateAnswer("S'il tu plait", pleaseItem);
+      assert.equal(res.ok, true);
+      assert.ok(res.hint?.includes("S'il tu plait"));
+    });
+
+    it('accepts unaccented word with friendly educational hint when not in alternatives', () => {
+      const res = evaluateAnswer("Enchante", enchanteItem);
+      assert.equal(res.ok, true);
+      assert.equal(res.isClose, true);
+      assert.ok(res.hint?.includes("accents"));
+    });
+
+    it('accepts near-miss typo with constructive guidance', () => {
+      const res = evaluateAnswer("Enchanti", enchanteItem);
+      assert.equal(res.ok, true);
+      assert.equal(res.isClose, true);
+      assert.ok(res.hint?.includes("spelling"));
+    });
+
+    it('rejects genuinely incorrect translations', () => {
+      const res = evaluateAnswer("Au revoir", pleaseItem);
+      assert.equal(res.ok, false);
+      assert.equal(res.expected, "S'il vous plaît");
     });
   });
 
@@ -229,13 +278,28 @@ describe('ORRALI Learning Engine & Lesson State Logic', () => {
       }
     });
 
-    it('buildExercises generates choice, listen, and type exercises', () => {
+    it('buildExercises generates scaffolding with intro, choice, listen, and type', () => {
       const fr = courses[0];
       const items = fr.lessons[0].items;
-      const exercises = buildExercises(fr, items);
-      assert.equal(exercises.length, items.length * 3);
+      const exercises = buildExercises(fr, items, false);
+
+      // Verify the first exercise is an intro card (teaching the learner first!)
+      assert.equal(exercises[0].kind, 'intro');
 
       const kinds = new Set(exercises.map((e) => e.kind));
+      assert.ok(kinds.has('intro'));
+      assert.ok(kinds.has('choice'));
+      assert.ok(kinds.has('listen'));
+      assert.ok(kinds.has('type'));
+    });
+
+    it('buildExercises skips intro cards in review mode', () => {
+      const fr = courses[0];
+      const items = fr.lessons[0].items.slice(0, 3);
+      const reviewExercises = buildExercises(fr, items, true);
+
+      const kinds = new Set(reviewExercises.map((e) => e.kind));
+      assert.ok(!kinds.has('intro'));
       assert.ok(kinds.has('choice'));
       assert.ok(kinds.has('listen'));
       assert.ok(kinds.has('type'));
