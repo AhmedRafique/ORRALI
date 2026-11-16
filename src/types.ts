@@ -43,12 +43,25 @@ export interface Course {
   lessons: Lesson[];
 }
 
-export type ExerciseKind = 'intro' | 'choice' | 'listen' | 'type';
+export type ExerciseKind = 'intro' | 'choice' | 'listen' | 'speak' | 'type';
 
 export interface Exercise {
   kind: ExerciseKind;
   item: Item;
   options?: string[];
+}
+
+export interface WordScore {
+  word: string;
+  score: number;
+  status: 'great' | 'good' | 'retry';
+}
+
+export interface PronunciationResult {
+  overallScore: number;
+  words: WordScore[];
+  feedback: string;
+  passed: boolean;
 }
 
 export interface AnswerEvaluation {

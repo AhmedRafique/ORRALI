@@ -144,7 +144,12 @@ export function buildExercises(course: Course, items: Item[], isReview = false):
       out.push({ kind: 'listen', item });
     }
 
-    // 4. Active production phase: typing from recall
+    // 4. Speaking practice phase: pronounce out loud with audio assessment
+    for (const item of shuffle(chunk)) {
+      out.push({ kind: 'speak', item });
+    }
+
+    // 5. Active production phase: typing from recall
     for (const item of shuffle(chunk)) {
       out.push({ kind: 'type', item });
     }

@@ -1,6 +1,7 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import { norm, stripAccents, evaluateAnswer, buildExercises } from '../exercises';
+import { evaluatePronunciation, extractCleanWords } from '../scoring';
 import { newCard, review, isDue } from '../srs';
 import { emptyProgress, touchStreak, getEffectiveStreak, dayKey } from '../streak';
 import { courses } from '../content';
@@ -139,6 +140,35 @@ describe('ORRALI Learning Engine & Lesson State Logic', () => {
       const res = evaluateAnswer("Au revoir", pleaseItem);
       assert.equal(res.ok, false);
       assert.equal(res.expected, "S'il vous plaît");
+    });
+  });
+
+  describe('Pronunciation & Speech Scoring Engine', () => {
+    it('extractCleanWords strips punctuation and splits words', () => {
+      const words = extractCleanWords("S'il vous plaît !");
+      assert.deepEqual(words, ["Sil", "vous", "plaît"]);
+    });
+
+    it('rejects recordings that are too short (accidental taps or silence)', () => {
+      const res = evaluatePronunciation('Bonjour', 200);
+      assert.equal(res.passed, false);
+      assert.equal(res.overallScore, 30);
+      assert.ok(res.feedback.includes('too short'));
+    });
+
+    it('evaluates cadence and speech envelope for natural spoken duration', () => {
+      const res = evaluatePronunciation('Bonjour', 1200);
+      assert.equal(res.passed, true);
+      assert.ok(res.overallScore >= 70);
+      assert.equal(res.words.length, 1);
+      assert.equal(res.words[0].word, 'Bonjour');
+    });
+
+    it('accurately scores transcript when speech recognition is supplied', () => {
+      const res = evaluatePronunciation("Comment ça va", 1500, "Comment ca va");
+      assert.equal(res.passed, true);
+      assert.ok(res.overallScore >= 90);
+      assert.equal(res.words[0].status, 'great');
     });
   });
 
@@ -350,7 +380,7 @@ describe('ORRALI Learning Engine & Lesson State Logic', () => {
       }
     });
 
-    it('buildExercises generates scaffolding with intro, choice, listen, and type', () => {
+    it('buildExercises generates scaffolding with intro, choice, listen, speak, and type', () => {
       const fr = courses[0];
       const items = fr.lessons[0].items;
       const exercises = buildExercises(fr, items, false);
@@ -362,6 +392,7 @@ describe('ORRALI Learning Engine & Lesson State Logic', () => {
       assert.ok(kinds.has('intro'));
       assert.ok(kinds.has('choice'));
       assert.ok(kinds.has('listen'));
+      assert.ok(kinds.has('speak'));
       assert.ok(kinds.has('type'));
     });
 

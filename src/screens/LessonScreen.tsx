@@ -11,9 +11,16 @@ import {
   TextInput,
   View,
 } from 'react-native';
+import {
+  createAudioPlayer,
+  RecordingPresets,
+  requestRecordingPermissionsAsync,
+  useAudioRecorder,
+} from 'expo-audio';
 import { findBestVoiceForLanguage, playPhraseAudio, stopAllAudio } from '../audio';
 import { buildExercises, evaluateAnswer } from '../exercises';
-import { Course, Item, LessonCheckpoint } from '../types';
+import { evaluatePronunciation } from '../scoring';
+import { Course, Item, LessonCheckpoint, PronunciationResult } from '../types';
 
 const C = {
   midnight: '#1B1536',
@@ -64,6 +71,13 @@ export default function LessonScreen({
   const [wrongIds, setWrongIds] = useState<string[]>(initialWrongIds);
   const [voiceId, setVoiceId] = useState<string | undefined>(undefined);
 
+  // Audio recording & pronunciation state
+  const recorder = useAudioRecorder(RecordingPresets.HIGH_QUALITY);
+  const [isRecording, setIsRecording] = useState(false);
+  const [recordStartTime, setRecordStartTime] = useState<number | null>(null);
+  const [recordedUri, setRecordedUri] = useState<string | null>(null);
+  const [pronunciation, setPronunciation] = useState<PronunciationResult | null>(null);
+
   const ex = exercises[index];
   const progress = (index + (feedback ? 1 : 0)) / Math.max(1, exercises.length);
 
@@ -90,6 +104,10 @@ export default function LessonScreen({
   // Stop audio when exercise changes & auto-play if it's an intro card
   useEffect(() => {
     void stopAllAudio();
+    setPronunciation(null);
+    setIsRecording(false);
+    setRecordedUri(null);
+
     if (ex?.kind === 'intro') {
       const timer = setTimeout(() => {
         void playPhraseAudio(ex.item, course.code, voiceId);
@@ -156,9 +174,69 @@ export default function LessonScreen({
     void playPhraseAudio(item, course.code, voiceId);
   };
 
+  // Speaking Recording Handlers
+  const startRecording = async () => {
+    try {
+      const perm = await requestRecordingPermissionsAsync();
+      if (!perm.granted) {
+        Alert.alert(
+          'Microphone Permission Needed',
+          'Please enable microphone access in your phone settings to practice speaking out loud.'
+        );
+        return;
+      }
+      void stopAllAudio();
+      setPronunciation(null);
+      setRecordStartTime(Date.now());
+      setIsRecording(true);
+      recorder.record();
+    } catch (err) {
+      console.warn('[ORRALI Speak] startRecording error:', err);
+      setIsRecording(false);
+    }
+  };
+
+  const stopRecordingAndEvaluate = async () => {
+    try {
+      setIsRecording(false);
+      await recorder.stop();
+      const durationMs = recordStartTime ? Date.now() - recordStartTime : 1200;
+      setRecordedUri(recorder.uri);
+
+      const result = evaluatePronunciation(ex.item.target, durationMs);
+      setPronunciation(result);
+
+      if (result.passed) {
+        const nextCorrect = correctIds.includes(ex.item.id) ? correctIds : [...correctIds, ex.item.id];
+        const nextWrong = wrongIds.filter((id) => id !== ex.item.id);
+        setCorrectIds(nextCorrect);
+        setWrongIds(nextWrong);
+        persistCheckpoint(index, nextCorrect, nextWrong);
+      } else {
+        const nextWrong = wrongIds.includes(ex.item.id) ? wrongIds : [...wrongIds, ex.item.id];
+        const nextCorrect = correctIds.filter((id) => id !== ex.item.id);
+        setWrongIds(nextWrong);
+        setCorrectIds(nextCorrect);
+        persistCheckpoint(index, nextCorrect, nextWrong);
+      }
+    } catch (err) {
+      console.warn('[ORRALI Speak] stopRecording error:', err);
+      setIsRecording(false);
+    }
+  };
+
+  const playRecordedAudio = () => {
+    if (recordedUri) {
+      try {
+        const p = createAudioPlayer(recordedUri);
+        p.play();
+      } catch {}
+    }
+  };
+
   // Mutually exclusive correct/wrong answer status with smart evaluation
   const check = () => {
-    if (feedback || ex.kind === 'intro') return;
+    if (feedback || ex.kind === 'intro' || ex.kind === 'speak') return;
     const given = ex.kind === 'choice' ? picked ?? '' : answer;
     const evalRes = evaluateAnswer(given, ex.item);
 
@@ -195,13 +273,24 @@ export default function LessonScreen({
     setAnswer('');
     setPicked(null);
     setFeedback(null);
+    setPronunciation(null);
+    setRecordedUri(null);
+    setIsRecording(false);
     persistCheckpoint(nextIdx, correctIds, wrongIds);
   };
 
-  const canCheck = ex.kind === 'choice' ? !!picked : answer.trim().length > 0;
+  const canCheck =
+    ex.kind === 'choice'
+      ? !!picked
+      : ex.kind === 'speak'
+      ? !!pronunciation?.passed
+      : answer.trim().length > 0;
+
   const prompt =
     ex.kind === 'intro'
       ? 'Meet your new phrase'
+      : ex.kind === 'speak'
+      ? 'Say this phrase out loud'
       : ex.kind === 'choice'
       ? 'Choose the translation of'
       : ex.kind === 'listen'
@@ -232,8 +321,11 @@ export default function LessonScreen({
 
         <Text style={s.chapter}>{title.toUpperCase()}</Text>
         <Text style={s.prompt}>{prompt}</Text>
-        {ex.kind !== 'listen' && ex.kind !== 'intro' && <Text style={s.meaning}>{ex.item.en}</Text>}
+        {ex.kind !== 'listen' && ex.kind !== 'intro' && ex.kind !== 'speak' && (
+          <Text style={s.meaning}>{ex.item.en}</Text>
+        )}
 
+        {/* Phase 1: Intro Card */}
         {ex.kind === 'intro' && (
           <View style={s.introCard}>
             <View style={s.introBadge}>
@@ -255,6 +347,79 @@ export default function LessonScreen({
           </View>
         )}
 
+        {/* Phase 2: Speaking Drill */}
+        {ex.kind === 'speak' && (
+          <View style={s.speakPanel}>
+            <Text style={s.speakTarget}>{ex.item.target}</Text>
+            {ex.item.phonetic && <Text style={s.speakPhonetic}>/{ex.item.phonetic}/</Text>}
+            <Text style={s.speakMeaning}>{ex.item.en}</Text>
+
+            <Pressable style={s.playButton} onPress={() => speak(ex.item)}>
+              <Text style={s.playIcon}>▶</Text>
+              <Text style={s.playText}>Listen to pronunciation</Text>
+            </Pressable>
+
+            <View style={s.micArea}>
+              <Pressable
+                onPress={isRecording ? stopRecordingAndEvaluate : startRecording}
+                style={[s.micButton, isRecording && s.micButtonRecording]}
+              >
+                <Text style={s.micIcon}>{isRecording ? '⏹' : '🎙'}</Text>
+                <Text style={s.micText}>
+                  {isRecording ? 'Listening... Tap to finish' : 'Tap to speak'}
+                </Text>
+              </Pressable>
+            </View>
+
+            {pronunciation && (
+              <View
+                style={[
+                  s.scoreCard,
+                  pronunciation.passed ? s.scoreGood : s.scoreRetry,
+                ]}
+              >
+                <View style={s.scoreTop}>
+                  <View style={s.scoreBadge}>
+                    <Text style={s.scoreBadgeText}>{pronunciation.overallScore}% MATCH</Text>
+                  </View>
+                  {recordedUri && (
+                    <Pressable style={s.playbackBtn} onPress={playRecordedAudio}>
+                      <Text style={s.playbackText}>Hear yourself 🔊</Text>
+                    </Pressable>
+                  )}
+                </View>
+
+                <Text style={s.scoreFeedback}>{pronunciation.feedback}</Text>
+
+                <View style={s.wordPills}>
+                  {pronunciation.words.map((w, idx) => (
+                    <View
+                      key={idx}
+                      style={[
+                        s.wordPill,
+                        w.status === 'great'
+                          ? s.wordPillGreat
+                          : w.status === 'good'
+                          ? s.wordPillGood
+                          : s.wordPillRetry,
+                      ]}
+                    >
+                      <Text style={s.wordPillText}>{w.word}</Text>
+                    </View>
+                  ))}
+                </View>
+              </View>
+            )}
+
+            {!pronunciation && (
+              <Pressable style={s.skipButton} onPress={next}>
+                <Text style={s.skipButtonText}>Can’t speak right now? Skip</Text>
+              </Pressable>
+            )}
+          </View>
+        )}
+
+        {/* Phase 3: Multiple Choice */}
         {ex.kind === 'choice' && (
           <View style={s.options}>
             {ex.options!.map((o, i) => (
@@ -276,6 +441,7 @@ export default function LessonScreen({
           </View>
         )}
 
+        {/* Phase 4: Listen & Write */}
         {ex.kind === 'listen' && (
           <View style={s.listenPanel}>
             <Pressable style={s.playButton} onPress={() => speak(ex.item)}>
@@ -296,6 +462,7 @@ export default function LessonScreen({
           </View>
         )}
 
+        {/* Phase 5: Translate & Type */}
         {ex.kind === 'type' && (
           <View style={s.listenPanel}>
             <TextInput
@@ -325,15 +492,37 @@ export default function LessonScreen({
             </View>
           )}
           <Pressable
-            disabled={ex.kind !== 'intro' && !feedback && !canCheck}
-            onPress={ex.kind === 'intro' || feedback ? next : check}
-            style={[s.cta, ex.kind !== 'intro' && !feedback && !canCheck && s.ctaDisabled]}
+            disabled={
+              ex.kind === 'speak'
+                ? !pronunciation
+                : ex.kind !== 'intro' && !feedback && !canCheck
+            }
+            onPress={
+              ex.kind === 'intro' || feedback || (ex.kind === 'speak' && pronunciation?.passed)
+                ? next
+                : ex.kind === 'speak' && pronunciation && !pronunciation.passed
+                ? startRecording
+                : check
+            }
+            style={[
+              s.cta,
+              (ex.kind === 'speak' ? !pronunciation : ex.kind !== 'intro' && !feedback && !canCheck) &&
+                s.ctaDisabled,
+            ]}
           >
             <Text style={s.ctaText}>
               {ex.kind === 'intro'
                 ? index + 1 === exercises.length
                   ? 'Finish lesson'
                   : 'I understand · Continue'
+                : ex.kind === 'speak'
+                ? pronunciation?.passed
+                  ? index + 1 === exercises.length
+                    ? 'Finish lesson'
+                    : 'Continue'
+                  : pronunciation
+                  ? 'Try again 🎙️'
+                  : 'Record phrase'
                 : feedback
                 ? index + 1 === exercises.length
                   ? 'Finish lesson'
@@ -428,6 +617,78 @@ const s = StyleSheet.create({
     fontSize: 12,
     lineHeight: 18,
   },
+  speakPanel: {
+    backgroundColor: C.white,
+    borderRadius: 22,
+    padding: 22,
+    borderWidth: 1.5,
+    borderColor: C.line,
+    marginTop: 10,
+    marginBottom: 16,
+    alignItems: 'center',
+  },
+  speakTarget: {
+    color: C.midnight,
+    fontSize: 28,
+    fontWeight: '800',
+    textAlign: 'center',
+    marginBottom: 4,
+  },
+  speakPhonetic: {
+    color: C.gold,
+    fontSize: 15,
+    fontWeight: '700',
+    textAlign: 'center',
+    marginBottom: 10,
+  },
+  speakMeaning: {
+    color: C.muted,
+    fontSize: 14,
+    fontWeight: '600',
+    textAlign: 'center',
+    marginBottom: 18,
+  },
+  micArea: { marginTop: 20, marginBottom: 10, alignItems: 'center' },
+  micButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    backgroundColor: C.midnight,
+    paddingHorizontal: 24,
+    paddingVertical: 16,
+    borderRadius: 28,
+    shadowColor: C.midnight,
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.18,
+    shadowRadius: 10,
+    elevation: 6,
+  },
+  micButtonRecording: { backgroundColor: '#C04348' },
+  micIcon: { fontSize: 20, color: C.gold },
+  micText: { color: C.white, fontSize: 14, fontWeight: '800' },
+  scoreCard: {
+    width: '100%',
+    borderRadius: 16,
+    padding: 14,
+    marginTop: 14,
+    borderWidth: 1.5,
+  },
+  scoreGood: { backgroundColor: '#EAF2EC', borderColor: C.green },
+  scoreRetry: { backgroundColor: '#FDF3E7', borderColor: '#E5A548' },
+  scoreTop: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 },
+  scoreBadge: { backgroundColor: C.white, paddingHorizontal: 9, paddingVertical: 4, borderRadius: 8 },
+  scoreBadgeText: { color: C.midnight, fontSize: 10, fontWeight: '900' },
+  playbackBtn: { paddingHorizontal: 6, paddingVertical: 3 },
+  playbackText: { color: C.midnight, fontSize: 11, fontWeight: '700' },
+  scoreFeedback: { color: C.ink, fontSize: 13, fontWeight: '700', marginBottom: 10 },
+  wordPills: { flexDirection: 'row', flexWrap: 'wrap', gap: 6 },
+  wordPill: { paddingHorizontal: 9, paddingVertical: 4, borderRadius: 8 },
+  wordPillGreat: { backgroundColor: '#D2EAD8' },
+  wordPillGood: { backgroundColor: '#FCEDD3' },
+  wordPillRetry: { backgroundColor: '#FAD7D9' },
+  wordPillText: { color: C.ink, fontSize: 11, fontWeight: '800' },
+  skipButton: { marginTop: 16, padding: 6 },
+  skipButtonText: { color: C.muted, fontSize: 11, fontWeight: '600', textDecorationLine: 'underline' },
   options: { gap: 10 },
   option: {
     flexDirection: 'row',
@@ -447,18 +708,19 @@ const s = StyleSheet.create({
   optionLetter: { color: '#A69DAC', fontSize: 10, fontWeight: '800', marginLeft: 10 },
   listenPanel: { marginTop: 12 },
   playButton: {
-    alignSelf: 'flex-start',
+    alignSelf: 'center',
     flexDirection: 'row',
     alignItems: 'center',
     gap: 10,
     backgroundColor: C.midnight,
-    paddingHorizontal: 19,
-    paddingVertical: 14,
+    paddingHorizontal: 18,
+    paddingVertical: 12,
     borderRadius: 15,
+    marginBottom: 6,
   },
-  playIcon: { color: C.gold, fontSize: 13 },
-  playText: { color: C.white, fontWeight: '800', fontSize: 13 },
-  listenHint: { color: C.muted, fontSize: 12, lineHeight: 18, marginTop: 16, marginBottom: 12 },
+  playIcon: { color: C.gold, fontSize: 12 },
+  playText: { color: C.white, fontWeight: '800', fontSize: 12 },
+  listenHint: { color: C.muted, fontSize: 12, lineHeight: 18, marginTop: 16, marginBottom: 12, textAlign: 'center' },
   input: {
     backgroundColor: C.white,
     borderWidth: 1.5,
