@@ -11,7 +11,7 @@ import {
   TextInput,
   View,
 } from 'react-native';
-import * as Speech from 'expo-speech';
+import { findBestVoiceForLanguage, playPhraseAudio, stopAllAudio } from '../audio';
 import { buildExercises, norm } from '../exercises';
 import { Course, Item } from '../types';
 
@@ -49,43 +49,34 @@ export default function LessonScreen({ course, title, items, onFinish, onExit }:
   const ex = exercises[index];
   const progress = (index + (feedback ? 1 : 0)) / Math.max(1, exercises.length);
 
-  // Discover and set matching native voice for course language (e.g. French / German)
+  // Discover and set highest quality neural voice for course language (e.g. French / German)
   useEffect(() => {
     let active = true;
-    const lang = course.code.toLowerCase();
-    Speech.getAvailableVoicesAsync()
-      .then((voices) => {
-        if (!active) return;
-        const match = voices.find((v) => {
-          const vLang = (v.language ?? '').toLowerCase();
-          const vId = (v.identifier ?? '').toLowerCase();
-          return vLang.startsWith(lang) || vId.startsWith(lang) || vId.includes(`-${lang}-`) || vId.includes(`_${lang}_`);
-        });
-        if (match) {
-          setVoiceId(match.identifier);
-        }
-      })
-      .catch(() => {});
+    findBestVoiceForLanguage(course.code).then((bestVoice) => {
+      if (active && bestVoice) {
+        setVoiceId(bestVoice);
+      }
+    });
     return () => {
       active = false;
     };
   }, [course.code]);
 
-  // Stop speech on unmount
+  // Stop audio on unmount
   useEffect(() => {
     return () => {
-      void Speech.stop();
+      void stopAllAudio();
     };
   }, []);
 
-  // Stop speech when exercise changes
+  // Stop audio when exercise changes
   useEffect(() => {
-    void Speech.stop();
+    void stopAllAudio();
   }, [index]);
 
   // Handle exit with audio stop
   const handleExit = () => {
-    void Speech.stop();
+    void stopAllAudio();
     onExit();
   };
 
@@ -122,13 +113,8 @@ export default function LessonScreen({ course, title, items, onFinish, onExit }:
     );
   };
 
-  const speak = (text: string) => {
-    void Speech.stop();
-    Speech.speak(text, {
-      language: course.code, // 'fr' or 'de'
-      voice: voiceId,
-      rate: 0.88,
-    });
+  const speak = (item: Item) => {
+    void playPhraseAudio(item, course.code, voiceId);
   };
 
   // Mutually exclusive correct/wrong answer status
@@ -141,7 +127,7 @@ export default function LessonScreen({ course, title, items, onFinish, onExit }:
     if (ok) {
       setCorrectIds((prev) => (prev.includes(ex.item.id) ? prev : [...prev, ex.item.id]));
       setWrongIds((prev) => prev.filter((id) => id !== ex.item.id));
-      speak(ex.item.target);
+      speak(ex.item);
     } else {
       setWrongIds((prev) => (prev.includes(ex.item.id) ? prev : [...prev, ex.item.id]));
       setCorrectIds((prev) => prev.filter((id) => id !== ex.item.id));
@@ -149,7 +135,7 @@ export default function LessonScreen({ course, title, items, onFinish, onExit }:
   };
 
   const next = () => {
-    void Speech.stop();
+    void stopAllAudio();
     if (index + 1 >= exercises.length) {
       onFinish({ correctIds, wrongIds });
       return;
@@ -217,7 +203,7 @@ export default function LessonScreen({ course, title, items, onFinish, onExit }:
 
         {ex.kind === 'listen' && (
           <View style={s.listenPanel}>
-            <Pressable style={s.playButton} onPress={() => speak(ex.item.target)}>
+            <Pressable style={s.playButton} onPress={() => speak(ex.item)}>
               <Text style={s.playIcon}>▶</Text>
               <Text style={s.playText}>Play audio</Text>
             </Pressable>

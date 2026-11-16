@@ -4,6 +4,8 @@ export interface Item {
   id: string;
   target: string;
   en: string;
+  audio?: any;
+  audioUrl?: string;
 }
 
 export interface Lesson {

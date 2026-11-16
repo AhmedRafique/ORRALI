@@ -47,10 +47,11 @@ jobs:
       - name: Expo Prebuild (Generate Android native project)
         run: npx expo prebuild --platform android --clean --no-install
 
-      - name: Configure Android Proguard Rules for SQLite and AsyncStorage
+      - name: Configure Android Proguard Rules for SQLite, Audio and AsyncStorage
         run: |
           echo "-keep class com.reactnativecommunity.asyncstorage.** { *; }" >> android/app/proguard-rules.pro
           echo "-keep class expo.modules.sqlite.** { *; }" >> android/app/proguard-rules.pro
+          echo "-keep class expo.modules.audio.** { *; }" >> android/app/proguard-rules.pro
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
@@ -70,7 +71,7 @@ jobs:
           fi
           if [ -f "$APK_PATH" ]; then
             echo "Found Standalone Release APK at: $APK_PATH"
-            cp "$APK_PATH" dist-apk/ORRALI-1.2.0.apk
+            cp "$APK_PATH" dist-apk/ORRALI-1.2.1.apk
             ls -la dist-apk/
           else
             echo "Error: No APK file found!"
@@ -81,18 +82,18 @@ jobs:
       - name: Upload APK as Workflow Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ORRALI-1.2.0-Android-APK
-          path: dist-apk/ORRALI-1.2.0.apk
+          name: ORRALI-1.2.1-Android-APK
+          path: dist-apk/ORRALI-1.2.1.apk
           retention-days: 30
 
       - name: Create GitHub Release
         if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: v1.2.0
-          name: ORRALI v1.2.0 — Learning Engine & Persistence Release
+          tag_name: v1.2.1
+          name: ORRALI v1.2.1 — Enhanced Audio & Learning Engine Release
           body_path: RELEASE_NOTES.md
-          files: dist-apk/ORRALI-1.2.0.apk
+          files: dist-apk/ORRALI-1.2.1.apk
           draft: false
           prerelease: false
         env:

@@ -11,7 +11,7 @@ export default function ProfileScreen({ courses, code, progress, onPickCourse, o
     <Text style={s.sectionTitle}>Learning preferences</Text>
     <View style={s.panel}><Text style={s.label}>CURRENT LEARNING WORLD</Text>{courses.map((course) => <Pressable key={course.code} onPress={() => onPickCourse(course.code)} style={[s.choice, code === course.code && s.choiceActive]}><Text style={s.flag}>{course.flag}</Text><View style={{ flex: 1 }}><Text style={s.choiceName}>{course.name}</Text><Text style={s.choiceMeta}>{course.code === 'fr' ? 'French' : 'German'} · A1 foundations</Text></View><Text style={s.check}>{code === course.code ? '✓' : '○'}</Text></Pressable>)}</View>
     <View style={s.panel}><Text style={s.label}>DAILY LEARNING GOAL</Text><Text style={s.goalTitle}>{progress.dailyGoal} XP per day</Text><Text style={s.goalHint}>Choose a goal that feels achievable and enjoyable.</Text><View style={s.goalRow}>{[10, 20, 30].map((goal) => <Pressable key={goal} onPress={() => onSetDailyGoal(goal)} style={[s.goal, progress.dailyGoal === goal && s.goalActive]}><Text style={[s.goalText, progress.dailyGoal === goal && s.goalTextActive]}>{goal} XP</Text></Pressable>)}</View></View>
-    <View style={s.about}><Text style={s.aboutBrand}>ORRALI</Text><Text style={s.tagline}>Beyond the familiar.</Text><Text style={s.aboutText}>A new world of possibilities. Discover · Connect · Grow.</Text><Text style={s.version}>LEARNING ENGINE BUILD · 1.2.0</Text></View>
+    <View style={s.about}><Text style={s.aboutBrand}>ORRALI</Text><Text style={s.tagline}>Beyond the familiar.</Text><Text style={s.aboutText}>A new world of possibilities. Discover · Connect · Grow.</Text><Text style={s.version}>AUDIO & LEARNING ENGINE · 1.2.1</Text></View>
   </ScrollView>;
 }
 
