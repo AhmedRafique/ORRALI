@@ -158,7 +158,7 @@ describe('ORRALI Learning Engine & Lesson State Logic', () => {
     });
 
     it('evaluates cadence and speech envelope for natural spoken duration', () => {
-      const res = evaluatePronunciation('Bonjour', 1200);
+      const res = evaluatePronunciation('Bonjour', 1200, 'Bonjour');
       assert.equal(res.passed, true);
       assert.ok(res.overallScore >= 70);
       assert.equal(res.words.length, 1);

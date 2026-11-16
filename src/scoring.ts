@@ -68,7 +68,11 @@ export function evaluatePronunciation(
   if (spokenTranscript && spokenTranscript.trim().length > 0) {
     const spokenWords = extractCleanWords(spokenTranscript);
     const words: WordScore[] = targetWords.map((tWord, i) => {
-      const sWord = spokenWords[i] ?? spokenWords[spokenWords.length - 1] ?? '';
+      const sWord = spokenWords[i] ?? '';
+      if (!sWord) {
+        return { word: tWord, score: 0, status: 'retry' };
+      }
+
       const normT = stripAccents(norm(tWord));
       const normS = stripAccents(norm(sWord));
       const dist = levenshteinDistance(normT, normS);
@@ -90,38 +94,29 @@ export function evaluatePronunciation(
       overallScore >= 90
         ? 'Magnifique! Native-level pronunciation.'
         : overallScore >= 80
-        ? 'Très bien! Clear and articulate.'
+        ? 'Sehr gut! Clear and articulate.'
         : overallScore >= 70
         ? 'Good pronunciation! Keep practicing for perfection.'
-        : 'Try again — listen carefully to the native phrase.';
+        : overallScore >= 40
+        ? 'Pronunciation needs work — listen carefully to the native phrase.'
+        : 'Unrecognized speech or wrong language. Speak the phrase in the target language.';
 
     return { overallScore, words, feedback, passed };
   }
 
-  // 3. Acoustic/Cadence Envelope Evaluation (offline device recording)
-  // Calculates expected speaking duration (~250-450ms per syllable/word)
-  const expectedDuration = targetWords.length * 420;
-  const ratio = Math.min(recordingDurationMs, expectedDuration * 2) / Math.max(400, expectedDuration);
-  const timingFactor = ratio >= 0.7 && ratio <= 1.8 ? 1 : 0.85;
+  // 3. If no intelligible speech transcript was recognized or transcript is empty
+  // We NEVER award a fake passing score!
+  const words: WordScore[] = targetWords.map((word) => ({
+    word,
+    score: 25,
+    status: 'retry',
+  }));
 
-  const words: WordScore[] = targetWords.map((word, idx) => {
-    // Generate nuanced word-level scores based on cadence
-    const baseVariation = ((idx * 7 + targetWords.length * 13) % 15);
-    const wordScore = Math.min(98, Math.max(72, Math.round(88 * timingFactor + baseVariation)));
-    const status: WordScore['status'] = wordScore >= 85 ? 'great' : 'good';
-    return { word, score: wordScore, status };
-  });
-
-  const sum = words.reduce((acc, w) => acc + w.score, 0);
-  const overallScore = Math.round(sum / Math.max(1, words.length));
-  const passed = overallScore >= 70;
-
-  const feedback =
-    overallScore >= 90
-      ? 'Magnifique! Native-level pronunciation.'
-      : overallScore >= 80
-      ? 'Very well pronounced! Clear and natural.'
-      : 'Good effort! Keep practicing to sound even more natural.';
-
-  return { overallScore, words, feedback, passed };
+  return {
+    overallScore: 25,
+    words,
+    feedback:
+      'No clear speech in the target language was recognized. Listen to the native audio and speak clearly into the microphone.',
+    passed: false,
+  };
 }

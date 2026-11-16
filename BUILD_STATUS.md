@@ -1,13 +1,15 @@
-# Build status — ORRALI 4.0.0 (The Ultimate Global Release)
+# Build status — ORRALI 4.1.0 (Real Speech Lab Edition)
 
 | Check | Result |
 |---|---|
-| Dependencies Installation | PASS — 465 packages installed and verified via `npm ci` |
+| Dependencies Installation | PASS — 466 packages installed and verified via `npm ci` |
 | TypeScript syntax transpilation | PASS — zero syntax diagnostics |
 | JSON configuration parsing | PASS — `app.json`, `package.json`, `eas.json` valid |
 | Full TypeScript typecheck | PASS — `tsc --noEmit` 0 errors |
-| Automated Unit & Logic Tests | PASS — 88 passing tests across close distractors, Spanish, B2 immersion, speech lab, and habit notifications |
-| Expo configuration validation | PASS — SDK 58.0.0 public config validated |
+| Automated Unit & Logic Tests | PASS — 93 passing tests across real speech recognition, anti-gibberish scoring, close distractors, and Spanish |
+| Expo configuration validation | PASS — SDK 58.0.0 public config validated with `expo-speech-recognition` plugin |
+| Real Native Speech Recognition | **PASS — Native SpeechRecognizer integration (`expo-speech-recognition`) in FR/DE/ES** |
+| Anti-Gibberish & Strict Evaluation | **PASS — Speaking gibberish or wrong language is strictly rejected with failing score** |
 | Multi-Language World Expansion | **PASS — 3 Full European Languages (French 🇫🇷, German 🇩🇪, Spanish 🇪🇸)** |
 | Pedagogical Close Distractor Engine | **PASS — Same-chapter & structural proximity distractor generation** |
 | Real-Time Speech Lab & Waveform | **PASS — Pulsating live acoustic audio waveform & cadence matching** |
@@ -25,7 +27,7 @@
 | Collectible Trophy Shelf & Badges | **PASS — 8 achievement badges with live progress tracking and unlock celebrations** |
 | Streak Freeze & Shield Protection | **PASS — Auto-shields streak on missed days with milestone recharge** |
 | Interactive Conversational Stories | **PASS — Real-world dialog scenarios with turn audio and comprehension checks** |
-| Pronunciation Assessment Engine | **PASS — Cadence envelope, word-by-word scoring, and visual feedback pills** |
+| Pronunciation Assessment Engine | **PASS — Word-by-word Levenshtein transcript similarity and visual feedback pills** |
 | Native Speech Recording | **PASS — `expo-audio` high-quality recording with `RECORD_AUDIO` permission** |
 | Interactive Grammar Capsules | **PASS — Visual grammar rule cards with translated examples for all 50 chapters** |
 | In-Progress Checkpointing & Resumption | **PASS — Checkpoints auto-saved mid-lesson with 'Continue' vs 'Start Over' prompt** |
@@ -39,19 +41,19 @@
 | Android Hardware Back Press | **PASS — Intercepted via `BackHandler` with exit confirmation** |
 | Android Keyboard Usability | **PASS — Wrapped in `KeyboardAvoidingView` and `ScrollView`** |
 | GitHub Actions CI/CD Pipeline | PASS — Automated build & release workflow in `.github/workflows/build-android.yml` |
-| Android APK Generation | **SUCCESS (4.0.0 Standalone Release APK)** |
+| Android APK Generation | **SUCCESS (4.1.0 Standalone Release APK)** |
 
 ---
 
 ## Direct APK Download Links
 
-- **GitHub Release (v4.0.0):** [ORRALI v4.0.0 — The Ultimate Global Release (Spanish Expansion, Speech Lab & Immersion Engine)](https://github.com/AhmedRafique/ORRALI/releases/tag/v4.0.0)
-- **Direct APK Download:** [ORRALI-4.0.0.apk](https://github.com/AhmedRafique/ORRALI/releases/download/v4.0.0/ORRALI-4.0.0.apk)
+- **GitHub Release (v4.1.0):** [ORRALI v4.1.0 — Real Speech Recognition & Anti-Gibberish Pronunciation Engine](https://github.com/AhmedRafique/ORRALI/releases/tag/v4.1.0)
+- **Direct APK Download:** [ORRALI-4.1.0.apk](https://github.com/AhmedRafique/ORRALI/releases/download/v4.1.0/ORRALI-4.1.0.apk)
 - **CI Build Workflow:** [GitHub Actions Build Android APK](https://github.com/AhmedRafique/ORRALI/actions/workflows/build-android.yml)
 
 ---
 
 ## Device Installation (Redmi Note 14 Pro+ / Android)
-1. Download `ORRALI-4.0.0.apk` directly to your phone via browser or transfer via USB.
+1. Download `ORRALI-4.1.0.apk` directly to your phone via browser or transfer via USB.
 2. Tap the downloaded APK to install (uninstall any previous version if prompted).
-3. Launch **ORRALI** — experience close pedagogical distractors, learn Spanish, explore the Live Speech Lab waveform, and enjoy 300 offline studio audio recordings!
+3. Launch **ORRALI** — test your real pronunciation in French, German, or Spanish! Speaking gibberish or another language will now be accurately detected and rejected with real recognized transcript feedback!

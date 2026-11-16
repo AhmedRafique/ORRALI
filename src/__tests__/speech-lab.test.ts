@@ -5,7 +5,11 @@ import { evaluatePronunciation } from '../scoring';
 describe('Real-Time Acoustic Waveform & Speech Lab Engine (TDD)', () => {
   it('computes acoustic cadence score and speech envelope ratio', () => {
     // Target: "Bonjour, comment allez-vous ?" (3 words, ~1500ms expected)
-    const result = evaluatePronunciation('Bonjour, comment allez-vous ?', 1450);
+    const result = evaluatePronunciation(
+      'Bonjour, comment allez-vous ?',
+      1450,
+      'Bonjour comment allez-vous'
+    );
 
     assert.ok(result.overallScore >= 70);
     assert.equal(result.passed, true);

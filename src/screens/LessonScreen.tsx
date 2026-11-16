@@ -17,6 +17,10 @@ import {
   requestRecordingPermissionsAsync,
   useAudioRecorder,
 } from 'expo-audio';
+import {
+  ExpoSpeechRecognitionModule,
+  useSpeechRecognitionEvent,
+} from 'expo-speech-recognition';
 import { findBestVoiceForLanguage, playPhraseAudio, stopAllAudio } from '../audio';
 import { buildExercises, evaluateAnswer } from '../exercises';
 import { evaluatePronunciation } from '../scoring';
@@ -77,7 +81,19 @@ export default function LessonScreen({
   const [isRecording, setIsRecording] = useState(false);
   const [recordStartTime, setRecordStartTime] = useState<number | null>(null);
   const [recordedUri, setRecordedUri] = useState<string | null>(null);
+  const [liveTranscript, setLiveTranscript] = useState('');
   const [pronunciation, setPronunciation] = useState<PronunciationResult | null>(null);
+
+  useSpeechRecognitionEvent('result', (event) => {
+    const text = event.results[0]?.transcript;
+    if (text) {
+      setLiveTranscript(text);
+    }
+  });
+
+  useSpeechRecognitionEvent('error', (event) => {
+    console.log('[ORRALI STT Error]', event.error, event.message);
+  });
 
   const ex = exercises[index];
   const progress = (index + (feedback ? 1 : 0)) / Math.max(1, exercises.length);
@@ -188,10 +204,29 @@ export default function LessonScreen({
       }
       void stopAllAudio();
       setPronunciation(null);
+      setLiveTranscript('');
       setRecordStartTime(Date.now());
       setIsRecording(true);
       void triggerHaptic('light');
       recorder.record();
+
+      // Start native speech recognizer in the course target language
+      try {
+        const langMap: Record<string, string> = { fr: 'fr-FR', de: 'de-DE', es: 'es-ES' };
+        const sttLang = langMap[course.speechLang] ?? 'fr-FR';
+
+        const sttPerm = await ExpoSpeechRecognitionModule.requestPermissionsAsync();
+        if (sttPerm.granted) {
+          ExpoSpeechRecognitionModule.start({
+            lang: sttLang,
+            interimResults: true,
+            maxAlternatives: 1,
+            continuous: false,
+          });
+        }
+      } catch (sttErr) {
+        console.warn('[ORRALI STT] start error:', sttErr);
+      }
     } catch (err) {
       console.warn('[ORRALI Speak] startRecording error:', err);
       setIsRecording(false);
@@ -202,10 +237,18 @@ export default function LessonScreen({
     try {
       setIsRecording(false);
       await recorder.stop();
+
+      try {
+        ExpoSpeechRecognitionModule.stop();
+      } catch {
+        /* best effort */
+      }
+
       const durationMs = recordStartTime ? Date.now() - recordStartTime : 1200;
       setRecordedUri(recorder.uri);
 
-      const result = evaluatePronunciation(ex.item.target, durationMs);
+      // Evaluate authentic pronunciation against real recognized transcript
+      const result = evaluatePronunciation(ex.item.target, durationMs, liveTranscript);
       setPronunciation(result);
       void triggerHaptic(result.passed ? 'success' : 'warning');
 
@@ -414,6 +457,12 @@ export default function LessonScreen({
                     </Pressable>
                   )}
                 </View>
+
+                {liveTranscript.length > 0 ? (
+                  <Text style={s.heardText}>Recognized: "{liveTranscript}"</Text>
+                ) : (
+                  <Text style={s.heardText}>(No clear speech recognized in {course.name})</Text>
+                )}
 
                 <Text style={s.scoreFeedback}>{pronunciation.feedback}</Text>
 
@@ -739,6 +788,13 @@ const s = StyleSheet.create({
   scoreBadgeText: { color: C.midnight, fontSize: 10, fontWeight: '900' },
   playbackBtn: { paddingHorizontal: 6, paddingVertical: 3 },
   playbackText: { color: C.midnight, fontSize: 11, fontWeight: '700' },
+  heardText: {
+    color: C.muted,
+    fontSize: 11,
+    fontWeight: '700',
+    fontStyle: 'italic',
+    marginBottom: 8,
+  },
   scoreFeedback: { color: C.ink, fontSize: 13, fontWeight: '700', marginBottom: 10 },
   wordPills: { flexDirection: 'row', flexWrap: 'wrap', gap: 6 },
   wordPill: { paddingHorizontal: 9, paddingVertical: 4, borderRadius: 8 },
