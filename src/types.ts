@@ -11,12 +11,28 @@ export interface Item {
   audioUrl?: string;
 }
 
+export interface GrammarExample {
+  target: string;
+  en: string;
+  note?: string;
+}
+
+export interface GrammarCapsule {
+  id: string;
+  title: string;
+  tag: string;
+  summary: string;
+  explanation: string;
+  examples: GrammarExample[];
+}
+
 export interface Lesson {
   id: string;
   title: string;
   items: Item[];
   subtitle?: string;
   level?: string;
+  grammarCapsule?: GrammarCapsule;
 }
 
 export interface Course {

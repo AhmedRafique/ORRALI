@@ -1,27 +1,40 @@
-# ORRALI 1.3.1 — In-Progress Lesson Resumption & Checkpointing
+# ORRALI 1.4.0 — Complete A1 Curriculum & Grammar Capsules Release
 
 ## Summary
-Milestone 1.3.1 introduces in-progress lesson checkpointing and resumption: when you leave a lesson mid-way (via the close button or Android back gesture), ORRALI automatically saves your exact step index, correct answers, and wrong answers. When you tap the lesson again, you are given the option to continue from where you stopped or start fresh from the beginning.
+Milestone 1.4.0 delivers the full CEFR A1 curriculum for French and German across 20 comprehensive thematic units (120 vocabulary items and sentences), complete with embedded Grammar Capsules, visual rule cards, phonetic guides, and cultural usage notes.
 
-## Features Added in 1.3.1
-- **In-Progress Lesson Checkpointing:**
-  - Automatically records `LessonCheckpoint` (`lessonId`, `exerciseIndex`, `totalExercises`, `correctIds`, `wrongIds`, `updatedAt`) whenever the learner advances through a lesson or exits early.
-  - Persisted across app restarts and device power cycles through the dual-layer SQLite/AsyncStorage persistence engine.
-- **Interactive Resume Prompt Modal:**
-  - When opening a lesson with an existing checkpoint, a branded ORRALI modal appears:
-    - *"Continue from Step X"* — resumes immediately at the saved exercise with all previously answered items preserved.
-    - *"Start from Beginning"* — clears the saved checkpoint and starts the chapter fresh from Step 1.
-    - *"Cancel"* — dismisses the prompt and stays on the home dashboard.
-- **Automatic Checkpoint Clearance:**
-  - When a lesson is finished, its checkpoint is automatically cleared from storage.
-- **PlantUML Flow Update:**
-  - Synchronized `docs/lesson-flow.puml` with the new checkpoint detection and resumption lifecycle.
-- **Automated Verification:**
-  - Added unit test suite covering checkpoint creation, state restoration, and cleanup on completion (30 passing tests).
+## What's Included in 1.4.0
+- **Full 10-Unit French A1 Curriculum:**
+  1. *Salutations & Courtoisie* (Polite address, tu vs. vous)
+  2. *Les Chiffres & Nombres* (Counting, un vs. une gender)
+  3. *Se présenter & Origines* (Nationalities, professions without articles)
+  4. *Au Café & Restaurant* (Ordering drinks, polite conditional "je voudrais")
+  5. *S'orienter & Transports* (Directions, prepositions of location)
+  6. *Le Temps & L'Heure* (Telling time, "il est... heures")
+  7. *Faire les Boutiques* (Shopping, demonstratives ce/cette/ces)
+  8. *À l'Hôtel* (Checking in, contracted articles le/la/l')
+  9. *Santé & Urgence* (Pharmacy, doctors, expressing pain with "avoir mal à")
+  10. *La Météo & Sentiments* (Weather with "faire", feelings and emotions)
+- **Full 10-Unit German A1 Curriculum:**
+  1. *Begrüßung & Höflichkeit* (Du vs. Sie formal address)
+  2. *Zahlen & Zählen* (Numbers, eins vs. ein/eine)
+  3. *Sich vorstellen & Herkunft* (Introductions, professions without articles)
+  4. *Im Café & Restaurant* (Ordering, accusative case "einen Kaffee")
+  5. *Orientierung & Unterwegs* (Directions, polite imperatives)
+  6. *Uhrzeit & Wochentage* (Telling time, "es ist... Uhr")
+  7. *Einkaufen & Bezahlen* (Shopping, modal verbs like "können")
+  8. *Im Hotel* (Checking in, gender articles der/die/das)
+  9. *Gesundheit & Notfall* (Medical, dative well-being "mir geht es...")
+  10. *Wetter & Gefühle* (Weather, predicative adjectives with "sein")
+- **Interactive Grammar Capsules:**
+  - Each lesson card displays an elegant gold Grammar Capsule badge (`✦ Grammar: [Topic]`).
+  - Tapping opens an in-depth visual modal with rule summary, detailed explanation, and translated example sentences.
+- **Enriched Vocabulary:**
+  - All 120 phrases feature phonetic pronunciation guides, usage/cultural tips, and accepted alternative translations.
 
 ---
 
-# ORRALI 1.3.0 — Scaffolding & Smart Evaluation Release
+# ORRALI 1.3.1 — In-Progress Lesson Resumption & Checkpointing
 
 ## Summary
-Milestone 1.3.0 completely revamps the learning pedagogy: introducing structured cognitive scaffolding (Discovery -> Recognition -> Comprehension -> Production) so learners are always taught new phrases before being asked to produce them, and deploys intelligent answer evaluation that accepts valid informal/formal variants, forgives missing accents, and tolerates minor typos.
+Milestone 1.3.1 introduces in-progress lesson checkpointing and resumption: when you leave a lesson mid-way, ORRALI automatically saves your exact step index, correct answers, and wrong answers. When you tap the lesson again, you can continue from where you stopped or start fresh.
