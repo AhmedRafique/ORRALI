@@ -1,6 +1,6 @@
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { isDue } from '../srs';
-import { dayKey } from '../store';
+import { dayKey, getEffectiveStreak } from '../store';
 import { Course, LangCode, Progress } from '../types';
 
 const C = {
@@ -42,7 +42,7 @@ export default function HomeScreen({ courses, course, progress, onPickCourse, on
           <Text style={s.welcome}>Hello, Explorer!</Text>
           <Text style={s.subWelcome}>A little progress opens a new world.</Text>
         </View>
-        <View style={s.streakPill}><Text style={s.streakIcon}>✦</Text><Text style={s.streakText}>{progress.streak} day streak</Text></View>
+        <View style={s.streakPill}><Text style={s.streakIcon}>✦</Text><Text style={s.streakText}>{getEffectiveStreak(progress)} day streak</Text></View>
       </View>
 
       <View style={s.goalCard}>

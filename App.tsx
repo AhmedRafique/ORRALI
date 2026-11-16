@@ -7,6 +7,7 @@ import LessonScreen from './src/screens/LessonScreen';
 import ProgressScreen from './src/screens/ProgressScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
 import { review, isDue } from './src/srs';
+import { recordAttemptToDb } from './src/db';
 import { dayKey, emptyProgress, loadLanguage, loadProgress, saveLanguage, saveProgress, touchStreak } from './src/store';
 import { Item, LangCode, Progress } from './src/types';
 
@@ -43,26 +44,39 @@ export default function App() {
 
   const finish = useCallback(
     (res: { correctIds: string[]; wrongIds: string[] }) => {
-      setProgress((prev) => {
-        let p = touchStreak(prev ?? emptyProgress());
-        const cards = { ...p.cards };
-        const finalCorrectIds = res.correctIds.filter((id) => !res.wrongIds.includes(id));
-        const finalWrongIds = res.wrongIds.filter((id) => !res.correctIds.includes(id));
-        const wrong = new Set(finalWrongIds);
-        for (const id of new Set([...finalCorrectIds, ...finalWrongIds])) {
-          cards[id] = review(cards[id], !wrong.has(id));
-        }
-        const earnedXp = finalCorrectIds.length * 5;
-        const today = dayKey(new Date());
-        p = { ...p, cards, xp: p.xp + earnedXp, dailyXp: (p.dailyXpDay === today ? p.dailyXp : 0) + earnedXp, dailyXpDay: today };
-        if (session?.lessonId) p = { ...p, completed: { ...p.completed, [session.lessonId]: true } };
-        void saveProgress(p);
-        return p;
-      });
+      const current = progress ?? emptyProgress();
+      let p = touchStreak(current);
+      const cards = { ...p.cards };
+      const finalCorrectIds = res.correctIds.filter((id) => !res.wrongIds.includes(id));
+      const finalWrongIds = res.wrongIds.filter((id) => !res.correctIds.includes(id));
+      const wrong = new Set(finalWrongIds);
+      for (const id of new Set([...finalCorrectIds, ...finalWrongIds])) {
+        const isCorrect = !wrong.has(id);
+        cards[id] = review(cards[id], isCorrect);
+        void recordAttemptToDb(id, course.code, 'lesson', isCorrect);
+      }
+      const earnedXp = finalCorrectIds.length * 5;
+      const today = dayKey(new Date());
+      const currentCourseXp = p.courseXp?.[course.code] ?? 0;
+      p = {
+        ...p,
+        cards,
+        xp: p.xp + earnedXp,
+        courseXp: {
+          ...(p.courseXp ?? {}),
+          [course.code]: currentCourseXp + earnedXp,
+        },
+        dailyXp: (p.dailyXpDay === today ? p.dailyXp : 0) + earnedXp,
+        dailyXpDay: today,
+        completed: session?.lessonId ? { ...p.completed, [session.lessonId]: true } : p.completed,
+      };
+
+      setProgress(p);
+      void saveProgress(p);
       setSession(null);
       setTab('home');
     },
-    [session],
+    [course.code, progress, session],
   );
 
   if (!progress) {

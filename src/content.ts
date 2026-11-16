@@ -5,7 +5,7 @@ export const courses: Course[] = [
     code: 'fr',
     name: 'Français',
     flag: '🇫🇷',
-    speechLang: 'fr-FR',
+    speechLang: 'fr',
     lessons: [
       {
         id: 'fr-1',
@@ -55,7 +55,7 @@ export const courses: Course[] = [
     code: 'de',
     name: 'Deutsch',
     flag: '🇩🇪',
-    speechLang: 'de-DE',
+    speechLang: 'de',
     lessons: [
       {
         id: 'de-1',

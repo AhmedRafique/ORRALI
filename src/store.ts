@@ -1,50 +1,59 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { loadProgressFromDb, saveProgressToDb } from './db';
 import { Progress } from './types';
+import { emptyProgress } from './streak';
+
+export * from './streak';
 
 const KEY = 'orrali.progress.v2';
 const LEGACY_KEY = 'lingo.progress.v1';
 const LANGUAGE_KEY = 'orrali.language.v1';
 
-export const emptyProgress = (): Progress => ({
-  xp: 0,
-  streak: 0,
-  lastDay: '',
-  dailyGoal: 20,
-  dailyXp: 0,
-  dailyXpDay: '',
-  completed: {},
-  cards: {},
-});
-
 export async function loadProgress(): Promise<Progress> {
   try {
-    const raw = (await AsyncStorage.getItem(KEY)) ?? (await AsyncStorage.getItem(LEGACY_KEY));
+    // 1. Try primary SQLite database
+    let raw = await loadProgressFromDb();
+
+    // 2. Fall back to AsyncStorage if SQLite had no record
+    if (!raw) {
+      raw = (await AsyncStorage.getItem(KEY)) ?? (await AsyncStorage.getItem(LEGACY_KEY));
+      // Auto-migrate from AsyncStorage into SQLite
+      if (raw) {
+        void saveProgressToDb(raw);
+      }
+    }
+
     if (!raw) return emptyProgress();
+
     const parsed = JSON.parse(raw) as Partial<Progress>;
-    return { ...emptyProgress(), ...parsed, dailyGoal: parsed.dailyGoal ?? 20, dailyXp: parsed.dailyXp ?? 0, dailyXpDay: parsed.dailyXpDay ?? '' };
-  } catch {
+    return {
+      ...emptyProgress(),
+      ...parsed,
+      courseXp: parsed.courseXp ?? {},
+      dailyGoal: parsed.dailyGoal ?? 20,
+      dailyXp: parsed.dailyXp ?? 0,
+      dailyXpDay: parsed.dailyXpDay ?? '',
+    };
+  } catch (err) {
+    console.warn('[ORRALI Store] loadProgress error:', err);
     return emptyProgress();
   }
 }
 
 export async function saveProgress(p: Progress): Promise<void> {
+  const json = JSON.stringify(p);
+  // Dual-layer persistence: SQLite primary + AsyncStorage backup
   try {
-    await AsyncStorage.setItem(KEY, JSON.stringify(p));
-  } catch {
-    // Persistence is best-effort; the current session remains usable.
+    await saveProgressToDb(json);
+  } catch (err) {
+    console.warn('[ORRALI Store] saveProgress SQLite error:', err);
   }
-}
 
-export const dayKey = (d: Date) =>
-  `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
-
-export function touchStreak(p: Progress): Progress {
-  const today = dayKey(new Date());
-  if (p.lastDay === today) return p;
-  const yesterday = new Date();
-  yesterday.setDate(yesterday.getDate() - 1);
-  const streak = p.lastDay === dayKey(yesterday) ? p.streak + 1 : 1;
-  return { ...p, streak, lastDay: today, dailyXp: p.dailyXpDay === today ? p.dailyXp : 0, dailyXpDay: today };
+  try {
+    await AsyncStorage.setItem(KEY, json);
+  } catch (err) {
+    console.warn('[ORRALI Store] saveProgress AsyncStorage error:', err);
+  }
 }
 
 export async function loadLanguage(): Promise<'fr' | 'de'> {
@@ -57,5 +66,9 @@ export async function loadLanguage(): Promise<'fr' | 'de'> {
 }
 
 export async function saveLanguage(value: 'fr' | 'de'): Promise<void> {
-  try { await AsyncStorage.setItem(LANGUAGE_KEY, value); } catch { /* best-effort */ }
+  try {
+    await AsyncStorage.setItem(LANGUAGE_KEY, value);
+  } catch {
+    /* best-effort */
+  }
 }

@@ -44,9 +44,32 @@ export default function LessonScreen({ course, title, items, onFinish, onExit }:
   const [feedback, setFeedback] = useState<null | { ok: boolean; expected: string }>(null);
   const [correctIds, setCorrectIds] = useState<string[]>([]);
   const [wrongIds, setWrongIds] = useState<string[]>([]);
+  const [voiceId, setVoiceId] = useState<string | undefined>(undefined);
 
   const ex = exercises[index];
   const progress = (index + (feedback ? 1 : 0)) / Math.max(1, exercises.length);
+
+  // Discover and set matching native voice for course language (e.g. French / German)
+  useEffect(() => {
+    let active = true;
+    const lang = course.code.toLowerCase();
+    Speech.getAvailableVoicesAsync()
+      .then((voices) => {
+        if (!active) return;
+        const match = voices.find((v) => {
+          const vLang = (v.language ?? '').toLowerCase();
+          const vId = (v.identifier ?? '').toLowerCase();
+          return vLang.startsWith(lang) || vId.startsWith(lang) || vId.includes(`-${lang}-`) || vId.includes(`_${lang}_`);
+        });
+        if (match) {
+          setVoiceId(match.identifier);
+        }
+      })
+      .catch(() => {});
+    return () => {
+      active = false;
+    };
+  }, [course.code]);
 
   // Stop speech on unmount
   useEffect(() => {
@@ -101,7 +124,11 @@ export default function LessonScreen({ course, title, items, onFinish, onExit }:
 
   const speak = (text: string) => {
     void Speech.stop();
-    Speech.speak(text, { language: course.speechLang, rate: 0.88 });
+    Speech.speak(text, {
+      language: course.code, // 'fr' or 'de'
+      voice: voiceId,
+      rate: 0.88,
+    });
   };
 
   // Mutually exclusive correct/wrong answer status

@@ -11,8 +11,9 @@
 |---|---|---|---|
 | **1.1.0** | Foundation Sprint 02 | Bottom tabs, AsyncStorage, French/German courses | **COMPLETED** |
 | **1.1.1** | Stability Release | Bug fixes (answer state, TTS lifecycle), test suite, typecheck | **COMPLETED** |
-| **1.2.0** | Learning Engine | SQLite integration, SM-2 refinement, mistake tracking, course-isolated progress | **NEXT UP** |
-| **1.3.0** | Structured A1 Content | Complete CEFR A1 curriculum for FR & DE, grammar tips, expanded vocabulary | **PLANNED** |
+| **1.1.2** | Standalone Android Release | Offline embedded JS bundle, Android BackHandler, keyboard view | **COMPLETED** |
+| **1.2.0** | Learning Engine | SQLite integration, SM-2 lapse tracking, dual persistence, native voice selection | **COMPLETED** |
+| **1.3.0** | Structured A1 Content | Complete CEFR A1 curriculum for FR & DE, grammar tips, expanded vocabulary | **NEXT UP** |
 | **1.4.0** | Speaking & Listening | Audio exercises, microphone permissions, speech recognition & pronunciation scoring | **PLANNED** |
 | **1.5.0** | Learning World | Gamification, daily challenges, achievements, interactive stories | **PLANNED** |
 | **2.0.0** | AI Companion | Adaptive difficulty, contextual conversational AI, personalized revision | **FUTURE** |

@@ -2,7 +2,7 @@ import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import { norm, buildExercises } from '../exercises';
 import { newCard, review, isDue } from '../srs';
-import { emptyProgress, touchStreak, dayKey } from '../store';
+import { emptyProgress, touchStreak, getEffectiveStreak, dayKey } from '../streak';
 import { courses } from '../content';
 
 describe('ORRALI Learning Engine & Lesson State Logic', () => {
@@ -116,17 +116,23 @@ describe('ORRALI Learning Engine & Lesson State Logic', () => {
       assert.ok(card.interval >= 7);
     });
 
-    it('review with incorrect answer resets reps and interval', () => {
+    it('review with incorrect answer resets reps and interval and tracks lapses', () => {
       let card = newCard();
+      assert.equal(card.lapses, 0);
       card = review(card, true);
       card = review(card, true);
       assert.equal(card.reps, 2);
 
-      // Missed answer
+      // Missed answer (lapse)
       card = review(card, false);
       assert.equal(card.reps, 0);
       assert.equal(card.interval, 0);
+      assert.equal(card.lapses, 1);
       assert.ok(card.ease < 2.5);
+
+      // Second lapse
+      card = review(card, false);
+      assert.equal(card.lapses, 2);
     });
 
     it('isDue detects due vs future cards', () => {
@@ -180,14 +186,34 @@ describe('ORRALI Learning Engine & Lesson State Logic', () => {
       const touched = touchStreak(p);
       assert.equal(touched.streak, 1);
     });
+
+    it('getEffectiveStreak returns current streak when practiced today or yesterday', () => {
+      const today = dayKey(new Date());
+      const p1 = { ...emptyProgress(), streak: 5, lastDay: today };
+      assert.equal(getEffectiveStreak(p1), 5);
+
+      const yesterday = new Date();
+      yesterday.setDate(yesterday.getDate() - 1);
+      const p2 = { ...emptyProgress(), streak: 5, lastDay: dayKey(yesterday) };
+      assert.equal(getEffectiveStreak(p2), 5);
+    });
+
+    it('getEffectiveStreak returns 0 when practice lapsed', () => {
+      const twoDaysAgo = new Date();
+      twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
+      const p = { ...emptyProgress(), streak: 8, lastDay: dayKey(twoDaysAgo) };
+      assert.equal(getEffectiveStreak(p), 0);
+    });
   });
 
   describe('Content integrity', () => {
-    it('all courses have distinct valid lessons and items', () => {
+    it('all courses have distinct valid lessons and items with ISO 639-1 speech codes', () => {
       assert.equal(courses.length, 2);
       const [fr, de] = courses;
       assert.equal(fr.code, 'fr');
+      assert.equal(fr.speechLang, 'fr');
       assert.equal(de.code, 'de');
+      assert.equal(de.speechLang, 'de');
 
       const allItemIds = new Set<string>();
       for (const course of courses) {

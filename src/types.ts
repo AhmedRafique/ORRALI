@@ -35,10 +35,13 @@ export interface Card {
   interval: number;
   ease: number;
   reps: number;
+  lapses?: number;
+  lastReviewed?: number;
 }
 
 export interface Progress {
   xp: number;
+  courseXp?: Record<string, number>;
   streak: number;
   lastDay: string;
   dailyGoal: number;

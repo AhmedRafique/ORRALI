@@ -1,28 +1,31 @@
+# ORRALI 1.2.0 — Learning Engine & Persistence Release
+
+## Summary
+Milestone 1.2.0 delivers the core Learning Engine foundation: fixes Android TTS voice selection so French and German words are spoken with native accents, introduces dual-layer persistence (SQLite via `expo-sqlite` and AsyncStorage with R8 Proguard rules), fixes state updater persistence race conditions, enhances the Spaced Repetition System with mistake (lapse) tracking, and establishes course-isolated XP and progress tracking.
+
+## What's Fixed & Added in 1.2.0
+- **Native TTS Voice Selection & Accent Fix:**
+  - Resolved Android `expo-speech` bug where `Locale.Builder().setLanguage("fr-FR")` threw `IllformedLocaleException` and silently reverted to the default system voice (English).
+  - Normalized language codes to ISO 639-1 (`'fr'`, `'de'`), allowing Android TextToSpeech to resolve native French and German engines without exceptions.
+  - Added dynamic native voice resolution (`Speech.getAvailableVoicesAsync()`) in `LessonScreen.tsx` to automatically match and bind available French and German voices.
+- **Dual-Layer Persistence (SQLite + AsyncStorage):**
+  - Integrated `expo-sqlite` as the primary local relational database (`src/db.ts`).
+  - Added auto-migration from legacy AsyncStorage keys (`orrali.progress.v2`, `lingo.progress.v1`) into SQLite.
+  - Synchronizes updates to both SQLite and AsyncStorage for maximum reliability across Android ROMs.
+  - Added explicit ProGuard keep rules for both `@react-native-async-storage/async-storage` and `expo-sqlite` to prevent R8 from stripping native JNI classes in release builds.
+- **Persistence Race Condition Resolved in Root (`App.tsx`):**
+  - Removed async side effects from React state updaters. `saveProgress` is now directly invoked on committed state objects.
+- **Enhanced Spaced Repetition (SRS) Engine:**
+  - Added `lapses` (number of times forgotten) and `lastReviewed` timestamp tracking to each SM-2 `Card`.
+  - Tuned ease bounds and reset penalties.
+- **Course-Isolated Progress & Fresh Streak Calculation:**
+  - Track `courseXp` independently for French and German.
+  - Added `getEffectiveStreak` to prevent stale streak displays after periods of inactivity.
+  - Logged each exercise attempt to SQLite (`exercise_attempts`).
+
+---
+
 # ORRALI 1.1.2 — Standalone Android Release
 
 ## Summary
 Milestone 1.1.2 fixes the standalone offline APK runtime crash (Metro connection failure) by compiling an offline embedded JavaScript/Hermes bundle into the release APK, intercepts Android hardware back button events, and improves keyboard ergonomics.
-
-## Fixed & Improved
-- **Standalone Offline APK Packaging (Fix for Red Screen `loadJSBundleFromAssets` / Metro Error):**
-  - Switched APK generation from `assembleDebug` to `assembleRelease`.
-  - In React Native / Expo, `assembleDebug` expects Metro bundler on `localhost:8081` and does not package the JS bundle into assets, causing the red screen crash when launched standalone on a phone.
-  - `assembleRelease` runs the `bundleReleaseJsAndAssets` task, pre-compiling all TypeScript/JavaScript into Hermes bytecode embedded directly in the APK as `index.android.bundle`.
-  - Signed with the debug certificate for immediate sideloading and testing on Android devices.
-- **Android Hardware / Gesture Back Handling:**
-  - Added `BackHandler` interception in `LessonScreen.tsx` so pressing the Android back button or swiping back shows a confirmation dialog instead of exiting the entire application.
-- **Keyboard Ergonomics in Text Exercises:**
-  - Wrapped `LessonScreen.tsx` inside `KeyboardAvoidingView` and `ScrollView` with `keyboardShouldPersistTaps="handled"` so typing answers does not push action buttons off-screen.
-
----
-
-# ORRALI 1.1.1 — Stability Release
-
-## Summary
-Milestone 1.1.1 resolves the critical correctness defects identified during the codebase audit, guarantees answer-state mutual exclusion, fixes speech playback lifecycle issues, provides automated regression testing, and confirms full TypeScript typecheck clearance.
-
-## Fixed
-- **Bug 1: Conflicting Correct and Incorrect Answer Records:**
-  - `LessonScreen.tsx` enforces strict mutual exclusion between `correctIds` and `wrongIds`.
-- **Bug 2: Speech Playback Lifecycle & Audio Overlap:**
-  - `LessonScreen.tsx` calls `Speech.stop()` prior to triggering any new TTS utterance, on unmount, and on exercise transitions.

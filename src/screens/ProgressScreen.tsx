@@ -1,4 +1,5 @@
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { getEffectiveStreak } from '../store';
 import { Course, Progress } from '../types';
 
 const C = { midnight: '#1B1536', gold: '#D4AF7C', ivory: '#F8F6F1', ink: '#211B32', muted: '#827B8D', white: '#FFFFFF', line: '#EAE5EE', sage: '#A7C4B0' };
@@ -17,7 +18,7 @@ export default function ProgressScreen({ courses, progress }: { courses: Course[
     <View style={s.hero}>
       <Text style={s.heroLabel}>TOTAL EXPERIENCE</Text>
       <Text style={s.xp}>{progress.xp} <Text style={s.xpUnit}>XP</Text></Text>
-      <View style={s.heroBottom}><Text style={s.heroMeta}>✦ {progress.streak} day streak</Text><Text style={s.heroMeta}>{completed}/{totalLessons} lessons</Text></View>
+      <View style={s.heroBottom}><Text style={s.heroMeta}>✦ {getEffectiveStreak(progress)} day streak</Text><Text style={s.heroMeta}>{completed}/{totalLessons} lessons</Text></View>
     </View>
     <View style={s.stats}>
       <View style={s.stat}><Text style={s.statValue}>{completed}</Text><Text style={s.statLabel}>Lessons done</Text></View>
@@ -29,8 +30,9 @@ export default function ProgressScreen({ courses, progress }: { courses: Course[
       {courses.map((course) => {
         const done = course.lessons.filter((lesson) => !!progress.completed[lesson.id]).length;
         const ratio = done / Math.max(1, course.lessons.length);
+        const courseXp = progress.courseXp?.[course.code] ?? 0;
         return <View key={course.code} style={s.course}>
-          <View style={s.courseTop}><Text style={s.flag}>{course.flag}</Text><View style={{ flex: 1 }}><Text style={s.courseName}>{course.name}</Text><Text style={s.courseMeta}>{done} of {course.lessons.length} chapters completed</Text></View><Text style={s.percent}>{Math.round(ratio * 100)}%</Text></View>
+          <View style={s.courseTop}><Text style={s.flag}>{course.flag}</Text><View style={{ flex: 1 }}><Text style={s.courseName}>{course.name}</Text><Text style={s.courseMeta}>{done} of {course.lessons.length} chapters · {courseXp} XP</Text></View><Text style={s.percent}>{Math.round(ratio * 100)}%</Text></View>
           <View style={s.track}><View style={[s.fill, { width: `${ratio * 100}%` }]} /></View>
         </View>;
       })}
