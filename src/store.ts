@@ -30,6 +30,7 @@ export async function loadProgress(): Promise<Progress> {
       ...emptyProgress(),
       ...parsed,
       courseXp: parsed.courseXp ?? {},
+      checkpoints: parsed.checkpoints ?? {},
       dailyGoal: parsed.dailyGoal ?? 20,
       dailyXp: parsed.dailyXp ?? 0,
       dailyXpDay: parsed.dailyXpDay ?? '',

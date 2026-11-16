@@ -52,6 +52,15 @@ export interface Card {
   lastReviewed?: number;
 }
 
+export interface LessonCheckpoint {
+  lessonId: string;
+  exerciseIndex: number;
+  totalExercises: number;
+  correctIds: string[];
+  wrongIds: string[];
+  updatedAt: number;
+}
+
 export interface Progress {
   xp: number;
   courseXp?: Record<string, number>;
@@ -62,4 +71,5 @@ export interface Progress {
   dailyXpDay: string;
   completed: Record<string, true>;
   cards: Record<string, Card>;
+  checkpoints?: Record<string, LessonCheckpoint>;
 }

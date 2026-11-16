@@ -1,60 +1,68 @@
-@startuml Lesson_Flow_and_Speech_Lifecycle
+@startuml Lesson_Flow_and_Checkpoint_Lifecycle
 !theme plain
 skinparam backgroundColor #F8F6F1
 skinparam defaultFontName Arial
 skinparam sequenceParticipantBackgroundColor #FFFFFF
 skinparam sequenceParticipantBorderColor #1B1536
 
-title Lesson Flow, Answer Reconciliation & Speech Lifecycle (ORRALI 1.1.1)
+title Lesson Flow, Scaffolding & Resumption Checkpoint (ORRALI 1.3.1)
 
 actor Learner
-participant "LessonScreen" as Lesson
-participant "expo-speech" as Speech
+participant "HomeScreen" as Home
 participant "App (Root)" as App
-participant "srs.ts" as SRS
-participant "store.ts" as Store
+participant "LessonScreen" as Lesson
+participant "audio.ts" as Audio
+participant "store.ts / SQLite" as Storage
 
-== Exercise Interaction & Audio Playback ==
-Learner -> Lesson : Press "Play audio" / Open listen exercise
-Lesson -> Speech : Speech.stop() [Halt prior playback]
-Lesson -> Speech : Speech.speak(target, { language, rate: 0.88 })
-
-== Answer Evaluation (Mutually Exclusive State) ==
-Learner -> Lesson : Submit answer & click "Check answer"
-alt Answer is Correct (ok == true)
-  Lesson -> Lesson : correctIds.add(itemId)
-wrongIds.remove(itemId)
-  Lesson -> Speech : Speech.stop()
-  Lesson -> Speech : Speech.speak(target) [Pronounce correct answer]
-else Answer is Incorrect (ok == false)
-  Lesson -> Lesson : wrongIds.add(itemId)
-correctIds.remove(itemId)
+== Chapter Launch & Checkpoint Detection ==
+Learner -> Home : Tap chapter card (startLesson)
+Home -> App : startLesson(lessonId)
+alt Checkpoint exists (exerciseIndex > 0)
+  App -> Learner : Show Resume Modal ("Continue from Step X" vs "Start from Beginning")
+  alt Learner chooses "Continue from Step X"
+    Learner -> App : Resume
+    App -> Lesson : Mount with initialIndex, initialCorrectIds, initialWrongIds
+  else Learner chooses "Start from Beginning"
+    Learner -> App : Start from Beginning
+    App -> Storage : Delete checkpoint for lessonId
+    App -> Lesson : Mount at initialIndex = 0
+  end
+else No Checkpoint
+  App -> Lesson : Mount at initialIndex = 0
 end
 
-== Navigation Between Exercises ==
-Learner -> Lesson : Click "Continue" (next exercise)
-Lesson -> Speech : Speech.stop() [Prevent speech carryover]
-Lesson -> Lesson : Increment index, reset input state
-
-== Lesson Finish & Results Reconciliation ==
-Learner -> Lesson : Click "Finish lesson" on final exercise
-Lesson -> Speech : Speech.stop()
-Lesson -> App : onFinish({ correctIds, wrongIds }) [Strictly disjoint]
-
-App -> App : Ensure disjoint sets (finalCorrectIds, finalWrongIds)
-App -> App : Calculate earnedXp = finalCorrectIds.length * 5
-loop For each answered item
-  App -> SRS : review(card, !wrong.has(id))
-  SRS --> App : Updated SM-2 card (interval, reps, ease)
+== Pedagogical Scaffolding & Audio Lifecycle ==
+alt Step is 'intro' card
+  Lesson -> Audio : Auto-play phrase with native neural voice
+  Learner -> Lesson : Tap "I understand · Continue"
+  Lesson -> Storage : Auto-save checkpoint(nextIndex)
+else Step is 'choice' / 'listen' / 'type'
+  Learner -> Lesson : Enter or select translation
+  Lesson -> Lesson : evaluateAnswer(given, item) [Variants + Accent-leniency + Typos]
+  alt Correct or Close
+    Lesson -> Audio : Play pronunciation & show supportive tip
+    Lesson -> Storage : Auto-save checkpoint(currentIndex, correctIds, wrongIds)
+  else Incorrect
+    Lesson -> Lesson : Record in wrongIds & show constructive feedback
+  end
+  Learner -> Lesson : Tap "Continue"
+  Lesson -> Storage : Auto-save checkpoint(nextIndex)
 end
-App -> Store : touchStreak(progress) & saveProgress(p)
-App -> Learner : Return to HomeScreen with updated XP & Streak
 
-== Early Exit (Cancellation) ==
-opt Learner presses "×" (close) or screen unmounts
-  Learner -> Lesson : Click close (onExit)
-  Lesson -> Speech : Speech.stop()
-  Lesson -> App : setSession(null)
+== Early Exit (Mid-Lesson Pause) ==
+opt Learner presses "×" or Android Back button
+  Learner -> Lesson : Exit action
+  Lesson -> Learner : Confirmation alert ("Your progress is saved up to this step.")
+  Learner -> Lesson : Confirm Leave
+  Lesson -> Storage : Persist Checkpoint(lessonId, index, correctIds, wrongIds)
+  Lesson -> App : onExit() -> Return to Home
 end
+
+== Lesson Finish & Checkpoint Clearance ==
+Learner -> Lesson : Complete final exercise & tap "Finish lesson"
+Lesson -> App : onFinish({ correctIds, wrongIds })
+App -> Storage : Clear checkpoint for lessonId
+App -> Storage : Update XP, courseXp, streak, completed chapters & SM-2 cards
+App -> Home : Return to Home with completed status
 
 @enduml

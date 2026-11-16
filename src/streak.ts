@@ -10,6 +10,7 @@ export const emptyProgress = (): Progress => ({
   dailyXpDay: '',
   completed: {},
   cards: {},
+  checkpoints: {},
 });
 
 export const dayKey = (d: Date) =>

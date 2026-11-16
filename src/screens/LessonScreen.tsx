@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import { findBestVoiceForLanguage, playPhraseAudio, stopAllAudio } from '../audio';
 import { buildExercises, evaluateAnswer } from '../exercises';
-import { Course, Item } from '../types';
+import { Course, Item, LessonCheckpoint } from '../types';
 
 const C = {
   midnight: '#1B1536',
@@ -32,19 +32,36 @@ interface Props {
   course: Course;
   title: string;
   items: Item[];
+  lessonId?: string;
   isReview?: boolean;
+  initialIndex?: number;
+  initialCorrectIds?: string[];
+  initialWrongIds?: string[];
   onFinish: (result: { correctIds: string[]; wrongIds: string[] }) => void;
+  onSaveCheckpoint?: (checkpoint: LessonCheckpoint) => void;
   onExit: () => void;
 }
 
-export default function LessonScreen({ course, title, items, isReview = false, onFinish, onExit }: Props) {
+export default function LessonScreen({
+  course,
+  title,
+  items,
+  lessonId,
+  isReview = false,
+  initialIndex = 0,
+  initialCorrectIds = [],
+  initialWrongIds = [],
+  onFinish,
+  onSaveCheckpoint,
+  onExit,
+}: Props) {
   const exercises = useMemo(() => buildExercises(course, items, isReview), [course, items, isReview]);
-  const [index, setIndex] = useState(0);
+  const [index, setIndex] = useState(Math.min(initialIndex, Math.max(0, exercises.length - 1)));
   const [answer, setAnswer] = useState('');
   const [picked, setPicked] = useState<string | null>(null);
   const [feedback, setFeedback] = useState<null | { ok: boolean; expected: string; hint?: string }>(null);
-  const [correctIds, setCorrectIds] = useState<string[]>([]);
-  const [wrongIds, setWrongIds] = useState<string[]>([]);
+  const [correctIds, setCorrectIds] = useState<string[]>(initialCorrectIds);
+  const [wrongIds, setWrongIds] = useState<string[]>(initialWrongIds);
   const [voiceId, setVoiceId] = useState<string | undefined>(undefined);
 
   const ex = exercises[index];
@@ -81,9 +98,24 @@ export default function LessonScreen({ course, title, items, isReview = false, o
     }
   }, [index, ex?.kind, ex?.item, course.code, voiceId]);
 
-  // Handle exit with audio stop
+  // Save checkpoint helper
+  const persistCheckpoint = (newIndex: number, newCorrect: string[], newWrong: string[]) => {
+    if (lessonId && onSaveCheckpoint && newIndex > 0 && newIndex < exercises.length) {
+      onSaveCheckpoint({
+        lessonId,
+        exerciseIndex: newIndex,
+        totalExercises: exercises.length,
+        correctIds: newCorrect,
+        wrongIds: newWrong,
+        updatedAt: Date.now(),
+      });
+    }
+  };
+
+  // Handle exit with audio stop and checkpoint save
   const handleExit = () => {
     void stopAllAudio();
+    persistCheckpoint(index, correctIds, wrongIds);
     onExit();
   };
 
@@ -92,7 +124,7 @@ export default function LessonScreen({ course, title, items, isReview = false, o
     const onBackPress = () => {
       Alert.alert(
         'Leave Lesson?',
-        'Your current lesson progress will not be saved.',
+        'Your progress up to this step is saved. You can resume anytime.',
         [
           { text: 'Keep Learning', style: 'cancel' },
           { text: 'Leave', style: 'destructive', onPress: handleExit },
@@ -106,12 +138,12 @@ export default function LessonScreen({ course, title, items, isReview = false, o
     return () => {
       backSub.remove();
     };
-  }, []);
+  }, [index, correctIds, wrongIds]);
 
   const confirmExit = () => {
     Alert.alert(
       'Leave Lesson?',
-      'Your current lesson progress will not be saved.',
+      'Your progress up to this step is saved. You can resume anytime.',
       [
         { text: 'Keep Learning', style: 'cancel' },
         { text: 'Leave', style: 'destructive', onPress: handleExit },
@@ -137,12 +169,18 @@ export default function LessonScreen({ course, title, items, isReview = false, o
     });
 
     if (evalRes.ok) {
-      setCorrectIds((prev) => (prev.includes(ex.item.id) ? prev : [...prev, ex.item.id]));
-      setWrongIds((prev) => prev.filter((id) => id !== ex.item.id));
+      const nextCorrect = correctIds.includes(ex.item.id) ? correctIds : [...correctIds, ex.item.id];
+      const nextWrong = wrongIds.filter((id) => id !== ex.item.id);
+      setCorrectIds(nextCorrect);
+      setWrongIds(nextWrong);
       speak(ex.item);
+      persistCheckpoint(index, nextCorrect, nextWrong);
     } else {
-      setWrongIds((prev) => (prev.includes(ex.item.id) ? prev : [...prev, ex.item.id]));
-      setCorrectIds((prev) => prev.filter((id) => id !== ex.item.id));
+      const nextWrong = wrongIds.includes(ex.item.id) ? wrongIds : [...wrongIds, ex.item.id];
+      const nextCorrect = correctIds.filter((id) => id !== ex.item.id);
+      setWrongIds(nextWrong);
+      setCorrectIds(nextCorrect);
+      persistCheckpoint(index, nextCorrect, nextWrong);
     }
   };
 
@@ -152,10 +190,12 @@ export default function LessonScreen({ course, title, items, isReview = false, o
       onFinish({ correctIds, wrongIds });
       return;
     }
-    setIndex((v) => v + 1);
+    const nextIdx = index + 1;
+    setIndex(nextIdx);
     setAnswer('');
     setPicked(null);
     setFeedback(null);
+    persistCheckpoint(nextIdx, correctIds, wrongIds);
   };
 
   const canCheck = ex.kind === 'choice' ? !!picked : answer.trim().length > 0;

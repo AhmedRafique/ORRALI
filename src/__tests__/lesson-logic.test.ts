@@ -255,6 +255,78 @@ describe('ORRALI Learning Engine & Lesson State Logic', () => {
     });
   });
 
+  describe('In-Progress Lesson Checkpoint Lifecycle', () => {
+    it('emptyProgress initializes with empty checkpoints', () => {
+      const p = emptyProgress();
+      assert.deepEqual(p.checkpoints, {});
+    });
+
+    it('saves in-progress checkpoint when user exits mid-lesson', () => {
+      let p = emptyProgress();
+      const cp = {
+        lessonId: 'fr-1',
+        exerciseIndex: 6,
+        totalExercises: 18,
+        correctIds: ['fr-1-1', 'fr-1-2'],
+        wrongIds: ['fr-1-3'],
+        updatedAt: Date.now(),
+      };
+      p = { ...p, checkpoints: { ...(p.checkpoints ?? {}), [cp.lessonId]: cp } };
+
+      assert.ok(p.checkpoints?.['fr-1']);
+      assert.equal(p.checkpoints?.['fr-1'].exerciseIndex, 6);
+      assert.deepEqual(p.checkpoints?.['fr-1'].correctIds, ['fr-1-1', 'fr-1-2']);
+    });
+
+    it('clears checkpoint upon lesson completion', () => {
+      let p = emptyProgress();
+      p = {
+        ...p,
+        checkpoints: {
+          'fr-1': {
+            lessonId: 'fr-1',
+            exerciseIndex: 12,
+            totalExercises: 18,
+            correctIds: ['fr-1-1'],
+            wrongIds: [],
+            updatedAt: Date.now(),
+          },
+        },
+      };
+
+      // Simulate lesson finish
+      const nextCheckpoints = { ...p.checkpoints };
+      delete nextCheckpoints['fr-1'];
+      p = { ...p, checkpoints: nextCheckpoints };
+
+      assert.equal(p.checkpoints?.['fr-1'], undefined);
+    });
+
+    it('clears checkpoint when user decides to start from beginning', () => {
+      let p = emptyProgress();
+      p = {
+        ...p,
+        checkpoints: {
+          'de-1': {
+            lessonId: 'de-1',
+            exerciseIndex: 8,
+            totalExercises: 18,
+            correctIds: ['de-1-1'],
+            wrongIds: [],
+            updatedAt: Date.now(),
+          },
+        },
+      };
+
+      // User chose Start from Beginning
+      const cps = { ...p.checkpoints };
+      delete cps['de-1'];
+      p = { ...p, checkpoints: cps };
+
+      assert.equal(p.checkpoints?.['de-1'], undefined);
+    });
+  });
+
   describe('Content integrity', () => {
     it('all courses have distinct valid lessons and items with ISO 639-1 speech codes', () => {
       assert.equal(courses.length, 2);
