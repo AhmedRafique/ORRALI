@@ -19,8 +19,9 @@
 | **1.4.0** | Complete A1 Curriculum & Grammar | Full 20 CEFR A1 units (120 items), interactive Grammar Capsules with rules & examples | **COMPLETED** |
 | **1.5.0** | Speaking & Pronunciation | Spoken drills ('speak'), mic recording, pronunciation scoring engine | **COMPLETED** |
 | **1.6.0** | Learning World & Retention | Trophy shelf, achievement badges, streak shields, conversational stories | **COMPLETED** |
-| **1.7.0** | Studio Human Audio | Pre-rendered studio neural voice recordings, 100% offline | **NEXT UP** |
-| **2.0.0** | AI Companion | Adaptive difficulty, contextual conversational AI, personalized revision | **FUTURE** |
+| **1.7.0** | Studio Human Audio | Pre-rendered studio neural voice recordings, 100% offline | **COMPLETED** |
+| **2.0.0** | AI Companion | Mistake Clinic, Conversational Roleplay, "Ask ORRALI" AI Tutor | **COMPLETED** |
+| **2.1.0** | A2 & B1 Curriculum Expansion | Past tenses (Passé Composé, Perfekt), future tenses, 20 intermediate units | **NEXT UP** |
 
 ---
 

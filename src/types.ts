@@ -124,6 +124,60 @@ export interface StoryScenario {
   };
 }
 
+export interface MistakeRecord {
+  itemId: string;
+  courseCode: LangCode;
+  failCount: number;
+  passCount: number;
+  lastFailedAt: number;
+}
+
+export interface MistakeDiagnosis {
+  item: Item;
+  failCount: number;
+  passCount: number;
+  accuracyPercent: number;
+  suggestedTip: string;
+}
+
+export interface RoleplayMessage {
+  id: string;
+  sender: 'ai' | 'user';
+  speakerName: string;
+  avatar: string;
+  target: string;
+  en?: string;
+  feedback?: string;
+  timestamp: number;
+}
+
+export interface RoleplayTurnResult {
+  reply: RoleplayMessage;
+  isCompleted: boolean;
+  earnedXp?: number;
+  suggestedNextReplies: string[];
+}
+
+export interface RoleplayScenario {
+  id: string;
+  courseCode: LangCode;
+  title: string;
+  role: string;
+  personaName: string;
+  avatar: string;
+  contextObjective: string;
+  initialGreeting: { target: string; en: string };
+  suggestedReplies: string[];
+}
+
+export interface TutorExplanation {
+  topic: string;
+  childFriendlySummary: string;
+  detailedExplanation: string;
+  examples: { target: string; en: string }[];
+  goldenRule: string;
+}
+
 export interface Progress {
   xp: number;
   courseXp?: Record<string, number>;

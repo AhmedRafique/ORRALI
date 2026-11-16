@@ -1,10 +1,14 @@
 import { useState } from 'react';
 import { Modal, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { playPhraseAudio, stopAllAudio } from '../audio';
+import { ROLEPLAY_SCENARIOS } from '../companion/roleplay';
 import { stories } from '../content';
 import { isDue } from '../srs';
 import { dayKey, getEffectiveStreak } from '../store';
-import { Course, GrammarCapsule, LangCode, Progress, StoryScenario } from '../types';
+import { Course, Exercise, GrammarCapsule, LangCode, Progress, RoleplayScenario, StoryScenario } from '../types';
+import MistakeClinicModal from './MistakeClinicModal';
+import RoleplayModal from './RoleplayModal';
+import TutorModal from './TutorModal';
 
 const C = {
   midnight: '#1B1536',
@@ -30,6 +34,8 @@ interface Props {
   onStartReview: () => void;
   onSetDailyGoal: (goal: number) => void;
   onCompleteStory?: (storyId: string, earnedXp: number) => void;
+  onStartRemedialWorkout?: (exercises: Exercise[]) => void;
+  onCompleteRoleplay?: (earnedXp: number) => void;
 }
 
 export default function HomeScreen({
@@ -41,9 +47,14 @@ export default function HomeScreen({
   onStartReview,
   onSetDailyGoal,
   onCompleteStory,
+  onStartRemedialWorkout,
+  onCompleteRoleplay,
 }: Props) {
   const [activeCapsule, setActiveCapsule] = useState<GrammarCapsule | null>(null);
   const [activeStory, setActiveStory] = useState<StoryScenario | null>(null);
+  const [isTutorOpen, setIsTutorOpen] = useState(false);
+  const [isClinicOpen, setIsClinicOpen] = useState(false);
+  const [activeRoleplay, setActiveRoleplay] = useState<RoleplayScenario | null>(null);
   const [storyAnswer, setStoryAnswer] = useState<number | null>(null);
   const [storyCompleted, setStoryCompleted] = useState(false);
 
@@ -135,6 +146,50 @@ export default function HomeScreen({
             ))}
           </View>
         </View>
+      </View>
+
+      {/* AI Learning Companion Hub */}
+      <View style={s.sectionHeader}>
+        <View>
+          <Text style={s.sectionTitle}>AI Learning Companion</Text>
+          <Text style={s.sectionSub}>Personalized coaching, roleplay & grammar</Text>
+        </View>
+      </View>
+      <View style={s.companionRow}>
+        <Pressable style={s.companionBtn} onPress={() => setIsTutorOpen(true)}>
+          <Text style={s.companionIcon}>🤖</Text>
+          <View style={{ flex: 1 }}>
+            <Text style={s.companionTitle}>Ask ORRALI · AI Tutor</Text>
+            <Text style={s.companionSub}>Explain any rule like I am a child</Text>
+          </View>
+          <Text style={s.companionArrow}>›</Text>
+        </Pressable>
+
+        <Pressable style={s.companionBtn} onPress={() => setIsClinicOpen(true)}>
+          <Text style={s.companionIcon}>🏥</Text>
+          <View style={{ flex: 1 }}>
+            <Text style={s.companionTitle}>Smart Mistake Clinic</Text>
+            <Text style={s.companionSub}>Targeted review of recent error patterns</Text>
+          </View>
+          <Text style={s.companionArrow}>›</Text>
+        </Pressable>
+
+        <Pressable
+          style={s.companionBtn}
+          onPress={() => {
+            const sc =
+              ROLEPLAY_SCENARIOS.find((s) => s.courseCode === course.code) ??
+              ROLEPLAY_SCENARIOS[0];
+            setActiveRoleplay(sc);
+          }}
+        >
+          <Text style={s.companionIcon}>🎭</Text>
+          <View style={{ flex: 1 }}>
+            <Text style={s.companionTitle}>Conversational AI Roleplay</Text>
+            <Text style={s.companionSub}>Live bistros & train station simulations</Text>
+          </View>
+          <Text style={s.companionArrow}>›</Text>
+        </Pressable>
       </View>
 
       {/* Choose Your World */}
@@ -429,6 +484,38 @@ export default function HomeScreen({
           </View>
         </Modal>
       )}
+
+      {/* Tutor Modal */}
+      <TutorModal
+        visible={isTutorOpen}
+        courseCode={course.code}
+        onClose={() => setIsTutorOpen(false)}
+      />
+
+      {/* Mistake Clinic Modal */}
+      <MistakeClinicModal
+        visible={isClinicOpen}
+        course={course}
+        progress={progress}
+        onStartRemedialWorkout={(exs) => {
+          setIsClinicOpen(false);
+          onStartRemedialWorkout?.(exs);
+        }}
+        onClose={() => setIsClinicOpen(false)}
+      />
+
+      {/* Roleplay Simulation Modal */}
+      {activeRoleplay && (
+        <RoleplayModal
+          visible={!!activeRoleplay}
+          scenario={activeRoleplay}
+          onFinishRoleplay={(earnedXp) => {
+            setActiveRoleplay(null);
+            onCompleteRoleplay?.(earnedXp);
+          }}
+          onClose={() => setActiveRoleplay(null)}
+        />
+      )}
     </ScrollView>
   );
 }
@@ -490,6 +577,21 @@ const s = StyleSheet.create({
   },
   sectionTitle: { color: C.ink, fontSize: 18, fontWeight: '800' },
   sectionSub: { color: C.muted, fontSize: 11, marginTop: 4 },
+  companionRow: { gap: 9, marginBottom: 24 },
+  companionBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: C.white,
+    borderWidth: 1,
+    borderColor: C.line,
+    borderRadius: 16,
+    padding: 13,
+    gap: 12,
+  },
+  companionIcon: { fontSize: 24 },
+  companionTitle: { color: C.midnight, fontSize: 13, fontWeight: '800' },
+  companionSub: { color: C.muted, fontSize: 10, marginTop: 2 },
+  companionArrow: { color: C.gold, fontSize: 20, fontWeight: '700' },
   courseRow: { gap: 10, marginBottom: 22 },
   courseCard: {
     flexDirection: 'row',

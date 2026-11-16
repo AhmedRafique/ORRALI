@@ -1,24 +1,33 @@
-# ORRALI 1.7.0 — Pre-Rendered Native Studio Audio Release
+# ORRALI 2.0.0 — The AI Learning Companion & Roleplay Release
 
 ## Summary
-Milestone 1.7.0 completes Option 2 of the master roadmap: replacing on-device synthetic speech with 120 pre-rendered, high-definition studio neural audio recordings bundled directly inside the app. Every French and German phrase in the curriculum now plays with authentic human breathing, natural pitch cadence, and native liaisons with sub-millisecond start time and 100% offline support.
+Milestone 2.0.0 marks the launch of ORRALI's AI Learning Companion era, built using rigorous Test-Driven Development (TDD). It introduces the Smart Mistake Clinic to diagnose SQLite error patterns and generate custom remedial workouts, interactive multi-turn Conversational AI Roleplay with in-character native dialogue, and the "Ask ORRALI" AI contextual tutor explaining complex grammar in child-friendly terms.
 
-## What's New in 1.7.0
-- **120 Bundled Native Studio Audio Recordings:**
-  - Generated using Microsoft Azure Neural Studio voices (`fr-FR-VivienneMultilingualNeural` for French, `de-DE-TanjaNeural` for German).
-  - All 60 French phrases and 60 German phrases across the 20 A1 units are pre-rendered into high-clarity 24kHz MP3 assets inside `assets/audio/`.
-  - Zero latency: instant audio playback using `expo-audio` without reliance on phone-specific speech synthesizers.
-  - Native French liaisons (*c'est délicieux*, *les toilettes*, *s'il vous plaît*) and German compound word cadences pronounced authentically.
-  - Ultra-lightweight: entire studio audio catalog is only 1.4 MB total.
-- **Dynamic Asset Mapping (`src/audioMap.ts`):**
-  - Statically maps every curriculum item ID to its bundled audio asset.
-  - Dual-mode fallback in `src/audio.ts`: plays the bundled studio audio first; seamlessly falls back to enhanced Google Neural TTS if an asset is not found.
-- **Automated Verification:**
-  - Clean TypeScript typecheck (`tsc --noEmit`) and 42 unit tests passing (`npm test`).
+## What's New in 2.0.0
+- **Smart Mistake Clinic (`src/companion/clinic.ts` & `MistakeClinicModal.tsx`):**
+  - Analyzes learner's historical attempts and card lapses stored in SQLite.
+  - Automatically diagnoses recurring error patterns, computes item accuracy rates, and generates targeted linguistic coaching tips.
+  - One-tap launcher: *"Start 5-min Remedial Workout"* dynamically builds a focused session targeting only the phrases you struggled with.
+- **Conversational AI Roleplay (`src/companion/roleplay.ts` & `RoleplayModal.tsx`):**
+  - Dynamic, multi-turn conversational roleplay simulations in French and German:
+    - *Au Café de Paris* (with Pierre the Bistro Waiter)
+    - *À la Réception de l’Hôtel* (with Claire the Concierge)
+    - *Am Hauptbahnhof* (with Hans the Ticket Agent)
+    - *In der Bäckerei* (with Frau Schmidt the Baker)
+  - Features speaker avatars, native audio pronunciation on every message, suggested quick-reply chips, and free-form input.
+  - In-line linguistic coaching cards providing real-time feedback on politeness, grammar, and vocabulary.
+  - Completion detection: Completing the scenario objective awards +20 XP!
+- **"Ask ORRALI" Contextual AI Tutor (`src/companion/tutor.ts` & `TutorModal.tsx`):**
+  - "Explain to me like a child" interactive grammar and pronunciation tutor.
+  - Search any question or tap popular query chips (*Tu vs. Vous*, *Un vs. Une*, *Einen Kaffee (Akkusativ)*, *Telling Time*).
+  - Provides simple child-friendly summaries, detailed explanations, golden rules, and translated example sentences with instant audio playback.
+- **TDD Quality & Architecture Verification:**
+  - Designed and validated using Test-Driven Development (TDD).
+  - 53 automated unit tests passing (`npm test`) covering all AI Companion systems, speech evaluation, scaffolding, and streak protection with 0 TypeScript diagnostics (`tsc --noEmit`).
 
 ---
 
-# ORRALI 1.6.0 — Learning World, Badges, Streak Shields & Stories Release
+# ORRALI 1.7.0 — Pre-Rendered Native Studio Audio Release
 
 ## Summary
-Milestone 1.6.0 brings the ORRALI Learning World to life: introducing the collectible Trophy Shelf with achievement medals, automatic Streak Freeze Shield protection against missed days, and interactive Real-World Conversational Stories with native audio dialog and comprehension checks.
+Milestone 1.7.0 replaces on-device synthetic speech with 120 pre-rendered, high-definition studio neural audio recordings bundled directly inside the app. Every French and German phrase in the curriculum plays with authentic human breathing, natural pitch cadence, and native liaisons with sub-millisecond start time and 100% offline support.

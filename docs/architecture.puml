@@ -1,4 +1,4 @@
-@startuml ORRALI_Architecture
+@startuml ORRALI_Architecture_v2
 !theme plain
 skinparam backgroundColor #F8F6F1
 skinparam defaultFontName Arial
@@ -6,55 +6,99 @@ skinparam packageBackgroundColor #FFFFFF
 skinparam packageBorderColor #1B1536
 skinparam componentStyle uml2
 
-title ORRALI Architecture (Version 1.1.1)
+title ORRALI Architecture (Version 2.0.0 — AI Learning Companion)
 
-package "Presentation Layer (React Native / Expo)" {
+package "Presentation & UI Layer (React Native / Expo)" {
   [App.tsx
-Root & Orchestrator] as App
+Root Orchestrator] as App
   
-  package "Screens" {
+  package "Screens & Dashboards" {
     [HomeScreen
-Dashboard & Path] as HomeScreen
+Path, Quests & Hub] as HomeScreen
     [ProgressScreen
-Journey & SRS Stats] as ProgressScreen
+Journey & Course XP] as ProgressScreen
     [ProfileScreen
-Preferences & Goals] as ProfileScreen
+Trophy Shelf & Preferences] as ProfileScreen
     [LessonScreen
-Interactive Learning] as LessonScreen
+Scaffolded Interactive Learning] as LessonScreen
+  }
+
+  package "AI Companion Modals" {
+    [TutorModal
+Ask ORRALI Tutor] as TutorModal
+    [MistakeClinicModal
+Smart Mistake Clinic] as ClinicModal
+    [RoleplayModal
+Conversational Simulation] as RoleplayModal
   }
 }
 
-package "Domain & Learning Engine" {
-  [exercises.ts
-Exercise Builder & Norm] as Exercises
-  [srs.ts
-SM-2 Spaced Repetition] as SRS
-  [content.ts
-Curriculum (FR & DE)] as Content
-  [store.ts
-State, Streak & Persistence] as Store
+package "AI Companion Engine (src/companion/)" {
+  [clinic.ts
+Error Diagnosis & Remediation] as ClinicEngine
+  [tutor.ts
+Knowledge Base & Rules] as TutorEngine
+  [roleplay.ts
+Multi-turn State Machine] as RoleplayEngine
 }
 
-package "Platform & Native Services" {
+package "Domain & Pedagogical Engine" {
+  [exercises.ts
+Scaffolding & Smart Evaluation] as Exercises
+  [scoring.ts
+Pronunciation & Speech Scoring] as Scoring
+  [srs.ts
+SM-2 with Lapse Tracking] as SRS
+  [badges.ts
+Achievement Evaluation] as Badges
+  [streak.ts
+Streak Shields & Freeze] as Streak
+  [content.ts
+20 A1 Units & Stories] as Content
+  [store.ts
+Dual-Write Repository] as Store
+}
+
+package "Audio Architecture (src/audio.ts)" {
+  [audioMap.ts
+120 Studio Neural MP3s] as AudioMap
+  [expo-audio
+Sub-ms Native Player & Recorder] as ExpoAudio
   [expo-speech
-TTS with Lifecycle Guard] as Speech
+Google WaveNet TTS Fallback] as Speech
+}
+
+package "Local Persistence" {
+  [expo-sqlite
+orrali.db SQLite Engine] as SQLite
   [AsyncStorage
-Local Storage Engine] as Storage
+Key-Value Backup Cache] as AsyncStorage
 }
 
 App --> HomeScreen : displays
 App --> ProgressScreen : displays
 App --> ProfileScreen : displays
-App --> LessonScreen : manages active session
+App --> LessonScreen : manages active sessions
 
-LessonScreen --> Exercises : builds exercises
-LessonScreen --> Speech : speak() & stop() lifecycle
-LessonScreen --> App : onFinish(correctIds, wrongIds)
+HomeScreen --> TutorModal : launches
+HomeScreen --> ClinicModal : launches
+HomeScreen --> RoleplayModal : launches
 
-App --> SRS : review(cards, isCorrect)
-App --> Store : touchStreak(), saveProgress()
-Store --> Storage : read/write progress & language
-HomeScreen --> Content : course catalog & chapters
-HomeScreen --> SRS : isDue() for review deck
+TutorModal --> TutorEngine : query rule
+ClinicModal --> ClinicEngine : diagnose errors & build workout
+RoleplayModal --> RoleplayEngine : advance turn
+
+LessonScreen --> Exercises : builds scaffolding
+LessonScreen --> Scoring : evaluates pronunciation
+LessonScreen --> ExpoAudio : records speech & plays audio
+LessonScreen --> AudioMap : studio MP3 clips
+
+App --> SRS : review(card, isCorrect)
+App --> Badges : evaluateBadges(progress)
+App --> Streak : touchStreak(progress)
+App --> Store : saveProgress(progress)
+
+Store --> SQLite : primary database write
+Store --> AsyncStorage : backup write
 
 @enduml

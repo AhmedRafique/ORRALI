@@ -26,7 +26,7 @@ import {
   saveProgress,
   touchStreak,
 } from './src/store';
-import { Item, LangCode, LessonCheckpoint, Progress } from './src/types';
+import { Exercise, Item, LangCode, LessonCheckpoint, Progress } from './src/types';
 
 type Session = {
   title: string;
@@ -173,6 +173,37 @@ export default function App() {
     [course.code, progress, updateProgress],
   );
 
+  const startRemedialWorkout = useCallback((exercises: Exercise[]) => {
+    const items = exercises.map((e) => e.item);
+    const unique = Array.from(new Map(items.map((i) => [i.id, i])).values());
+    setSession({
+      title: 'Mistake Clinic Workout',
+      items: unique,
+    });
+  }, []);
+
+  const completeRoleplay = useCallback(
+    (earnedXp: number) => {
+      const current = progress ?? emptyProgress();
+      let p = touchStreak(current);
+      const today = dayKey(new Date());
+      const currentCourseXp = p.courseXp?.[course.code] ?? 0;
+      p = {
+        ...p,
+        xp: p.xp + earnedXp,
+        courseXp: {
+          ...(p.courseXp ?? {}),
+          [course.code]: currentCourseXp + earnedXp,
+        },
+        dailyXp: (p.dailyXpDay === today ? p.dailyXp : 0) + earnedXp,
+        dailyXpDay: today,
+      };
+      const { updatedProgress } = evaluateBadges(p, courses);
+      updateProgress(updatedProgress);
+    },
+    [course.code, progress, updateProgress],
+  );
+
   if (!progress) {
     return (
       <SafeAreaView style={s.loading}>
@@ -226,6 +257,8 @@ export default function App() {
                 onStartLesson={startLesson}
                 onSetDailyGoal={(goal) => updateProgress({ ...progress, dailyGoal: goal })}
                 onCompleteStory={completeStory}
+                onStartRemedialWorkout={startRemedialWorkout}
+                onCompleteRoleplay={completeRoleplay}
                 onStartReview={() => {
                   const due = course.lessons
                     .flatMap((lesson) => lesson.items)

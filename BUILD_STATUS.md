@@ -1,4 +1,4 @@
-# Build status — ORRALI 1.7.0 (Studio Native Audio Release)
+# Build status — ORRALI 2.0.0 (AI Learning Companion & Roleplay)
 
 | Check | Result |
 |---|---|
@@ -6,8 +6,11 @@
 | TypeScript syntax transpilation | PASS — zero syntax diagnostics |
 | JSON configuration parsing | PASS — `app.json`, `package.json`, `eas.json` valid |
 | Full TypeScript typecheck | PASS — `tsc --noEmit` 0 errors |
-| Automated Unit & Logic Tests | PASS — 42 passing tests across badges, streak shields, stories, pronunciation, checkpointing, smart evaluation, and scaffolding |
+| Automated Unit & Logic Tests | PASS — 53 passing tests across AI companion, roleplay, tutor, mistake clinic, audio, badges, streak shields, and scaffolding |
 | Expo configuration validation | PASS — SDK 58.0.0 public config validated |
+| Conversational AI Roleplay Engine | **PASS — Multi-turn simulations with avatars, coaching feedback & +20 XP rewards** |
+| "Ask ORRALI" AI Contextual Tutor | **PASS — Child-friendly grammar explanations, golden rules & translated examples** |
+| Smart Mistake Clinic | **PASS — SQLite error pattern diagnostics & 5-min remedial workout builder** |
 | Pre-Rendered Native Studio Audio | **PASS — 120 Studio Neural MP3 recordings bundled in assets/audio/ (100% offline)** |
 | Studio Audio Engine | **PASS — Instant sub-millisecond playback via `expo-audio` with TTS fallback** |
 | Collectible Trophy Shelf & Badges | **PASS — 8 achievement badges with live progress tracking and unlock celebrations** |
@@ -28,19 +31,19 @@
 | Android Hardware Back Press | **PASS — Intercepted via `BackHandler` with exit confirmation** |
 | Android Keyboard Usability | **PASS — Wrapped in `KeyboardAvoidingView` and `ScrollView`** |
 | GitHub Actions CI/CD Pipeline | PASS — Automated build & release workflow in `.github/workflows/build-android.yml` |
-| Android APK Generation | **SUCCESS (1.7.0 Standalone Release APK)** |
+| Android APK Generation | **SUCCESS (2.0.0 Standalone Release APK)** |
 
 ---
 
 ## Direct APK Download Links
 
-- **GitHub Release (v1.7.0):** [ORRALI v1.7.0 — Pre-Rendered Native Studio Audio Release](https://github.com/AhmedRafique/ORRALI/releases/tag/v1.7.0)
-- **Direct APK Download:** [ORRALI-1.7.0.apk](https://github.com/AhmedRafique/ORRALI/releases/download/v1.7.0/ORRALI-1.7.0.apk)
+- **GitHub Release (v2.0.0):** [ORRALI v2.0.0 — The AI Learning Companion & Roleplay Release](https://github.com/AhmedRafique/ORRALI/releases/tag/v2.0.0)
+- **Direct APK Download:** [ORRALI-2.0.0.apk](https://github.com/AhmedRafique/ORRALI/releases/download/v2.0.0/ORRALI-2.0.0.apk)
 - **CI Build Workflow:** [GitHub Actions Build Android APK](https://github.com/AhmedRafique/ORRALI/actions/workflows/build-android.yml)
 
 ---
 
 ## Device Installation (Redmi Note 14 Pro+ / Android)
-1. Download `ORRALI-1.7.0.apk` directly to your phone via browser or transfer via USB.
+1. Download `ORRALI-2.0.0.apk` directly to your phone via browser or transfer via USB.
 2. Tap the downloaded APK to install (uninstall any previous version if prompted).
-3. Launch **ORRALI** — tap any phrase to hear the authentic, native studio human recording!
+3. Launch **ORRALI** — test the new AI Companion buttons: Ask ORRALI, Mistake Clinic, and Conversational Roleplay!
