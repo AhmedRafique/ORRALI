@@ -90,15 +90,53 @@ export interface LessonCheckpoint {
   updatedAt: number;
 }
 
+export interface AchievementBadge {
+  id: string;
+  title: string;
+  description: string;
+  icon: string;
+  category: 'learning' | 'streak' | 'speaking' | 'mastery';
+  unlockedAt?: number;
+  current: number;
+  target: number;
+  unlocked: boolean;
+}
+
+export interface DialogTurn {
+  speaker: string;
+  avatar: string;
+  target: string;
+  en: string;
+}
+
+export interface StoryScenario {
+  id: string;
+  courseCode: LangCode;
+  title: string;
+  subtitle: string;
+  level: string;
+  dialog: DialogTurn[];
+  question: {
+    prompt: string;
+    options: string[];
+    correctIndex: number;
+    explanation: string;
+  };
+}
+
 export interface Progress {
   xp: number;
   courseXp?: Record<string, number>;
   streak: number;
+  streakShields?: number;
+  lastShieldUsed?: string;
   lastDay: string;
   dailyGoal: number;
   dailyXp: number;
   dailyXpDay: string;
   completed: Record<string, true>;
+  completedStories?: Record<string, true>;
   cards: Record<string, Card>;
   checkpoints?: Record<string, LessonCheckpoint>;
+  badges?: Record<string, number>;
 }

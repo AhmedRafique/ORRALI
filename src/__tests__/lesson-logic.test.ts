@@ -4,7 +4,8 @@ import { norm, stripAccents, evaluateAnswer, buildExercises } from '../exercises
 import { evaluatePronunciation, extractCleanWords } from '../scoring';
 import { newCard, review, isDue } from '../srs';
 import { emptyProgress, touchStreak, getEffectiveStreak, dayKey } from '../streak';
-import { courses } from '../content';
+import { evaluateBadges, getBadgesWithProgress } from '../badges';
+import { courses, stories } from '../content';
 
 describe('ORRALI Learning Engine & Lesson State Logic', () => {
   describe('Bug 1: Conflicting Correct and Incorrect Answer Records', () => {
@@ -258,10 +259,28 @@ describe('ORRALI Learning Engine & Lesson State Logic', () => {
       assert.equal(touched.lastDay, dayKey(new Date()));
     });
 
-    it('touchStreak resets streak to 1 if practice lapsed', () => {
+    it('touchStreak preserves streak when shielded after missing 1 day', () => {
       const twoDaysAgo = new Date();
       twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
-      const p = { ...emptyProgress(), streak: 12, lastDay: dayKey(twoDaysAgo) };
+      const p = { ...emptyProgress(), streak: 6, streakShields: 1, lastDay: dayKey(twoDaysAgo) };
+      const touched = touchStreak(p);
+      assert.equal(touched.streak, 7);
+      assert.equal(touched.streakShields, 0); // 1 shield was consumed to preserve the streak!
+      assert.equal(touched.lastDay, dayKey(new Date()));
+    });
+
+    it('touchStreak resets streak to 1 when shields are depleted', () => {
+      const twoDaysAgo = new Date();
+      twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
+      const p = { ...emptyProgress(), streak: 12, streakShields: 0, lastDay: dayKey(twoDaysAgo) };
+      const touched = touchStreak(p);
+      assert.equal(touched.streak, 1);
+    });
+
+    it('touchStreak resets streak to 1 if practice lapsed for more than 2 days', () => {
+      const threeDaysAgo = new Date();
+      threeDaysAgo.setDate(threeDaysAgo.getDate() - 3);
+      const p = { ...emptyProgress(), streak: 12, streakShields: 2, lastDay: dayKey(threeDaysAgo) };
       const touched = touchStreak(p);
       assert.equal(touched.streak, 1);
     });
@@ -277,11 +296,50 @@ describe('ORRALI Learning Engine & Lesson State Logic', () => {
       assert.equal(getEffectiveStreak(p2), 5);
     });
 
-    it('getEffectiveStreak returns 0 when practice lapsed', () => {
+    it('getEffectiveStreak shows protected streak when shield is available after 1 missed day', () => {
       const twoDaysAgo = new Date();
       twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
-      const p = { ...emptyProgress(), streak: 8, lastDay: dayKey(twoDaysAgo) };
+      const p = { ...emptyProgress(), streak: 8, streakShields: 1, lastDay: dayKey(twoDaysAgo) };
+      assert.equal(getEffectiveStreak(p), 8);
+    });
+
+    it('getEffectiveStreak returns 0 when practice lapsed without shield', () => {
+      const twoDaysAgo = new Date();
+      twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
+      const p = { ...emptyProgress(), streak: 8, streakShields: 0, lastDay: dayKey(twoDaysAgo) };
       assert.equal(getEffectiveStreak(p), 0);
+    });
+  });
+
+  describe('Achievement Badges & Trophy Shelf', () => {
+    it('evaluates and unlocks First Words badge on completing 1 chapter', () => {
+      let p = { ...emptyProgress(), completed: { 'fr-1': true as const } };
+      const { updatedProgress, newlyUnlocked } = evaluateBadges(p, courses);
+      assert.ok(updatedProgress.badges?.['first_words']);
+      assert.equal(newlyUnlocked.length, 1);
+      assert.equal(newlyUnlocked[0].id, 'first_words');
+    });
+
+    it('evaluates and unlocks XP Explorer on reaching 100 XP', () => {
+      let p = { ...emptyProgress(), xp: 120 };
+      const { updatedProgress, newlyUnlocked } = evaluateBadges(p, courses);
+      assert.ok(updatedProgress.badges?.['xp_centurion']);
+      assert.ok(newlyUnlocked.some((b) => b.id === 'xp_centurion'));
+    });
+
+    it('evaluates and unlocks Café Regular on completing Au Café', () => {
+      let p = { ...emptyProgress(), completed: { 'fr-4': true as const } };
+      const { updatedProgress } = evaluateBadges(p, courses);
+      assert.ok(updatedProgress.badges?.['cafe_regular']);
+    });
+
+    it('getBadgesWithProgress computes accurate progress ratios', () => {
+      const p = { ...emptyProgress(), xp: 50 };
+      const badgeList = getBadgesWithProgress(p, courses);
+      const xpBadge = badgeList.find((b) => b.id === 'xp_centurion')!;
+      assert.equal(xpBadge.current, 50);
+      assert.equal(xpBadge.target, 100);
+      assert.equal(xpBadge.unlocked, false);
     });
   });
 
@@ -395,17 +453,26 @@ describe('ORRALI Learning Engine & Lesson State Logic', () => {
       assert.ok(kinds.has('speak'));
       assert.ok(kinds.has('type'));
     });
+it('buildExercises skips intro cards in review mode', () => {
+  const fr = courses[0];
+  const items = fr.lessons[0].items.slice(0, 3);
+  const reviewExercises = buildExercises(fr, items, true);
 
-    it('buildExercises skips intro cards in review mode', () => {
-      const fr = courses[0];
-      const items = fr.lessons[0].items.slice(0, 3);
-      const reviewExercises = buildExercises(fr, items, true);
+  const kinds = new Set(reviewExercises.map((e) => e.kind));
+  assert.ok(!kinds.has('intro'));
+  assert.ok(kinds.has('choice'));
+  assert.ok(kinds.has('listen'));
+  assert.ok(kinds.has('speak'));
+  assert.ok(kinds.has('type'));
+});
 
-      const kinds = new Set(reviewExercises.map((e) => e.kind));
-      assert.ok(!kinds.has('intro'));
-      assert.ok(kinds.has('choice'));
-      assert.ok(kinds.has('listen'));
-      assert.ok(kinds.has('type'));
-    });
+it('all stories have valid dialog turns and comprehension checks', () => {
+  assert.ok(stories.length >= 2);
+  for (const story of stories) {
+    assert.ok(story.dialog.length >= 4);
+    assert.ok(story.question.options.length >= 2);
+    assert.ok(story.question.correctIndex >= 0);
+  }
+});
   });
 });

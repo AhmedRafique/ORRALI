@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { Modal, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { playPhraseAudio, stopAllAudio } from '../audio';
+import { stories } from '../content';
 import { isDue } from '../srs';
 import { dayKey, getEffectiveStreak } from '../store';
-import { Course, GrammarCapsule, LangCode, Progress } from '../types';
+import { Course, GrammarCapsule, LangCode, Progress, StoryScenario } from '../types';
 
 const C = {
   midnight: '#1B1536',
@@ -15,6 +17,8 @@ const C = {
   line: '#EAE5EE',
   white: '#FFFFFF',
   lilac: '#EEE9F6',
+  green: '#638B70',
+  red: '#B75D61',
 };
 
 interface Props {
@@ -25,6 +29,7 @@ interface Props {
   onStartLesson: (id: string) => void;
   onStartReview: () => void;
   onSetDailyGoal: (goal: number) => void;
+  onCompleteStory?: (storyId: string, earnedXp: number) => void;
 }
 
 export default function HomeScreen({
@@ -35,8 +40,12 @@ export default function HomeScreen({
   onStartLesson,
   onStartReview,
   onSetDailyGoal,
+  onCompleteStory,
 }: Props) {
   const [activeCapsule, setActiveCapsule] = useState<GrammarCapsule | null>(null);
+  const [activeStory, setActiveStory] = useState<StoryScenario | null>(null);
+  const [storyAnswer, setStoryAnswer] = useState<number | null>(null);
+  const [storyCompleted, setStoryCompleted] = useState(false);
 
   const goal = progress.dailyGoal;
   const todayXp = progress.dailyXpDay === dayKey(new Date()) ? progress.dailyXp : 0;
@@ -44,6 +53,25 @@ export default function HomeScreen({
   const completedCount = course.lessons.filter((l) => !!progress.completed[l.id]).length;
   const allItems = course.lessons.flatMap((l) => l.items);
   const dueCount = allItems.filter((i) => isDue(progress.cards[i.id])).length;
+  const shields = progress.streakShields ?? 1;
+
+  // Filter conversational stories for current language
+  const courseStories = stories.filter((s) => s.courseCode === course.code);
+
+  const playStoryTurnAudio = (target: string) => {
+    void playPhraseAudio({ id: 'turn', target, en: '' }, course.code);
+  };
+
+  const handleFinishStory = () => {
+    if (!activeStory) return;
+    void stopAllAudio();
+    if (onCompleteStory) {
+      onCompleteStory(activeStory.id, 15);
+    }
+    setActiveStory(null);
+    setStoryAnswer(null);
+    setStoryCompleted(false);
+  };
 
   return (
     <ScrollView style={s.root} contentContainerStyle={s.content} showsVerticalScrollIndicator={false}>
@@ -67,10 +95,13 @@ export default function HomeScreen({
         </View>
         <View style={s.streakPill}>
           <Text style={s.streakIcon}>✦</Text>
-          <Text style={s.streakText}>{getEffectiveStreak(progress)} day streak</Text>
+          <Text style={s.streakText}>
+            {getEffectiveStreak(progress)} day streak {shields > 0 ? `· 🛡️ ${shields}` : ''}
+          </Text>
         </View>
       </View>
 
+      {/* Goal & Daily Spark Card */}
       <View style={s.goalCard}>
         <View style={s.goalTop}>
           <View>
@@ -106,6 +137,7 @@ export default function HomeScreen({
         </View>
       </View>
 
+      {/* Choose Your World */}
       <View style={s.sectionHeader}>
         <View>
           <Text style={s.sectionTitle}>Choose your world</Text>
@@ -134,6 +166,46 @@ export default function HomeScreen({
         })}
       </View>
 
+      {/* Real-Life Conversational Stories */}
+      {courseStories.length > 0 && (
+        <>
+          <View style={s.sectionHeader}>
+            <View>
+              <Text style={s.sectionTitle}>Real-life conversations</Text>
+              <Text style={s.sectionSub}>Follow authentic dialogues and test your ear</Text>
+            </View>
+          </View>
+          <View style={s.storiesList}>
+            {courseStories.map((story) => {
+              const isDone = !!progress.completedStories?.[story.id];
+              return (
+                <Pressable
+                  key={story.id}
+                  style={[s.storyCard, isDone && s.storyCardDone]}
+                  onPress={() => {
+                    setActiveStory(story);
+                    setStoryAnswer(null);
+                    setStoryCompleted(false);
+                  }}
+                >
+                  <View style={s.storyIconCircle}>
+                    <Text style={s.storyIcon}>{story.dialog[0]?.avatar ?? '📖'}</Text>
+                  </View>
+                  <View style={{ flex: 1 }}>
+                    <Text style={s.storyTitle}>{story.title}</Text>
+                    <Text style={s.storySubtitle}>{story.subtitle}</Text>
+                  </View>
+                  <Text style={[s.storyAction, isDone && s.storyActionDone]}>
+                    {isDone ? '✓ DONE' : 'LISTEN ›'}
+                  </Text>
+                </Pressable>
+              );
+            })}
+          </View>
+        </>
+      )}
+
+      {/* Learning Path */}
       <View style={s.sectionHeader}>
         <View>
           <Text style={s.sectionTitle}>Your learning path</Text>
@@ -190,6 +262,7 @@ export default function HomeScreen({
         );
       })}
 
+      {/* Review Card */}
       <Pressable
         disabled={dueCount === 0}
         onPress={onStartReview}
@@ -208,6 +281,7 @@ export default function HomeScreen({
       </Pressable>
       <Text style={s.footer}>MADE FOR CURIOUS MINDS  ·  ORRALI</Text>
 
+      {/* Grammar Capsule Viewer Modal */}
       {activeCapsule && (
         <Modal
           transparent
@@ -248,6 +322,108 @@ export default function HomeScreen({
 
               <Pressable style={s.capsuleDoneBtn} onPress={() => setActiveCapsule(null)}>
                 <Text style={s.capsuleDoneText}>I Understand</Text>
+              </Pressable>
+            </View>
+          </View>
+        </Modal>
+      )}
+
+      {/* Story Scenario Player Modal */}
+      {activeStory && (
+        <Modal
+          transparent
+          animationType="fade"
+          visible={!!activeStory}
+          onRequestClose={() => setActiveStory(null)}
+        >
+          <View style={s.modalOverlay}>
+            <View style={s.storyModalCard}>
+              <View style={s.capsuleHeader}>
+                <View style={s.capsuleModalBadge}>
+                  <Text style={s.capsuleModalBadgeText}>📖 {activeStory.level}</Text>
+                </View>
+                <Pressable onPress={() => setActiveStory(null)} style={s.capsuleClose}>
+                  <Text style={s.capsuleCloseText}>×</Text>
+                </Pressable>
+              </View>
+
+              <Text style={s.storyModalTitle}>{activeStory.title}</Text>
+              <Text style={s.storyModalSub}>{activeStory.subtitle}</Text>
+
+              <ScrollView style={s.dialogScroll} showsVerticalScrollIndicator={false}>
+                {activeStory.dialog.map((turn, idx) => (
+                  <View key={idx} style={s.turnRow}>
+                    <Text style={s.turnAvatar}>{turn.avatar}</Text>
+                    <View style={s.turnBubble}>
+                      <View style={s.turnHeader}>
+                        <Text style={s.turnSpeaker}>{turn.speaker}</Text>
+                        <Pressable onPress={() => playStoryTurnAudio(turn.target)}>
+                          <Text style={s.turnAudioIcon}>🔊</Text>
+                        </Pressable>
+                      </View>
+                      <Text style={s.turnTarget}>{turn.target}</Text>
+                      <Text style={s.turnEn}>{turn.en}</Text>
+                    </View>
+                  </View>
+                ))}
+
+                {/* Comprehension Question at bottom */}
+                <View style={s.storyQuestionBox}>
+                  <Text style={s.questionBadge}>COMPREHENSION CHECK</Text>
+                  <Text style={s.questionPrompt}>{activeStory.question.prompt}</Text>
+                  <View style={{ gap: 8, marginTop: 10 }}>
+                    {activeStory.question.options.map((opt, optIdx) => {
+                      const isPicked = storyAnswer === optIdx;
+                      const isCorrect = optIdx === activeStory.question.correctIndex;
+                      return (
+                        <Pressable
+                          key={optIdx}
+                          disabled={storyCompleted}
+                          onPress={() => {
+                            setStoryAnswer(optIdx);
+                            if (isCorrect) setStoryCompleted(true);
+                          }}
+                          style={[
+                            s.storyOption,
+                            isPicked && (isCorrect ? s.storyOptionCorrect : s.storyOptionWrong),
+                          ]}
+                        >
+                          <Text
+                            style={[
+                              s.storyOptionText,
+                              isPicked && (isCorrect ? s.storyOptionTextCorrect : s.storyOptionTextWrong),
+                            ]}
+                          >
+                            {opt}
+                          </Text>
+                        </Pressable>
+                      );
+                    })}
+                  </View>
+
+                  {storyAnswer !== null && (
+                    <Text
+                      style={[
+                        s.storyQuestionFeedback,
+                        { color: storyAnswer === activeStory.question.correctIndex ? C.green : C.red },
+                      ]}
+                    >
+                      {storyAnswer === activeStory.question.correctIndex
+                        ? `Spot on! +15 XP · ${activeStory.question.explanation}`
+                        : 'Not quite. Listen to the conversation and try again!'}
+                    </Text>
+                  )}
+                </View>
+              </ScrollView>
+
+              <Pressable
+                disabled={!storyCompleted}
+                style={[s.storyDoneBtn, !storyCompleted && s.storyDoneBtnDisabled]}
+                onPress={handleFinishStory}
+              >
+                <Text style={s.storyDoneText}>
+                  {storyCompleted ? 'Complete Story (+15 XP)' : 'Answer check above to continue'}
+                </Text>
               </Pressable>
             </View>
           </View>
@@ -305,10 +481,16 @@ const s = StyleSheet.create({
   goalChoiceActive: { backgroundColor: C.gold, borderColor: C.gold },
   goalChoiceText: { color: '#E8DFF0', fontSize: 9, fontWeight: '800' },
   goalChoiceTextActive: { color: C.midnight },
-  sectionHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: 13, marginTop: 2 },
+  sectionHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-end',
+    marginBottom: 13,
+    marginTop: 2,
+  },
   sectionTitle: { color: C.ink, fontSize: 18, fontWeight: '800' },
   sectionSub: { color: C.muted, fontSize: 11, marginTop: 4 },
-  courseRow: { gap: 10, marginBottom: 27 },
+  courseRow: { gap: 10, marginBottom: 22 },
   courseCard: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -326,8 +508,40 @@ const s = StyleSheet.create({
   courseMeta: { color: C.muted, fontSize: 10, marginTop: 3 },
   courseMetaActive: { color: '#6F6381' },
   courseArrow: { color: C.muted, fontSize: 25, paddingHorizontal: 5 },
+  storiesList: { gap: 10, marginBottom: 24 },
+  storyCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: C.white,
+    borderRadius: 18,
+    padding: 14,
+    borderWidth: 1,
+    borderColor: C.line,
+    gap: 12,
+  },
+  storyCardDone: { backgroundColor: '#FAF8F4', borderColor: C.gold },
+  storyIconCircle: {
+    width: 42,
+    height: 42,
+    borderRadius: 15,
+    backgroundColor: C.lilac,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  storyIcon: { fontSize: 22 },
+  storyTitle: { color: C.midnight, fontSize: 13, fontWeight: '800' },
+  storySubtitle: { color: C.muted, fontSize: 10, marginTop: 3 },
+  storyAction: { color: '#8A6D34', fontSize: 10, fontWeight: '900', letterSpacing: 0.5 },
+  storyActionDone: { color: C.green },
   pathPercent: { color: '#8A719F', fontSize: 12, fontWeight: '800' },
-  pathTrack: { height: 5, backgroundColor: '#E9E2ED', borderRadius: 5, overflow: 'hidden', marginTop: -5, marginBottom: 15 },
+  pathTrack: {
+    height: 5,
+    backgroundColor: '#E9E2ED',
+    borderRadius: 5,
+    overflow: 'hidden',
+    marginTop: -5,
+    marginBottom: 15,
+  },
   pathFill: { height: 5, backgroundColor: C.gold, borderRadius: 5 },
   chapterWrapper: { marginBottom: 12 },
   lessonCard: {
@@ -341,7 +555,14 @@ const s = StyleSheet.create({
     gap: 12,
   },
   lessonLocked: { opacity: 0.48 },
-  lessonNumber: { width: 40, height: 40, borderRadius: 14, backgroundColor: C.lilac, alignItems: 'center', justifyContent: 'center' },
+  lessonNumber: {
+    width: 40,
+    height: 40,
+    borderRadius: 14,
+    backgroundColor: C.lilac,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   lessonNumberDone: { backgroundColor: '#E1EEE5' },
   lessonNumberLocked: { backgroundColor: '#EEECEF' },
   lessonNumberText: { color: C.purple, fontSize: 12, fontWeight: '900' },
@@ -366,9 +587,24 @@ const s = StyleSheet.create({
   capsuleTag: { color: '#86642A', fontSize: 9, fontWeight: '900', letterSpacing: 0.8 },
   capsuleTitle: { color: C.ink, fontSize: 11, fontWeight: '700', flex: 1 },
   capsuleArrow: { color: '#A07C41', fontSize: 15, fontWeight: '700' },
-  reviewCard: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#F1E9DD', borderRadius: 18, padding: 14, marginTop: 15, gap: 12 },
+  reviewCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#F1E9DD',
+    borderRadius: 18,
+    padding: 14,
+    marginTop: 15,
+    gap: 12,
+  },
   reviewDisabled: { opacity: 0.65 },
-  reviewIcon: { width: 40, height: 40, borderRadius: 14, backgroundColor: '#E5D3B7', alignItems: 'center', justifyContent: 'center' },
+  reviewIcon: {
+    width: 40,
+    height: 40,
+    borderRadius: 14,
+    backgroundColor: '#E5D3B7',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   reviewTitle: { color: C.ink, fontSize: 12, fontWeight: '800' },
   reviewSub: { color: '#807365', fontSize: 10, marginTop: 4 },
   reviewArrow: { color: '#9B7449', fontSize: 24 },
@@ -455,4 +691,68 @@ const s = StyleSheet.create({
     alignItems: 'center',
   },
   capsuleDoneText: { color: C.white, fontWeight: '800', fontSize: 13 },
+
+  // Story Modal Styles
+  storyModalCard: {
+    width: '100%',
+    maxHeight: '90%',
+    backgroundColor: C.white,
+    borderRadius: 24,
+    padding: 22,
+    shadowColor: C.midnight,
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.2,
+    shadowRadius: 20,
+    elevation: 10,
+  },
+  storyModalTitle: { color: C.midnight, fontSize: 20, fontWeight: '800', marginBottom: 4 },
+  storyModalSub: { color: C.muted, fontSize: 11, marginBottom: 16 },
+  dialogScroll: { maxHeight: 320, marginBottom: 14 },
+  turnRow: { flexDirection: 'row', gap: 10, marginBottom: 12, alignItems: 'flex-start' },
+  turnAvatar: { fontSize: 24, marginTop: 4 },
+  turnBubble: {
+    flex: 1,
+    backgroundColor: '#F8F6FA',
+    borderRadius: 16,
+    padding: 12,
+    borderWidth: 1,
+    borderColor: '#ECE6F2',
+  },
+  turnHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 },
+  turnSpeaker: { color: '#8A6D34', fontSize: 10, fontWeight: '900', letterSpacing: 0.5 },
+  turnAudioIcon: { fontSize: 13, padding: 2 },
+  turnTarget: { color: C.midnight, fontSize: 14, fontWeight: '800', marginBottom: 2 },
+  turnEn: { color: C.muted, fontSize: 11 },
+  storyQuestionBox: {
+    backgroundColor: '#FAF8F4',
+    borderWidth: 1.5,
+    borderColor: C.gold,
+    borderRadius: 16,
+    padding: 14,
+    marginTop: 8,
+    marginBottom: 10,
+  },
+  questionBadge: { color: '#8A692E', fontSize: 9, fontWeight: '900', letterSpacing: 1 },
+  questionPrompt: { color: C.midnight, fontSize: 13, fontWeight: '800', marginTop: 6 },
+  storyOption: {
+    backgroundColor: C.white,
+    borderWidth: 1,
+    borderColor: C.line,
+    borderRadius: 12,
+    padding: 11,
+  },
+  storyOptionCorrect: { backgroundColor: '#EAF2EC', borderColor: C.green },
+  storyOptionWrong: { backgroundColor: '#FDF1F2', borderColor: C.red },
+  storyOptionText: { color: C.ink, fontSize: 12, fontWeight: '600' },
+  storyOptionTextCorrect: { color: '#2B5738', fontWeight: '800' },
+  storyOptionTextWrong: { color: '#822D31', fontWeight: '800' },
+  storyQuestionFeedback: { fontSize: 11, fontWeight: '700', marginTop: 10 },
+  storyDoneBtn: {
+    backgroundColor: C.midnight,
+    paddingVertical: 14,
+    borderRadius: 16,
+    alignItems: 'center',
+  },
+  storyDoneBtnDisabled: { backgroundColor: '#D4CFDC' },
+  storyDoneText: { color: C.white, fontWeight: '800', fontSize: 13 },
 });

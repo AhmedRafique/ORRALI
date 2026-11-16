@@ -16,6 +16,7 @@ import ProgressScreen from './src/screens/ProgressScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
 import { review, isDue } from './src/srs';
 import { recordAttemptToDb } from './src/db';
+import { evaluateBadges } from './src/badges';
 import {
   dayKey,
   emptyProgress,
@@ -135,12 +136,41 @@ export default function App() {
         completed: session?.lessonId ? { ...p.completed, [session.lessonId]: true } : p.completed,
       };
 
+      const { updatedProgress } = evaluateBadges(p, courses);
+      p = updatedProgress;
+
       setProgress(p);
       void saveProgress(p);
       setSession(null);
       setTab('home');
     },
     [course.code, progress, session],
+  );
+
+  const completeStory = useCallback(
+    (storyId: string, earnedXp: number) => {
+      const current = progress ?? emptyProgress();
+      let p = touchStreak(current);
+      const today = dayKey(new Date());
+      const currentCourseXp = p.courseXp?.[course.code] ?? 0;
+      p = {
+        ...p,
+        xp: p.xp + earnedXp,
+        courseXp: {
+          ...(p.courseXp ?? {}),
+          [course.code]: currentCourseXp + earnedXp,
+        },
+        dailyXp: (p.dailyXpDay === today ? p.dailyXp : 0) + earnedXp,
+        dailyXpDay: today,
+        completedStories: {
+          ...(p.completedStories ?? {}),
+          [storyId]: true,
+        },
+      };
+      const { updatedProgress } = evaluateBadges(p, courses);
+      updateProgress(updatedProgress);
+    },
+    [course.code, progress, updateProgress],
   );
 
   if (!progress) {
@@ -195,6 +225,7 @@ export default function App() {
                 onPickCourse={pickCourse}
                 onStartLesson={startLesson}
                 onSetDailyGoal={(goal) => updateProgress({ ...progress, dailyGoal: goal })}
+                onCompleteStory={completeStory}
                 onStartReview={() => {
                   const due = course.lessons
                     .flatMap((lesson) => lesson.items)

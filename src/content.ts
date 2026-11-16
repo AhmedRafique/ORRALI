@@ -1,4 +1,4 @@
-import { Course } from './types';
+import { Course, StoryScenario } from './types';
 
 export const courses: Course[] = [
   {
@@ -1367,5 +1367,110 @@ export const courses: Course[] = [
         ],
       },
     ],
+  },
+];
+
+export const stories: StoryScenario[] = [
+  {
+    id: 'story-fr-1',
+    courseCode: 'fr',
+    title: 'Un matin à la boulangerie',
+    subtitle: 'Ordering warm croissants and fresh baguettes in Paris',
+    level: 'A1 · Dialog Story',
+    dialog: [
+      {
+        speaker: 'Sophie',
+        avatar: '🥖',
+        target: 'Bonjour madame ! Deux croissants chauds, s’il vous plaît.',
+        en: 'Hello! Two warm croissants, please.',
+      },
+      {
+        speaker: 'Boulangère',
+        avatar: '👩‍🍳',
+        target: 'Bonjour ! Et avec ceci ?',
+        en: 'Hello! And with that?',
+      },
+      {
+        speaker: 'Pierre',
+        avatar: '☕',
+        target: 'Un café au lait et une baguette tradition, s’il vous plaît.',
+        en: 'A café au lait and a traditional baguette, please.',
+      },
+      {
+        speaker: 'Boulangère',
+        avatar: '👩‍🍳',
+        target: 'Très bien. Ça fait cinq euros cinquante, s’il vous plaît.',
+        en: 'Very well. That will be five euros fifty, please.',
+      },
+      {
+        speaker: 'Sophie',
+        avatar: '🥖',
+        target: 'Voici six euros. Gardez la monnaie ! Merci beaucoup !',
+        en: 'Here is six euros. Keep the change! Thank you very much!',
+      },
+      {
+        speaker: 'Boulangère',
+        avatar: '👩‍🍳',
+        target: 'Merci à vous ! Passez une excellente journée !',
+        en: 'Thank you! Have a wonderful day!',
+      },
+    ],
+    question: {
+      prompt: 'Combien coûtent les croissants, le café et la baguette ?',
+      options: ['Cinq euros cinquante', 'Six euros', 'Deux euros'],
+      correctIndex: 0,
+      explanation: 'La boulangère annonce : "Ça fait cinq euros cinquante".',
+    },
+  },
+  {
+    id: 'story-de-1',
+    courseCode: 'de',
+    title: 'Am Hauptbahnhof',
+    subtitle: 'Buying a train ticket to Munich at the station',
+    level: 'A1 · Dialog Story',
+    dialog: [
+      {
+        speaker: 'Max',
+        avatar: '🚆',
+        target: 'Guten Tag! Eine Fahrkarte nach München, bitte.',
+        en: 'Good day! A train ticket to Munich, please.',
+      },
+      {
+        speaker: 'Beamter',
+        avatar: '👨‍💼',
+        target: 'Guten Tag! Einfach oder hin und zurück?',
+        en: 'Good day! One-way or round trip?',
+      },
+      {
+        speaker: 'Max',
+        avatar: '🚆',
+        target: 'Einfach, bitte. Wann fährt der nächste Zug?',
+        en: 'One-way, please. When does the next train leave?',
+      },
+      {
+        speaker: 'Beamter',
+        avatar: '👨‍💼',
+        target: 'Um zehn Uhr fünfzehn von Gleis vier.',
+        en: 'At ten fifteen from platform four.',
+      },
+      {
+        speaker: 'Max',
+        avatar: '🚆',
+        target: 'Perfekt. Kann ich mit Karte zahlen?',
+        en: 'Perfect. Can I pay with card?',
+      },
+      {
+        speaker: 'Beamter',
+        avatar: '👨‍💼',
+        target: 'Ja, natürlich. Gute Reise!',
+        en: 'Yes, of course. Safe travels!',
+      },
+    ],
+    question: {
+      prompt: 'Von welchem Gleis fährt der Zug nach München?',
+      options: ['Gleis vier', 'Gleis zehn', 'Gleis eins'],
+      correctIndex: 0,
+      explanation: 'Der Beamte sagt: "Um zehn Uhr fünfzehn von Gleis vier".',
+    },
   },
 ];
