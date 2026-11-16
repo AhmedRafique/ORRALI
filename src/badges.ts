@@ -41,11 +41,11 @@ export const BADGE_DEFINITIONS: BadgeDefinition[] = [
   {
     id: 'cafe_regular',
     title: 'Café Regular',
-    description: 'Complete a café & dining chapter (Au Café or Im Café).',
+    description: 'Complete a café & dining chapter (Au Café, Im Café, or En la Cafetería).',
     icon: '☕',
     category: 'curriculum' as any,
     target: 1,
-    calculateCurrent: (p) => (p.completed['fr-4'] || p.completed['de-4'] ? 1 : 0),
+    calculateCurrent: (p) => (p.completed['fr-4'] || p.completed['de-4'] || p.completed['es-3'] ? 1 : 0),
   },
   {
     id: 'xp_centurion',
@@ -58,17 +58,19 @@ export const BADGE_DEFINITIONS: BadgeDefinition[] = [
   },
   {
     id: 'polyglot',
-    title: 'Dual Polyglot',
-    description: 'Earn at least 25 XP in both French and German.',
+    title: 'European Polyglot',
+    description: 'Earn at least 25 XP in any two languages (French, German, or Spanish).',
     icon: '🌐',
     category: 'learning',
     target: 2,
     calculateCurrent: (p) => {
       const frXp = p.courseXp?.['fr'] ?? 0;
       const deXp = p.courseXp?.['de'] ?? 0;
+      const esXp = p.courseXp?.['es'] ?? 0;
       let count = 0;
       if (frXp >= 25) count++;
       if (deXp >= 25) count++;
+      if (esXp >= 25) count++;
       return count;
     },
   },
