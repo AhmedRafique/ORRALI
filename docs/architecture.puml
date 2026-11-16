@@ -1,4 +1,4 @@
-@startuml ORRALI_Architecture_v2
+@startuml ORRALI_Architecture_v4
 !theme plain
 skinparam backgroundColor #F8F6F1
 skinparam defaultFontName Arial
@@ -6,7 +6,7 @@ skinparam packageBackgroundColor #FFFFFF
 skinparam packageBorderColor #1B1536
 skinparam componentStyle uml2
 
-title ORRALI Architecture (Version 2.0.0 — AI Learning Companion)
+title ORRALI Architecture (Version 4.0.0 — The Ultimate Global Release)
 
 package "Presentation & UI Layer (React Native / Expo)" {
   [App.tsx
@@ -18,12 +18,14 @@ Path, Quests & Hub] as HomeScreen
     [ProgressScreen
 Journey & Course XP] as ProgressScreen
     [ProfileScreen
-Trophy Shelf & Preferences] as ProfileScreen
+Trophy Shelf, Theme & Goals] as ProfileScreen
     [LessonScreen
-Scaffolded Interactive Learning] as LessonScreen
+Scaffolding & Live Speech Lab] as LessonScreen
   }
 
-  package "AI Companion Modals" {
+  package "Interactive Modals" {
+    [LexiconModal
+Smart Search & Flashcards] as LexiconModal
     [TutorModal
 Ask ORRALI Tutor] as TutorModal
     [MistakeClinicModal
@@ -33,20 +35,34 @@ Conversational Simulation] as RoleplayModal
   }
 }
 
+package "Smart Lexicon & Flashcard Engine" {
+  [lexicon.ts
+Search, Mastery Filters & Flip Deck] as LexiconEngine
+}
+
+package "Sensory Polish & Theme Engine" {
+  [sensory.ts
+expo-haptics Tactile Engine] as SensoryEngine
+  [theme.ts
+Velvet Midnight OLED Palette] as ThemeEngine
+}
+
 package "AI Companion Engine (src/companion/)" {
   [clinic.ts
 Error Diagnosis & Remediation] as ClinicEngine
   [tutor.ts
 Knowledge Base & Rules] as TutorEngine
   [roleplay.ts
-Multi-turn State Machine] as RoleplayEngine
+Multi-turn State Machine (FR/DE/ES)] as RoleplayEngine
 }
 
 package "Domain & Pedagogical Engine" {
   [exercises.ts
-Scaffolding & Smart Evaluation] as Exercises
+Close Distractor Scaffolding & Evaluation] as Exercises
   [scoring.ts
-Pronunciation & Speech Scoring] as Scoring
+Pronunciation & Cadence Scoring] as Scoring
+  [notifications.ts
+Offline Streak & Shield Reminders] as Notifications
   [srs.ts
 SM-2 with Lapse Tracking] as SRS
   [badges.ts
@@ -54,51 +70,56 @@ Achievement Evaluation] as Badges
   [streak.ts
 Streak Shields & Freeze] as Streak
   [content.ts
-20 A1 Units & Stories] as Content
+50 Units (FR/DE/ES) & B2 Stories] as Content
   [store.ts
 Dual-Write Repository] as Store
 }
 
-package "Audio Architecture (src/audio.ts)" {
+package "Audio Engine & Studio Assets" {
+  [audio.ts
+expo-audio Playback & Recording] as AudioEngine
   [audioMap.ts
-120 Studio Neural MP3s] as AudioMap
-  [expo-audio
-Sub-ms Native Player & Recorder] as ExpoAudio
-  [expo-speech
-Google WaveNet TTS Fallback] as Speech
+300 Pre-Rendered Studio MP3s] as AudioMap
 }
 
-package "Local Persistence" {
-  [expo-sqlite
-orrali.db SQLite Engine] as SQLite
-  [AsyncStorage
-Key-Value Backup Cache] as AsyncStorage
+package "Offline Persistence Layer" {
+  database "SQLite (expo-sqlite)
+progress_store & attempts" as SQLiteDB
+  database "AsyncStorage (Backup)" as AsyncBackup
 }
 
-App --> HomeScreen : displays
-App --> ProgressScreen : displays
-App --> ProfileScreen : displays
-App --> LessonScreen : manages active sessions
+' Navigation & Screen Wiring
+App --> HomeScreen
+App --> ProgressScreen
+App --> ProfileScreen
+App --> LessonScreen
+App --> ThemeEngine
 
-HomeScreen --> TutorModal : launches
-HomeScreen --> ClinicModal : launches
-HomeScreen --> RoleplayModal : launches
+HomeScreen --> LexiconModal
+HomeScreen --> TutorModal
+HomeScreen --> ClinicModal
+HomeScreen --> RoleplayModal
 
-TutorModal --> TutorEngine : query rule
-ClinicModal --> ClinicEngine : diagnose errors & build workout
-RoleplayModal --> RoleplayEngine : advance turn
+' Modals to Engines
+LexiconModal --> LexiconEngine
+LexiconModal --> AudioEngine
+ClinicModal --> ClinicEngine
+TutorModal --> TutorEngine
+RoleplayModal --> RoleplayEngine
 
-LessonScreen --> Exercises : builds scaffolding
-LessonScreen --> Scoring : evaluates pronunciation
-LessonScreen --> ExpoAudio : records speech & plays audio
-LessonScreen --> AudioMap : studio MP3 clips
+' Screen to Domain
+LessonScreen --> Exercises
+LessonScreen --> Scoring
+LessonScreen --> AudioEngine
+LessonScreen --> SensoryEngine
+ProfileScreen --> ThemeEngine
+ProfileScreen --> SensoryEngine
 
-App --> SRS : review(card, isCorrect)
-App --> Badges : evaluateBadges(progress)
-App --> Streak : touchStreak(progress)
-App --> Store : saveProgress(progress)
-
-Store --> SQLite : primary database write
-Store --> AsyncStorage : backup write
+' Domain to Persistence
+Store --> SQLiteDB
+Store --> AsyncBackup
+Exercises --> Content
+AudioEngine --> AudioMap
+SRS --> Store
 
 @enduml
