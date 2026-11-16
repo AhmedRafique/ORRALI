@@ -1,4 +1,4 @@
-@startuml ORRALI_Architecture_v4
+@startuml ORRALI_Architecture_v5
 !theme plain
 skinparam backgroundColor #F8F6F1
 skinparam defaultFontName Arial
@@ -6,7 +6,7 @@ skinparam packageBackgroundColor #FFFFFF
 skinparam packageBorderColor #1B1536
 skinparam componentStyle uml2
 
-title ORRALI Architecture (Version 4.0.0 — The Ultimate Global Release)
+title ORRALI Architecture (Version 5.0.0 — The Ultimate Store Edition)
 
 package "Presentation & UI Layer (React Native / Expo)" {
   [App.tsx
@@ -20,7 +20,7 @@ Journey & Course XP] as ProgressScreen
     [ProfileScreen
 Trophy Shelf, Theme & Goals] as ProfileScreen
     [LessonScreen
-Scaffolding & Live Speech Lab] as LessonScreen
+Scaffolding, Word Tiles & Speech Lab] as LessonScreen
   }
 
   package "Interactive Modals" {
@@ -58,9 +58,9 @@ Multi-turn State Machine (FR/DE/ES)] as RoleplayEngine
 
 package "Domain & Pedagogical Engine" {
   [exercises.ts
-Close Distractor Scaffolding & Evaluation] as Exercises
+Sentence Scramble, Distractors & Evaluation] as Exercises
   [scoring.ts
-Pronunciation & Cadence Scoring] as Scoring
+Anti-Gibberish STT & Cadence Scoring] as Scoring
   [notifications.ts
 Offline Streak & Shield Reminders] as Notifications
   [srs.ts
@@ -70,7 +70,7 @@ Achievement Evaluation] as Badges
   [streak.ts
 Streak Shields & Freeze] as Streak
   [content.ts
-50 Units (FR/DE/ES) & B2 Stories] as Content
+60 Units (FR/DE/ES through B2) & Stories] as Content
   [store.ts
 Dual-Write Repository] as Store
 }
@@ -79,7 +79,7 @@ package "Audio Engine & Studio Assets" {
   [audio.ts
 expo-audio Playback & Recording] as AudioEngine
   [audioMap.ts
-300 Pre-Rendered Studio MP3s] as AudioMap
+360 Pre-Rendered Studio MP3s] as AudioMap
 }
 
 package "Offline Persistence Layer" {

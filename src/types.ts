@@ -43,12 +43,13 @@ export interface Course {
   lessons: Lesson[];
 }
 
-export type ExerciseKind = 'intro' | 'choice' | 'listen' | 'speak' | 'type';
+export type ExerciseKind = 'intro' | 'choice' | 'scramble' | 'listen' | 'speak' | 'type';
 
 export interface Exercise {
   kind: ExerciseKind;
   item: Item;
   options?: string[];
+  tokens?: string[];
 }
 
 export interface WordScore {

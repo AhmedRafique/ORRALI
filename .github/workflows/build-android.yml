@@ -58,13 +58,13 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
 
-      - name: Build Android Release APK (Standalone Offline Bundle)
+      - name: Build Android Release APK & Google Play AAB Bundle
         run: |
           cd android
           chmod +x gradlew
-          ./gradlew assembleRelease --no-daemon --stacktrace
+          ./gradlew assembleRelease bundleRelease --no-daemon --stacktrace
 
-      - name: Prepare APK Deliverable
+      - name: Prepare APK and AAB Deliverables
         run: |
           mkdir -p dist-apk
           APK_PATH=$(find android/app/build/outputs/apk -name "*release*.apk" | head -n 1)
@@ -73,29 +73,40 @@ jobs:
           fi
           if [ -f "$APK_PATH" ]; then
             echo "Found Standalone Release APK at: $APK_PATH"
-            cp "$APK_PATH" dist-apk/ORRALI-4.1.0.apk
-            ls -la dist-apk/
+            cp "$APK_PATH" dist-apk/ORRALI-5.0.0.apk
           else
             echo "Error: No APK file found!"
             find android/app/build/outputs/ -type f || true
             exit 1
           fi
 
-      - name: Upload APK as Workflow Artifact
+          AAB_PATH=$(find android/app/build/outputs/bundle -name "*release*.aab" | head -n 1)
+          if [ -z "$AAB_PATH" ]; then
+            AAB_PATH=$(find android/app/build/outputs/bundle -name "*.aab" | head -n 1)
+          fi
+          if [ -f "$AAB_PATH" ]; then
+            echo "Found Google Play Bundle at: $AAB_PATH"
+            cp "$AAB_PATH" dist-apk/ORRALI-5.0.0.aab
+          fi
+          ls -la dist-apk/
+
+      - name: Upload APK & AAB as Workflow Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: ORRALI-4.1.0-Android-APK
-          path: dist-apk/ORRALI-4.1.0.apk
+          name: ORRALI-5.0.0-Android-Deliverables
+          path: dist-apk/*
           retention-days: 30
 
       - name: Create GitHub Release
         if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: v4.1.0
-          name: ORRALI v4.1.0 — Real Speech Recognition & Anti-Gibberish Pronunciation Engine
+          tag_name: v5.0.0
+          name: ORRALI v5.0.0 — The Ultimate Store Edition (Complete European Triad, Scramble Drills & Google Play Bundle)
           body_path: RELEASE_NOTES.md
-          files: dist-apk/ORRALI-4.1.0.apk
+          files: |
+            dist-apk/ORRALI-5.0.0.apk
+            dist-apk/ORRALI-5.0.0.aab
           draft: false
           prerelease: false
         env:

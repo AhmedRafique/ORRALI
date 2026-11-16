@@ -22,7 +22,7 @@ import {
   useSpeechRecognitionEvent,
 } from 'expo-speech-recognition';
 import { findBestVoiceForLanguage, playPhraseAudio, stopAllAudio } from '../audio';
-import { buildExercises, evaluateAnswer } from '../exercises';
+import { buildExercises, evaluateAnswer, evaluateScramble } from '../exercises';
 import { evaluatePronunciation } from '../scoring';
 import { triggerHaptic } from '../sensory';
 import { Course, Item, LessonCheckpoint, PronunciationResult } from '../types';
@@ -82,6 +82,7 @@ export default function LessonScreen({
   const [recordStartTime, setRecordStartTime] = useState<number | null>(null);
   const [recordedUri, setRecordedUri] = useState<string | null>(null);
   const [liveTranscript, setLiveTranscript] = useState('');
+  const [selectedIndices, setSelectedIndices] = useState<number[]>([]);
   const [pronunciation, setPronunciation] = useState<PronunciationResult | null>(null);
 
   useSpeechRecognitionEvent('result', (event) => {
@@ -124,6 +125,7 @@ export default function LessonScreen({
     setPronunciation(null);
     setIsRecording(false);
     setRecordedUri(null);
+    setSelectedIndices([]);
 
     if (ex?.kind === 'intro') {
       const timer = setTimeout(() => {
@@ -283,6 +285,37 @@ export default function LessonScreen({
   // Mutually exclusive correct/wrong answer status with smart evaluation
   const check = () => {
     if (feedback || ex.kind === 'intro' || ex.kind === 'speak') return;
+
+    if (ex.kind === 'scramble') {
+      const words = selectedIndices.map((i) => ex.tokens![i]);
+      const isOk = evaluateScramble(words, ex.item);
+      setFeedback({
+        ok: isOk,
+        expected: ex.item.target,
+        hint: isOk
+          ? 'Parfait! Sentence reconstructed accurately.'
+          : 'Check the word order carefully and try again.',
+      });
+
+      if (isOk) {
+        void triggerHaptic('success');
+        const nextCorrect = correctIds.includes(ex.item.id) ? correctIds : [...correctIds, ex.item.id];
+        const nextWrong = wrongIds.filter((id) => id !== ex.item.id);
+        setCorrectIds(nextCorrect);
+        setWrongIds(nextWrong);
+        speak(ex.item);
+        persistCheckpoint(index, nextCorrect, nextWrong);
+      } else {
+        void triggerHaptic('error');
+        const nextWrong = wrongIds.includes(ex.item.id) ? wrongIds : [...wrongIds, ex.item.id];
+        const nextCorrect = correctIds.filter((id) => id !== ex.item.id);
+        setWrongIds(nextWrong);
+        setCorrectIds(nextCorrect);
+        persistCheckpoint(index, nextCorrect, nextWrong);
+      }
+      return;
+    }
+
     const given = ex.kind === 'choice' ? picked ?? '' : answer;
     const evalRes = evaluateAnswer(given, ex.item);
 
@@ -324,12 +357,15 @@ export default function LessonScreen({
     setPronunciation(null);
     setRecordedUri(null);
     setIsRecording(false);
+    setSelectedIndices([]);
     persistCheckpoint(nextIdx, correctIds, wrongIds);
   };
 
   const canCheck =
     ex.kind === 'choice'
       ? !!picked
+      : ex.kind === 'scramble'
+      ? selectedIndices.length === (ex.tokens?.length ?? 0)
       : ex.kind === 'speak'
       ? !!pronunciation?.passed
       : answer.trim().length > 0;
@@ -337,6 +373,8 @@ export default function LessonScreen({
   const prompt =
     ex.kind === 'intro'
       ? 'Meet your new phrase'
+      : ex.kind === 'scramble'
+      ? 'Assemble the sentence in correct order'
       : ex.kind === 'speak'
       ? 'Say this phrase out loud'
       : ex.kind === 'choice'
@@ -513,6 +551,56 @@ export default function LessonScreen({
                 <Text style={s.optionLetter}>{String.fromCharCode(65 + i)}</Text>
               </Pressable>
             ))}
+          </View>
+        )}
+
+        {/* Phase 3b: Interactive Sentence Scramble (Word Tiles) */}
+        {ex.kind === 'scramble' && (
+          <View style={s.scramblePanel}>
+            <Text style={s.scrambleMeaning}>"{ex.item.en}"</Text>
+
+            {/* Selected Word Tiles Slot */}
+            <View style={s.slotArea}>
+              {selectedIndices.length === 0 ? (
+                <Text style={s.slotPlaceholder}>Tap word tiles below to assemble the sentence…</Text>
+              ) : (
+                <View style={s.slotRow}>
+                  {selectedIndices.map((tokenIdx, slotPos) => (
+                    <Pressable
+                      key={`slot-${slotPos}`}
+                      style={s.selectedTile}
+                      onPress={() => {
+                        if (feedback) return;
+                        void triggerHaptic('selection');
+                        setSelectedIndices((prev) => prev.filter((_, i) => i !== slotPos));
+                      }}
+                    >
+                      <Text style={s.selectedTileText}>{ex.tokens![tokenIdx]}</Text>
+                    </Pressable>
+                  ))}
+                </View>
+              )}
+            </View>
+
+            {/* Word Tiles Bank */}
+            <View style={s.tileBank}>
+              {ex.tokens?.map((token, tokenIdx) => {
+                const isUsed = selectedIndices.includes(tokenIdx);
+                return (
+                  <Pressable
+                    key={`bank-${tokenIdx}`}
+                    disabled={isUsed || !!feedback}
+                    style={[s.bankTile, isUsed && s.bankTileUsed]}
+                    onPress={() => {
+                      void triggerHaptic('selection');
+                      setSelectedIndices((prev) => [...prev, tokenIdx]);
+                    }}
+                  >
+                    <Text style={[s.bankTileText, isUsed && s.bankTileTextUsed]}>{token}</Text>
+                  </Pressable>
+                );
+              })}
+            </View>
           </View>
         )}
 
@@ -741,6 +829,68 @@ const s = StyleSheet.create({
   micButtonRecording: { backgroundColor: '#C04348' },
   micIcon: { fontSize: 20, color: C.gold },
   micText: { color: C.white, fontSize: 14, fontWeight: '800' },
+  scramblePanel: { width: '100%', alignItems: 'center', marginVertical: 10 },
+  scrambleMeaning: {
+    color: C.ink,
+    fontSize: 16,
+    fontWeight: '800',
+    textAlign: 'center',
+    marginBottom: 16,
+  },
+  slotArea: {
+    width: '100%',
+    minHeight: 80,
+    backgroundColor: C.white,
+    borderRadius: 18,
+    borderWidth: 1.5,
+    borderColor: '#E2D9E8',
+    padding: 12,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 18,
+  },
+  slotPlaceholder: {
+    color: C.muted,
+    fontSize: 12,
+    fontStyle: 'italic',
+    textAlign: 'center',
+  },
+  slotRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 8,
+    justifyContent: 'center',
+  },
+  selectedTile: {
+    backgroundColor: C.midnight,
+    paddingHorizontal: 14,
+    paddingVertical: 9,
+    borderRadius: 12,
+    shadowColor: C.midnight,
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.12,
+    shadowRadius: 5,
+    elevation: 3,
+  },
+  selectedTileText: { color: C.white, fontSize: 14, fontWeight: '800' },
+  tileBank: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 10,
+    justifyContent: 'center',
+    width: '100%',
+  },
+  bankTile: {
+    backgroundColor: '#F0EBF5',
+    paddingHorizontal: 14,
+    paddingVertical: 10,
+    borderRadius: 12,
+    borderWidth: 1.5,
+    borderColor: '#DED5E6',
+  },
+  bankTileUsed: { opacity: 0.25, backgroundColor: '#E2DCE8', borderColor: 'transparent' },
+  bankTileText: { color: C.ink, fontSize: 14, fontWeight: '800' },
+  bankTileTextUsed: { color: C.muted },
   waveformCard: {
     backgroundColor: C.white,
     borderRadius: 16,

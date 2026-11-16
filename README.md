@@ -34,12 +34,13 @@ npx expo start
 ## Android APK Download
 [![Build Android APK](https://github.com/AhmedRafique/ORRALI/actions/workflows/build-android.yml/badge.svg)](https://github.com/AhmedRafique/ORRALI/actions/workflows/build-android.yml)
 
-The verified Android APK is generated via GitHub Actions and available for direct installation:
-- **Direct Download:** [ORRALI-4.1.0.apk](https://github.com/AhmedRafique/ORRALI/releases/download/v4.1.0/ORRALI-4.1.0.apk)
-- **Release Page:** [ORRALI v4.1.0 — Real Speech Recognition & Anti-Gibberish Pronunciation Engine](https://github.com/AhmedRafique/ORRALI/releases/tag/v4.1.0)
+The verified Android deliverables are generated via GitHub Actions:
+- **Direct APK Download:** [ORRALI-5.0.0.apk](https://github.com/AhmedRafique/ORRALI/releases/download/v5.0.0/ORRALI-5.0.0.apk)
+- **Google Play App Bundle (.aab):** [ORRALI-5.0.0.aab](https://github.com/AhmedRafique/ORRALI/releases/download/v5.0.0/ORRALI-5.0.0.aab)
+- **Release Page:** [ORRALI v5.0.0 — The Ultimate Store Edition](https://github.com/AhmedRafique/ORRALI/releases/tag/v5.0.0)
 
 ### Installation Instructions
-1. Download `ORRALI-4.1.0.apk` directly onto your Android device (e.g. Redmi Note 14 Pro+).
+1. Download `ORRALI-5.0.0.apk` directly onto your Android device (e.g. Redmi Note 14 Pro+).
 2. Tap the APK file to install (enable "Install unknown apps" if prompted).
 3. Open ORRALI and start learning!
 

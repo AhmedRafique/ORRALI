@@ -26,6 +26,8 @@
 | **2.3.0** | Sensory Polish & Themes | Tactile haptics (expo-haptics), Midnight OLED dark mode | **COMPLETED** |
 | **3.0.0** | Master Release & B2 Expansion | Full 40 units (240 phrases), 240 studio MP3s, professional & idiomatic B2 | **COMPLETED** |
 | **4.0.0** | The Ultimate Global Edition | Spanish world launch (Español 🇪🇸), close pedagogical distractors, Speech Lab live waveform, B2 stories, habit notifications, 300 studio MP3s | **COMPLETED** |
+| **4.1.0** | Real Speech Recognition Engine | Native SpeechRecognizer integration (expo-speech-recognition), anti-gibberish transcript matching | **COMPLETED** |
+| **5.0.0** | The Ultimate Store Edition | Complete European Triad (FR, DE, ES through B2, 60 chapters, 360 studio MP3s), Sentence Scramble drills, Google Play AAB bundle | **COMPLETED** |
 
 ---
 

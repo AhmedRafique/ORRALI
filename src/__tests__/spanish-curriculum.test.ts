@@ -10,10 +10,10 @@ describe('Spanish Multi-Language World Expansion (TDD)', () => {
     assert.equal(es.name, 'Español');
     assert.equal(es.flag, '🇪🇸');
     assert.equal(es.speechLang, 'es');
-    assert.equal(es.lessons.length, 10);
+    assert.ok(es.lessons.length >= 10);
   });
 
-  it('all 10 Spanish lessons have 6 items each (60 phrases) with phonetics and grammar capsules', () => {
+  it('all Spanish lessons have 6 items each (120 phrases) with phonetics and grammar capsules', () => {
     const es = courses.find((c) => c.code === 'es')!;
     let totalItems = 0;
 
@@ -33,7 +33,7 @@ describe('Spanish Multi-Language World Expansion (TDD)', () => {
       }
     }
 
-    assert.equal(totalItems, 60);
+    assert.equal(totalItems, 120);
   });
 
   it('includes Spanish real-world conversational story', () => {

@@ -165,12 +165,61 @@ export function selectPlausibleDistractors(
 }
 
 /**
+ * Tokenizes a target phrase into clean word tokens, stripping surrounding punctuation.
+ */
+export function tokenizePhrase(target: string): string[] {
+  return target
+    .trim()
+    .split(/\s+/)
+    .map((word) => word.replace(/^[.,!?;:¿¡"']+|[.,!?;:¿¡"']+$/g, ''))
+    .filter((word) => word.length > 0);
+}
+
+/**
+ * Builds an interactive sentence scramble (word tiles) exercise.
+ */
+export function buildScrambleExercise(item: Item): Exercise {
+  const originalTokens = tokenizePhrase(item.target);
+  let shuffled = shuffle([...originalTokens]);
+
+  // If shuffle randomly resulted in identical order and length > 1, rotate by 1
+  if (shuffled.length > 1 && shuffled.join(' ') === originalTokens.join(' ')) {
+    shuffled = [...shuffled.slice(1), shuffled[0]];
+  }
+
+  return {
+    kind: 'scramble',
+    item,
+    tokens: shuffled,
+  };
+}
+
+/**
+ * Evaluates whether the user's selected word tile sequence matches the target phrase.
+ */
+export function evaluateScramble(selectedTokens: string[], item: Item): boolean {
+  const userStr = norm(selectedTokens.join(' '));
+  const targetStr = norm(item.target);
+  if (userStr === targetStr) return true;
+
+  if (item.alternatives) {
+    for (const alt of item.alternatives) {
+      if (userStr === norm(alt)) return true;
+    }
+  }
+
+  return false;
+}
+
+/**
  * Scaffolding-first curriculum builder:
  * Follows the natural learning ladder from absolute beginner to fluency:
  * 1. Presentation: 'intro' (See & Hear the word first with phonetics/notes)
  * 2. Recognition: 'choice' (Choose the right translation from options)
- * 3. Comprehension: 'listen' (Listen to the phrase and transcribe)
- * 4. Production: 'type' (Translate from memory)
+ * 3. Guided Assembly: 'scramble' (Reconstruct sentences using word tiles)
+ * 4. Comprehension: 'listen' (Listen to the phrase and transcribe)
+ * 5. Pronunciation: 'speak' (Pronounce out loud with speech recognition)
+ * 6. Production: 'type' (Translate from memory)
  */
 export function buildExercises(course: Course, items: Item[], isReview = false): Exercise[] {
   const out: Exercise[] = [];
@@ -197,17 +246,22 @@ export function buildExercises(course: Course, items: Item[], isReview = false):
       });
     }
 
-    // 3. Listening comprehension phase
+    // 3. Guided assembly phase: Sentence Scramble (Word Tiles)
+    for (const item of shuffle(chunk)) {
+      out.push(buildScrambleExercise(item));
+    }
+
+    // 4. Listening comprehension phase
     for (const item of shuffle(chunk)) {
       out.push({ kind: 'listen', item });
     }
 
-    // 4. Speaking practice phase: pronounce out loud with audio assessment
+    // 5. Speaking practice phase: pronounce out loud with real speech recognition
     for (const item of shuffle(chunk)) {
       out.push({ kind: 'speak', item });
     }
 
-    // 5. Active production phase: typing from recall
+    // 6. Active production phase: typing from recall
     for (const item of shuffle(chunk)) {
       out.push({ kind: 'type', item });
     }
