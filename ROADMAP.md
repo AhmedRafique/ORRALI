@@ -18,7 +18,8 @@
 | **1.3.1** | In-Progress Resumption | Mid-lesson checkpointing, resume prompt modal, state preservation | **COMPLETED** |
 | **1.4.0** | Complete A1 Curriculum & Grammar | Full 20 CEFR A1 units (120 items), interactive Grammar Capsules with rules & examples | **COMPLETED** |
 | **1.5.0** | Speaking & Pronunciation | Spoken drills ('speak'), mic recording, pronunciation scoring engine | **COMPLETED** |
-| **1.6.0** | Learning World & Retention | Gamification, daily challenges, achievements, interactive stories | **NEXT UP** |
+| **1.6.0** | Learning World & Retention | Trophy shelf, achievement badges, streak shields, conversational stories | **COMPLETED** |
+| **1.7.0** | Studio Human Audio | Pre-rendered studio neural voice recordings, 100% offline | **NEXT UP** |
 | **2.0.0** | AI Companion | Adaptive difficulty, contextual conversational AI, personalized revision | **FUTURE** |
 
 ---
