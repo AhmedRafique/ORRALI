@@ -1,33 +1,31 @@
+# ORRALI 2.1.0 — CEFR A2 & B1 Intermediate Curriculum Expansion Release
+
+## Summary
+Milestone 2.1.0 expands ORRALI into CEFR A2 (Elementary) and B1 (Intermediate Threshold) fluency: adding 10 new progressive units across French and German (60 new vocabulary items, sentences, and grammar capsules). Total curriculum now spans 30 units and 180 phrases, each with pre-rendered studio neural audio, interactive grammar capsules, and phonetic guides.
+
+## What's New in 2.1.0
+- **CEFR A2 & B1 French Expansion (Units 11 to 15):**
+  - Unit 11 (A2): *Raconter le Passé* (The Past: Passé Composé with avoir & être)
+  - Unit 12 (A2): *Projets & Futur* (Future Plans: Futur Proche & Futur Simple)
+  - Unit 13 (B1): *Exprimer son Opinion* (Opinions & Nuanced Perspective: Penser que & À mon avis)
+  - Unit 14 (B1): *Hypothèses & Conditions* (Hypotheticals with Conditionnel & Si-clauses)
+  - Unit 15 (B1): *Doutes, Souhaits & Subjonctif* (Wishes, Necessity & Subjunctive Mood)
+- **CEFR A2 & B1 German Expansion (Units 11 to 15):**
+  - Unit 11 (A2): *Vergangenes erzählen* (The Conversational Past: Das Perfekt with haben & sein)
+  - Unit 12 (A2): *Zukunft & Pläne* (Future Plans & Goals with 'werden')
+  - Unit 13 (B1): *Meinung & Argumentation* (Subordinate Clauses & Word Order with weil/dass)
+  - Unit 14 (B1): *Wünsche & Konjunktiv II* (Hypotheticals & Polite Requests with hätte/wäre/würde)
+  - Unit 15 (B1): *Bedingungen & Zweifel* (Concessive Clauses & Complex Conditions with obwohl & wenn)
+- **180 Bundled Studio Neural Audio Files:**
+  - Generated 60 new 24kHz studio MP3 recordings (`fr-11-1` to `fr-15-6` and `de-11-1` to `de-15-6`).
+  - Total bundled studio MP3 recordings in `assets/audio/` now stands at 180 files.
+  - Zero latency, 100% offline playback via `expo-audio`.
+- **TDD Quality Verification:**
+  - Expanded test suite to **62 automated unit tests** (`npm test`) covering intermediate grammar, tense evaluations, and curriculum integrity with **0 TypeScript errors** (`tsc --noEmit`).
+
+---
+
 # ORRALI 2.0.0 — The AI Learning Companion & Roleplay Release
 
 ## Summary
 Milestone 2.0.0 marks the launch of ORRALI's AI Learning Companion era, built using rigorous Test-Driven Development (TDD). It introduces the Smart Mistake Clinic to diagnose SQLite error patterns and generate custom remedial workouts, interactive multi-turn Conversational AI Roleplay with in-character native dialogue, and the "Ask ORRALI" AI contextual tutor explaining complex grammar in child-friendly terms.
-
-## What's New in 2.0.0
-- **Smart Mistake Clinic (`src/companion/clinic.ts` & `MistakeClinicModal.tsx`):**
-  - Analyzes learner's historical attempts and card lapses stored in SQLite.
-  - Automatically diagnoses recurring error patterns, computes item accuracy rates, and generates targeted linguistic coaching tips.
-  - One-tap launcher: *"Start 5-min Remedial Workout"* dynamically builds a focused session targeting only the phrases you struggled with.
-- **Conversational AI Roleplay (`src/companion/roleplay.ts` & `RoleplayModal.tsx`):**
-  - Dynamic, multi-turn conversational roleplay simulations in French and German:
-    - *Au Café de Paris* (with Pierre the Bistro Waiter)
-    - *À la Réception de l’Hôtel* (with Claire the Concierge)
-    - *Am Hauptbahnhof* (with Hans the Ticket Agent)
-    - *In der Bäckerei* (with Frau Schmidt the Baker)
-  - Features speaker avatars, native audio pronunciation on every message, suggested quick-reply chips, and free-form input.
-  - In-line linguistic coaching cards providing real-time feedback on politeness, grammar, and vocabulary.
-  - Completion detection: Completing the scenario objective awards +20 XP!
-- **"Ask ORRALI" Contextual AI Tutor (`src/companion/tutor.ts` & `TutorModal.tsx`):**
-  - "Explain to me like a child" interactive grammar and pronunciation tutor.
-  - Search any question or tap popular query chips (*Tu vs. Vous*, *Un vs. Une*, *Einen Kaffee (Akkusativ)*, *Telling Time*).
-  - Provides simple child-friendly summaries, detailed explanations, golden rules, and translated example sentences with instant audio playback.
-- **TDD Quality & Architecture Verification:**
-  - Designed and validated using Test-Driven Development (TDD).
-  - 53 automated unit tests passing (`npm test`) covering all AI Companion systems, speech evaluation, scaffolding, and streak protection with 0 TypeScript diagnostics (`tsc --noEmit`).
-
----
-
-# ORRALI 1.7.0 — Pre-Rendered Native Studio Audio Release
-
-## Summary
-Milestone 1.7.0 replaces on-device synthetic speech with 120 pre-rendered, high-definition studio neural audio recordings bundled directly inside the app. Every French and German phrase in the curriculum plays with authentic human breathing, natural pitch cadence, and native liaisons with sub-millisecond start time and 100% offline support.

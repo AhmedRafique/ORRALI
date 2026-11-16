@@ -133,7 +133,7 @@ export default function ProfileScreen({ courses, code, progress, onPickCourse, o
         <Text style={s.aboutBrand}>ORRALI</Text>
         <Text style={s.tagline}>Beyond the familiar.</Text>
         <Text style={s.aboutText}>A new world of possibilities. Discover · Connect · Grow.</Text>
-        <Text style={s.version}>AI COMPANION & ROLEPLAY · 2.0.0</Text></View>
+        <Text style={s.version}>CEFR A1, A2 & B1 CURRICULUM · 2.1.0</Text></View>
     </ScrollView>
   );
 }
