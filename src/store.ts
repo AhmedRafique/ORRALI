@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { loadProgressFromDb, saveProgressToDb } from './db';
-import { Progress } from './types';
+import { LangCode, Progress } from './types';
 import { emptyProgress } from './streak';
 
 export * from './streak';
@@ -57,16 +57,17 @@ export async function saveProgress(p: Progress): Promise<void> {
   }
 }
 
-export async function loadLanguage(): Promise<'fr' | 'de'> {
+export async function loadLanguage(): Promise<LangCode> {
   try {
     const value = await AsyncStorage.getItem(LANGUAGE_KEY);
-    return value === 'de' ? 'de' : 'fr';
+    if (value === 'de' || value === 'es') return value;
+    return 'fr';
   } catch {
     return 'fr';
   }
 }
 
-export async function saveLanguage(value: 'fr' | 'de'): Promise<void> {
+export async function saveLanguage(value: LangCode): Promise<void> {
   try {
     await AsyncStorage.setItem(LANGUAGE_KEY, value);
   } catch {

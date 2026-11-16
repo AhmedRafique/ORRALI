@@ -417,12 +417,11 @@ describe('ORRALI Learning Engine & Lesson State Logic', () => {
 
   describe('Content integrity', () => {
     it('all courses have distinct valid lessons and items with ISO 639-1 speech codes', () => {
-      assert.equal(courses.length, 2);
-      const [fr, de] = courses;
-      assert.equal(fr.code, 'fr');
-      assert.equal(fr.speechLang, 'fr');
-      assert.equal(de.code, 'de');
-      assert.equal(de.speechLang, 'de');
+      assert.ok(courses.length >= 3);
+      for (const course of courses) {
+        assert.ok(['fr', 'de', 'es'].includes(course.code));
+        assert.equal(course.speechLang, course.code);
+      }
 
       const allItemIds = new Set<string>();
       for (const course of courses) {

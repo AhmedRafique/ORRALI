@@ -376,6 +376,27 @@ export default function LessonScreen({
               </Pressable>
             </View>
 
+            {isRecording && (
+              <View style={s.waveformCard}>
+                <Text style={s.waveformLiveBadge}>● LIVE ACOUSTIC SPEECH LAB</Text>
+                <View style={s.waveformBars}>
+                  {[18, 38, 22, 55, 30, 68, 42, 58, 26, 62, 34, 48, 20].map((h, i) => (
+                    <View
+                      key={i}
+                      style={[
+                        s.waveformBar,
+                        {
+                          height: h,
+                          backgroundColor: i % 2 === 0 ? C.gold : '#C79858',
+                        },
+                      ]}
+                    />
+                  ))}
+                </View>
+                <Text style={s.waveformHint}>Listening to your natural cadence and phonemes…</Text>
+              </View>
+            )}
+
             {pronunciation && (
               <View
                 style={[
@@ -385,7 +406,7 @@ export default function LessonScreen({
               >
                 <View style={s.scoreTop}>
                   <View style={s.scoreBadge}>
-                    <Text style={s.scoreBadgeText}>{pronunciation.overallScore}% MATCH</Text>
+                    <Text style={s.scoreBadgeText}>{pronunciation.overallScore}% CADENCE MATCH</Text>
                   </View>
                   {recordedUri && (
                     <Pressable style={s.playbackBtn} onPress={playRecordedAudio}>
@@ -671,6 +692,39 @@ const s = StyleSheet.create({
   micButtonRecording: { backgroundColor: '#C04348' },
   micIcon: { fontSize: 20, color: C.gold },
   micText: { color: C.white, fontSize: 14, fontWeight: '800' },
+  waveformCard: {
+    backgroundColor: C.white,
+    borderRadius: 16,
+    borderWidth: 1.5,
+    borderColor: '#E8DFD0',
+    padding: 14,
+    alignItems: 'center',
+    marginVertical: 12,
+  },
+  waveformLiveBadge: {
+    color: '#C04348',
+    fontSize: 9,
+    fontWeight: '900',
+    letterSpacing: 1.2,
+    marginBottom: 10,
+  },
+  waveformBars: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 70,
+    gap: 6,
+  },
+  waveformBar: {
+    width: 5,
+    borderRadius: 3,
+  },
+  waveformHint: {
+    color: C.muted,
+    fontSize: 11,
+    fontWeight: '600',
+    marginTop: 8,
+  },
   scoreCard: {
     width: '100%',
     borderRadius: 16,

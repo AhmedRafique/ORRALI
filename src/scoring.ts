@@ -48,6 +48,22 @@ export function evaluatePronunciation(
     };
   }
 
+  // If audio recording was unnaturally long, cadence is dragged out or silent
+  const maxNaturalDuration = Math.max(3500, targetWords.length * 1500);
+  if (recordingDurationMs > maxNaturalDuration) {
+    const words: WordScore[] = targetWords.map((word) => ({
+      word,
+      score: 50,
+      status: 'retry',
+    }));
+    return {
+      overallScore: 50,
+      words,
+      feedback: 'Speech cadence was too slow or dragged out. Aim for a natural, flowing rhythm.',
+      passed: false,
+    };
+  }
+
   // 2. Transcript-based evaluation (if device STT or transcription provided)
   if (spokenTranscript && spokenTranscript.trim().length > 0) {
     const spokenWords = extractCleanWords(spokenTranscript);

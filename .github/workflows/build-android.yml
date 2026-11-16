@@ -72,7 +72,7 @@ jobs:
           fi
           if [ -f "$APK_PATH" ]; then
             echo "Found Standalone Release APK at: $APK_PATH"
-            cp "$APK_PATH" dist-apk/ORRALI-3.0.0.apk
+            cp "$APK_PATH" dist-apk/ORRALI-4.0.0.apk
             ls -la dist-apk/
           else
             echo "Error: No APK file found!"
@@ -83,18 +83,18 @@ jobs:
       - name: Upload APK as Workflow Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ORRALI-3.0.0-Android-APK
-          path: dist-apk/ORRALI-3.0.0.apk
+          name: ORRALI-4.0.0-Android-APK
+          path: dist-apk/ORRALI-4.0.0.apk
           retention-days: 30
 
       - name: Create GitHub Release
         if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: v3.0.0
-          name: ORRALI v3.0.0 — The Master Release (Lexicon, Sensory Polish & B2 Professional Expansion)
+          tag_name: v4.0.0
+          name: ORRALI v4.0.0 — The Ultimate Global Release (Spanish Expansion, Speech Lab & Immersion Engine)
           body_path: RELEASE_NOTES.md
-          files: dist-apk/ORRALI-3.0.0.apk
+          files: dist-apk/ORRALI-4.0.0.apk
           draft: false
           prerelease: false
         env:

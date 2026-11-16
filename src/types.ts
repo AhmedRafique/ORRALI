@@ -1,4 +1,4 @@
-export type LangCode = 'fr' | 'de';
+export type LangCode = 'fr' | 'de' | 'es';
 
 export interface Item {
   id: string;

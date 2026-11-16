@@ -1,37 +1,34 @@
-# ORRALI 3.0.0 — The Master Release (Lexicon, Sensory Polish & B2 Professional Expansion)
+# ORRALI 4.0.0 — The Ultimate Global Release (Spanish Expansion, Speech Lab & Immersion Engine)
 
 ## Summary
-Milestone 3.0.0 represents ORRALI's crowning release, uniting all three strategic horizons under strict Test-Driven Development (TDD): the Smart Lexicon & Searchable Dictionary with rapid-fire Flashcard Flip drills, Sensory Polish with tactile haptics (`expo-haptics`) and Midnight OLED Dark Mode, and the complete CEFR B2 Upper-Intermediate & Professional Fluency expansion (40 total units, 240 phrases, and 240 pre-rendered studio neural MP3 recordings).
+Milestone 4.0.0 is ORRALI's monumental Global Edition, developed under rigorous Test-Driven Development (TDD). It introduces close, plausible multiple-choice distractors for genuine pedagogical challenge, launches the complete Spanish course (Español 🇪🇸) with 60 neural studio phrases and Madrid tapas roleplay, expands immersion with B2 professional dialog stories, adds the Live Acoustic Waveform Speech Lab visualizer, and implements the Smart Streak & Shield Protection Notification Scheduler.
 
-## What's New in 3.0.0
-- **Smart Lexicon & Searchable Dictionary (`src/lexicon.ts` & `LexiconModal.tsx`):**
-  - Instant search across all 240 vocabulary words and phrases in French, German, English, and phonetics with accent leniency.
-  - Spaced Repetition Mastery filter chips:
-    - 🌟 **Mastered (21+ days):** Long-term retained vocabulary.
-    - ⏳ **In Progress:** Actively scheduled SM-2 review cards.
-    - ⚠️ **Stumbles (Lapses):** Error-prone items flagged by the Mistake Clinic.
-    - 🌱 **New:** Unpracticed curriculum phrases.
-  - Instant studio neural audio pronunciation on every word entry.
-  - **Flashcard Flip Drill Mode (🎴):** Interactive card flip mode to test your memory anytime, anywhere.
-- **Sensory Polish, Haptics & Midnight Dark Mode (`src/sensory.ts` & `src/theme.ts`):**
-  - **Tactile Haptic Feedback (`expo-haptics`):** Delightful tactile pulses on correct answers (success), typos (error), recording start (light), and card flips (selection).
-  - **Midnight Dark Mode (OLED):** Elegant velvet-dark night theme toggle in Profile settings to protect learners' eyes during late-night practice.
-- **CEFR B2 Upper-Intermediate & Professional Expansion (`src/content.ts`):**
-  - Added 10 new advanced units (5 French, 5 German):
-    - *Entretien d'Embauche & Carrière* / *Bewerbungsgespräch & Karriere* (Professional interviews)
-    - *Négociations & Affaires* / *Verhandlungen & Wirtschaft* (Business contracts, passive voice)
-    - *Débats de Société & Environnement* / *Gesellschaft & Nachhaltigkeit* (Civic debates, concession)
-    - *Expressions Idiomatiques & Familier* / *Redewendungen & Umgangssprache* (Authentic colloquial idioms)
-    - *Nuances Avancées & Subjonctif Passé* / *Stilistik & Konjunktiv I* (Reported speech, advanced stylistics)
-- **240 Bundled Studio Neural Audio Recordings:**
-  - Full catalog of 240 pre-rendered 24kHz studio MP3 recordings in `assets/audio/`.
-  - Sub-millisecond instant playback, zero network reliance, 100% offline.
-- **Exhaustive TDD Quality Assurance:**
-  - **76 automated unit tests passing** (`npm test`) across all 24 test suites with **0 TypeScript errors** (`tsc --noEmit`).
+## What's New in 4.0.0
+- **Pedagogical Close-Distractor Engine (`src/exercises.ts`):**
+  - Upgraded multiple-choice option generation to select close, plausible distractors from the *same chapter* and *same CEFR level* with matching phrase complexity and length.
+  - No more easy guesses! E.g. for numbers ("one, two, three"), choices test against other numbers ("Eins, zwei, drei" vs "Zehn, zwanzig, dreißig" vs "Vier, fünf, sechs").
+- **Spanish Language World Launch (Español 🇪🇸):**
+  - Complete 10-unit curriculum spanning A1 & A2 (60 vocabulary items & sentences).
+  - Pre-rendered 24kHz studio neural audio using Azure Neural voice (`es-ES-ElviraNeural`).
+  - Interactive Spanish Grammar Capsules (*Tú vs Usted*, *Ser vs Estar*, *El Verbo Gustar*, *Pretérito Indefinido*).
+  - Authentic Madrid Tapas Bar Conversational Roleplay (*Tapas en la Taberna Madrileña*).
+  - Madrid Market Dialog Story (*En el Mercado de San Miguel*).
+- **Deep Immersion & Advanced B2 Dialog Stories (`src/content.ts`):**
+  - French B2 Story: *L'Entretien d'Embauche à La Défense* (Paris executive software leadership interview).
+  - German B2 Story: *Die Wohnungsbesichtigung in München* (Schwabing apartment lease inspection and negotiation).
+- **Real-Time Acoustic Waveform & Speech Lab (`src/screens/LessonScreen.tsx` & `src/scoring.ts`):**
+  - Live animated pulsating audio waveform during voice recording.
+  - Real-time cadence matching evaluating speech rhythm envelope and phoneme delivery.
+- **Smart Streak & Shield Protection Scheduler (`src/notifications.ts`):**
+  - Calculates automated offline-safe evening reminders when learner streaks or Streak Freeze Shields are at risk.
+- **300 Bundled Studio Neural Audio Files:**
+  - Expanded native audio asset catalog to 300 studio MP3 files in `assets/audio/` (100% offline, zero latency).
+- **TDD Quality Assurance:**
+  - **88 automated unit tests passing** (`npm test`) across all 30 test suites with **0 TypeScript errors** (`tsc --noEmit`).
 
 ---
 
-# ORRALI 2.1.0 — CEFR A2 & B1 Intermediate Curriculum Expansion Release
+# ORRALI 3.0.0 — The Master Release (Lexicon, Sensory Polish & B2 Professional Expansion)
 
 ## Summary
-Milestone 2.1.0 expands ORRALI into CEFR A2 (Elementary) and B1 (Intermediate Threshold) fluency: adding 10 new progressive units across French and German.
+Milestone 3.0.0 introduced the Smart Lexicon with Flashcard Flip drills, Sensory Polish with tactile haptics (`expo-haptics`) and Midnight OLED Dark Mode, and the complete CEFR B2 Upper-Intermediate & Professional Fluency expansion.

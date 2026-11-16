@@ -106,6 +106,65 @@ export function evaluateAnswer(given: string, item: Item): AnswerEvaluation {
 }
 
 /**
+ * Selects close, plausible distractors from the same lesson or same CEFR level
+ * with matching word count and grammatical complexity.
+ */
+export function selectPlausibleDistractors(
+  course: Course,
+  currentLessonItems: Item[],
+  targetItem: Item,
+  count = 3
+): Item[] {
+  const lesson = course.lessons.find((l) => l.items.some((i) => i.id === targetItem.id));
+  const levelPrefix = lesson?.level?.split(' · ')[0] ?? 'A1';
+
+  // 1. Same lesson candidates (same semantic topic, e.g. numbers, cafe, hotel)
+  const sameLesson = (lesson ? lesson.items : currentLessonItems).filter((i) => i.id !== targetItem.id);
+
+  // 2. Same CEFR level candidates (same difficulty tier)
+  const sameLevel = course.lessons
+    .filter((l) => l.level?.startsWith(levelPrefix))
+    .flatMap((l) => l.items)
+    .filter((i) => i.id !== targetItem.id && !sameLesson.some((s) => s.id === i.id));
+
+  // Compute structural proximity score (lower = closer in word count and char length)
+  const targetWords = targetItem.target.trim().split(/\s+/).length;
+  const scoreProximity = (candidate: Item) => {
+    const candWords = candidate.target.trim().split(/\s+/).length;
+    const wordDiff = Math.abs(targetWords - candWords);
+    const charDiff = Math.abs(targetItem.target.length - candidate.target.length);
+    return wordDiff * 12 + charDiff;
+  };
+
+  const sortedSameLesson = shuffle(sameLesson).sort((a, b) => scoreProximity(a) - scoreProximity(b));
+  const sortedSameLevel = shuffle(sameLevel).sort((a, b) => scoreProximity(a) - scoreProximity(b));
+
+  const chosen: Item[] = [];
+
+  for (const candidate of sortedSameLesson) {
+    if (chosen.length >= count) break;
+    chosen.push(candidate);
+  }
+
+  for (const candidate of sortedSameLevel) {
+    if (chosen.length >= count) break;
+    chosen.push(candidate);
+  }
+
+  if (chosen.length < count) {
+    const fallback = course.lessons
+      .flatMap((l) => l.items)
+      .filter((i) => i.id !== targetItem.id && !chosen.some((c) => c.id === i.id));
+    for (const candidate of shuffle(fallback)) {
+      if (chosen.length >= count) break;
+      chosen.push(candidate);
+    }
+  }
+
+  return chosen.slice(0, count);
+}
+
+/**
  * Scaffolding-first curriculum builder:
  * Follows the natural learning ladder from absolute beginner to fluency:
  * 1. Presentation: 'intro' (See & Hear the word first with phonetics/notes)
@@ -114,7 +173,6 @@ export function evaluateAnswer(given: string, item: Item): AnswerEvaluation {
  * 4. Production: 'type' (Translate from memory)
  */
 export function buildExercises(course: Course, items: Item[], isReview = false): Exercise[] {
-  const pool = course.lessons.flatMap((l) => l.items);
   const out: Exercise[] = [];
 
   // Group items into digestible chunks of 2 or 3 items
@@ -129,9 +187,9 @@ export function buildExercises(course: Course, items: Item[], isReview = false):
       }
     }
 
-    // 2. Recognition phase: Multiple-choice for chunk items
+    // 2. Recognition phase: Multiple-choice with close, plausible distractors
     for (const item of shuffle(chunk)) {
-      const distractors = shuffle(pool.filter((p) => p.id !== item.id)).slice(0, 3);
+      const distractors = selectPlausibleDistractors(course, items, item, 3);
       out.push({
         kind: 'choice',
         item,

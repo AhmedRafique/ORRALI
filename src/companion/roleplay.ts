@@ -69,6 +69,23 @@ export const ROLEPLAY_SCENARIOS: RoleplayScenario[] = [
       'Ich möchte ein Brot, bitte.',
     ],
   },
+  {
+    id: 'roleplay-es-tapas',
+    courseCode: 'es',
+    title: 'Tapas en la Taberna Madrileña',
+    role: 'Waiter at a lively tavern in central Madrid',
+    personaName: 'Mateo',
+    avatar: '🥘',
+    contextObjective: 'Order delicious tapas and ask for the check in Spanish.',
+    initialGreeting: {
+      target: '¡Buenas tardes! Bienvenidos a la taberna. ¿Qué les pongo para beber y picar?',
+      en: 'Good afternoon! Welcome to the tavern. What can I get you to drink and snack on?',
+    },
+    suggestedReplies: [
+      '¡Buenas tardes! Un café con leche y una tortilla española, por favor.',
+      'Buenas tardes. ¿Tiene una mesa para dos?',
+    ],
+  },
 ];
 
 /**
@@ -231,24 +248,67 @@ export function evaluateRoleplayTurn(
   }
 
   // 4. German Bakery Roleplay (roleplay-de-bakery)
+  if (scenarioId === 'roleplay-de-bakery') {
+    if (turnIndex === 0) {
+      return {
+        reply: {
+          id: `ai-${Date.now()}`,
+          sender: 'ai',
+          speakerName: 'Frau Schmidt',
+          avatar: '🥨',
+          target:
+            'Sehr gerne! Die Brötchen sind noch ganz warm aus dem Ofen. Möchten Sie noch ein Stück Kuchen dazu?',
+          en: 'Gladly! The rolls are still warm from the oven. Would you like a slice of cake with that?',
+          feedback:
+            "Very authentic! In Germany, bread rolls are 'Brötchen' (or 'Semmeln' in the south).",
+          timestamp: Date.now(),
+        },
+        isCompleted: false,
+        suggestedNextReplies: [
+          'Nein danke, das ist alles. Wie viel kostet das?',
+          'Ja gerne! Was kostet das zusammen?',
+        ],
+      };
+    } else {
+      return {
+        reply: {
+          id: `ai-${Date.now()}`,
+          sender: 'ai',
+          speakerName: 'Frau Schmidt',
+          avatar: '🥨',
+          target:
+            'Das macht zusammen zwei Euro achtzig. Vielen Dank für Ihren Einkauf und einen schönen Tag noch!',
+          en: 'That makes two euros eighty altogether. Thank you for your purchase and have a wonderful day!',
+          feedback:
+            'Perfekt! You completed a lively German bakery transaction with natural politeness.',
+          timestamp: Date.now(),
+        },
+        isCompleted: true,
+        earnedXp: 20,
+        suggestedNextReplies: [],
+      };
+    }
+  }
+
+  // 5. Spanish Tapas Bar Roleplay (roleplay-es-tapas)
   if (turnIndex === 0) {
     return {
       reply: {
         id: `ai-${Date.now()}`,
         sender: 'ai',
-        speakerName: 'Frau Schmidt',
-        avatar: '🥨',
+        speakerName: 'Mateo',
+        avatar: '🥘',
         target:
-          'Sehr gerne! Die Brötchen sind noch ganz warm aus dem Ofen. Möchten Sie noch ein Stück Kuchen dazu?',
-        en: 'Gladly! The rolls are still warm from the oven. Would you like a slice of cake with that?',
+          '¡Excelente elección! La tortilla está recién hecha y el café sale enseguida. ¿Les apetece probar también unas aceitunas o jamón ibérico?',
+        en: 'Excellent choice! The tortilla is freshly made and the coffee is on its way. Would you also like to try some olives or Iberian ham?',
         feedback:
-          "Very authentic! In Germany, bread rolls are 'Brötchen' (or 'Semmeln' in the south).",
+          "¡Muy bien! Ordering with 'por favor' and naming tapas shows great cultural confidence.",
         timestamp: Date.now(),
       },
       isCompleted: false,
       suggestedNextReplies: [
-        'Nein danke, das ist alles. Wie viel kostet das?',
-        'Ja gerne! Was kostet das zusammen?',
+        'La cuenta, por favor.',
+        'Estupendo, muchas gracias. ¿Me trae la cuenta, por favor?',
       ],
     };
   } else {
@@ -256,13 +316,13 @@ export function evaluateRoleplayTurn(
       reply: {
         id: `ai-${Date.now()}`,
         sender: 'ai',
-        speakerName: 'Frau Schmidt',
-        avatar: '🥨',
+        speakerName: 'Mateo',
+        avatar: '🥘',
         target:
-          'Das macht zusammen zwei Euro achtzig. Vielen Dank für Ihren Einkauf und einen schönen Tag noch!',
-        en: 'That makes two euros eighty altogether. Thank you for your purchase and have a wonderful day!',
+          'Aquí tienen la cuenta. Son seis euros con cincuenta céntimos. Pueden pagar en efectivo o con tarjeta. ¡Muchas gracias y que disfruten de Madrid!',
+        en: 'Here is your check. It is six euros and fifty cents. You can pay with cash or card. Thank you very much and enjoy Madrid!',
         feedback:
-          'Perfekt! You completed a lively German bakery transaction with natural politeness.',
+          '¡Fantástico! You successfully navigated a friendly Spanish tapas bar interaction from greeting to payment.',
         timestamp: Date.now(),
       },
       isCompleted: true,
