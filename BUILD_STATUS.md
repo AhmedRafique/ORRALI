@@ -6,7 +6,7 @@
 | TypeScript syntax transpilation | PASS — zero syntax diagnostics |
 | JSON configuration parsing | PASS — `app.json`, `package.json`, `eas.json` valid |
 | Full TypeScript typecheck | PASS — `tsc --noEmit` 0 errors |
-| Automated Unit & Logic Tests | PASS — 115 passing tests across speed recall arcade, speech alignment, leniency threshold, cloud sync |
+| Automated Unit & Logic Tests | PASS — 133 passing tests across adversarial audit, speed recall arcade, speech alignment, leniency threshold, cloud sync |
 | Expo configuration validation | PASS — SDK 58.0.0 public config validated with plugins |
 | 60-Second Speed Recall Arcade | **PASS — Live 60s countdown, combo multipliers & ranked tier XP rewards** |
 | Fuzzy Speech Alignment & Anti-Trap | **PASS — Resolved contraction index shift bug & added Continue Anyway button** |

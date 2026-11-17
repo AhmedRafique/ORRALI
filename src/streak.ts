@@ -19,15 +19,15 @@ export const emptyProgress = (): Progress => ({
 export const dayKey = (d: Date) =>
   `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 
-export function touchStreak(p: Progress): Progress {
-  const today = dayKey(new Date());
+export function touchStreak(p: Progress, now = new Date()): Progress {
+  const today = dayKey(now);
   if (p.lastDay === today) return p;
 
-  const yesterday = new Date();
+  const yesterday = new Date(now);
   yesterday.setDate(yesterday.getDate() - 1);
   const yesterdayKey = dayKey(yesterday);
 
-  const twoDaysAgo = new Date();
+  const twoDaysAgo = new Date(now);
   twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
   const twoDaysAgoKey = dayKey(twoDaysAgo);
 
@@ -48,7 +48,7 @@ export function touchStreak(p: Progress): Progress {
     streak = p.streak + 1;
     shieldUsedDay = today;
   } else {
-    // Lapsed or fresh start
+    // Practice lapsed for more than 1 day or no shields remaining
     streak = 1;
   }
 
@@ -58,25 +58,22 @@ export function touchStreak(p: Progress): Progress {
     streakShields: shields,
     lastShieldUsed: shieldUsedDay,
     lastDay: today,
-    dailyXp: p.dailyXpDay === today ? p.dailyXp : 0,
-    dailyXpDay: today,
   };
 }
 
-export function getEffectiveStreak(p: Progress): number {
-  const today = dayKey(new Date());
+export function getEffectiveStreak(p: Progress, now = new Date()): number {
+  const today = dayKey(now);
   if (p.lastDay === today) return p.streak;
 
-  const yesterday = new Date();
+  const yesterday = new Date(now);
   yesterday.setDate(yesterday.getDate() - 1);
   if (p.lastDay === dayKey(yesterday)) return p.streak;
 
-  const twoDaysAgo = new Date();
+  const twoDaysAgo = new Date(now);
   twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
-  // If missed 1 day and has active shield, show streak as protected
   if (p.lastDay === dayKey(twoDaysAgo) && (p.streakShields ?? 0) > 0) {
     return p.streak;
   }
 
-  return 0; // Streak lapsed
+  return 0;
 }
