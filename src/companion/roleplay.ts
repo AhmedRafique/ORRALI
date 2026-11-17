@@ -137,6 +137,7 @@ export function evaluateRoleplayTurn(
           },
           isCompleted: false,
           earnedXp: 0,
+          intentMet: false,
           suggestedNextReplies: [
             "Un café et un croissant, s'il vous plaît.",
             "Bonjour, je voudrais un café, s'il vous plaît.",
@@ -190,6 +191,7 @@ export function evaluateRoleplayTurn(
           },
           isCompleted: false,
           earnedXp: 0,
+          intentMet: false,
           suggestedNextReplies: ["L'addition, s'il vous plaît."],
         };
       }
@@ -241,6 +243,7 @@ export function evaluateRoleplayTurn(
           },
           isCompleted: false,
           earnedXp: 0,
+          intentMet: false,
           suggestedNextReplies: ['Par carte bancaire, s’il vous plaît.'],
         };
       }
@@ -297,6 +300,7 @@ export function evaluateRoleplayTurn(
           },
           isCompleted: false,
           earnedXp: 0,
+          intentMet: false,
           suggestedNextReplies: ['Guten Tag, eine Fahrkarte nach München bitte.'],
         };
       }
@@ -458,6 +462,7 @@ export function evaluateRoleplayTurn(
         },
         isCompleted: false,
         earnedXp: 0,
+        intentMet: false,
         suggestedNextReplies: [
           '¡Buenas tardes! Un café con leche y una tortilla española, por favor.',
         ],

@@ -30,21 +30,27 @@ export default function TutorModal({ visible, courseCode, initialTopic, onClose 
     askTutor(initialTopic && initialTopic.length > 0 ? initialTopic : 'basics', courseCode)
   );
 
-  const isFrench = courseCode === 'fr';
-
-  const quickQuestions = isFrench
-    ? [
-        'When do I use Tu vs. Vous?',
-        'Difference between Un and Une?',
-        'Why say Je voudrais instead of Je veux?',
-        'How do I say where it hurts?',
-      ]
-    : [
-        'Difference between Du and Sie?',
-        'Why Der, Die, and Das?',
-        'Why is it Einen Kaffee in cafés?',
-        'How do I tell the time in German?',
-      ];
+  const quickQuestions =
+    courseCode === 'fr'
+      ? [
+          'When do I use Tu vs. Vous?',
+          'Difference between Un and Une?',
+          'Why say Je voudrais instead of Je veux?',
+          'How do I say where it hurts?',
+        ]
+      : courseCode === 'es'
+      ? [
+          'When do I use Ser vs. Estar?',
+          'How does Me Gusta work?',
+          'What is the difference between Por and Para?',
+          'How do I talk about the past with Pretérito?',
+        ]
+      : [
+          'Difference between Du and Sie?',
+          'Why Der, Die, and Das?',
+          'Why is it Einen Kaffee in cafés?',
+          'How do I tell the time in German?',
+        ];
 
   const handleAsk = (q: string) => {
     setQuery(q);
@@ -92,7 +98,13 @@ export default function TutorModal({ visible, courseCode, initialTopic, onClose 
           <View style={s.inputRow}>
             <TextInput
               style={s.input}
-              placeholder={isFrench ? 'e.g. Why is it en Égypte?...' : 'e.g. Why der vs den?...'}
+              placeholder={
+                courseCode === 'fr'
+                  ? 'e.g. Why is it en Égypte?...'
+                  : courseCode === 'es'
+                  ? 'e.g. Why ser vs estar?...'
+                  : 'e.g. Why der vs den?...'
+              }
               placeholderTextColor="#A49CAA"
               value={query}
               onChangeText={setQuery}

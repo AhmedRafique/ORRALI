@@ -81,7 +81,9 @@ export default function RoleplayModal({
 
     setTimeout(() => {
       setMessages((prev) => [...prev, turnRes.reply]);
-      setTurnIndex((v) => v + 1);
+      if (turnRes.intentMet !== false) {
+        setTurnIndex((v) => v + 1);
+      }
       setSuggestedReplies(turnRes.suggestedNextReplies);
 
       if (turnRes.isCompleted) {

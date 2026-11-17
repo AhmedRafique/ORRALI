@@ -157,6 +157,7 @@ export interface RoleplayTurnResult {
   isCompleted: boolean;
   earnedXp?: number;
   suggestedNextReplies: string[];
+  intentMet?: boolean;
 }
 
 export interface RoleplayScenario {

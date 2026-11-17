@@ -1,3 +1,8 @@
+import {
+  buildScrambleExercise,
+  selectPlausibleDistractors,
+  shuffle,
+} from '../exercises';
 import { Course, Exercise, Item, MistakeDiagnosis, MistakeRecord } from '../types';
 
 /**
@@ -69,17 +74,18 @@ export function buildRemedialWorkout(
     // 1. Listening comprehension drill
     exercises.push({ kind: 'listen', item });
 
-    // 2. Choice drill with distractors
-    const distractors = pool.filter((p) => p.id !== item.id).slice(0, 3);
-    const options = [item.target, ...distractors.map((d) => d.target)].sort(
-      () => Math.random() - 0.5
-    );
+    // 2. Choice drill with close, plausible distractors
+    const distractors = selectPlausibleDistractors(course, pool, item, 3);
+    const options = shuffle([item.target, ...distractors.map((d) => d.target)]);
     exercises.push({ kind: 'choice', item, options });
 
-    // 3. Spoken drill
+    // 3. Sentence Scramble (Word Tiles) assembly drill
+    exercises.push(buildScrambleExercise(item));
+
+    // 4. Spoken drill
     exercises.push({ kind: 'speak', item });
 
-    // 4. Final production recall
+    // 5. Final production recall
     exercises.push({ kind: 'type', item });
   }
 

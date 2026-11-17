@@ -97,71 +97,83 @@ export default function LexiconModal({ visible, course, progress, onClose }: Pro
           {/* Flashcard Flip Mode */}
           {isFlashcardMode ? (
             <View style={s.flashcardContainer}>
-              <Text style={s.flashcardCounter}>
-                Card {flashcardIndex + 1} of {flashcardDeck.length}
-              </Text>
+              {flashcardDeck.length === 0 ? (
+                <View style={s.emptyState}>
+                  <Text style={s.emptyIcon}>🎉</Text>
+                  <Text style={s.emptyTitle}>No flashcards in this filter</Text>
+                  <Text style={s.emptyDesc}>
+                    You have no words matching this status. Switch to "All" to drill all vocabulary!
+                  </Text>
+                </View>
+              ) : (
+                <>
+                  <Text style={s.flashcardCounter}>
+                    Card {flashcardIndex + 1} of {flashcardDeck.length}
+                  </Text>
 
-              {currentFlashcard && (
-                <Pressable
-                  style={[s.flashcard, isFlipped && s.flashcardFlipped]}
-                  onPress={() => setIsFlipped(!isFlipped)}
-                >
-                  <Text style={s.flipHint}>Tap card to flip ↻</Text>
-                  {!isFlipped ? (
-                    <View style={s.flashcardContent}>
-                      <Text style={s.flashcardTarget}>{currentFlashcard.item.target}</Text>
-                      {currentFlashcard.item.phonetic && (
-                        <Text style={s.flashcardPhonetic}>/{currentFlashcard.item.phonetic}/</Text>
+                  {currentFlashcard && (
+                    <Pressable
+                      style={[s.flashcard, isFlipped && s.flashcardFlipped]}
+                      onPress={() => setIsFlipped(!isFlipped)}
+                    >
+                      <Text style={s.flipHint}>Tap card to flip ↻</Text>
+                      {!isFlipped ? (
+                        <View style={s.flashcardContent}>
+                          <Text style={s.flashcardTarget}>{currentFlashcard.item.target}</Text>
+                          {currentFlashcard.item.phonetic && (
+                            <Text style={s.flashcardPhonetic}>/{currentFlashcard.item.phonetic}/</Text>
+                          )}
+                          <View style={s.flashcardAudioRow}>
+                            <Pressable
+                              style={s.flashcardAudioBtn}
+                              onPress={() => playAudio(currentFlashcard.item, false)}
+                            >
+                              <Text style={s.flashcardAudioIcon}>🔊 Normal</Text>
+                            </Pressable>
+                            <Pressable
+                              style={s.flashcardTurtleBtn}
+                              onPress={() => playAudio(currentFlashcard.item, true)}
+                            >
+                              <Text style={s.flashcardTurtleIcon}>🐢 Slow</Text>
+                            </Pressable>
+                          </View>
+                        </View>
+                      ) : (
+                        <View style={s.flashcardContent}>
+                          <Text style={s.flashcardMeaning}>{currentFlashcard.item.en}</Text>
+                          <Text style={s.flashcardLesson}>Chapter: {currentFlashcard.lessonTitle}</Text>
+                          {currentFlashcard.item.notes && (
+                            <Text style={s.flashcardNotes}>{currentFlashcard.item.notes}</Text>
+                          )}
+                        </View>
                       )}
-                      <View style={s.flashcardAudioRow}>
-                        <Pressable
-                          style={s.flashcardAudioBtn}
-                          onPress={() => playAudio(currentFlashcard.item, false)}
-                        >
-                          <Text style={s.flashcardAudioIcon}>🔊 Normal</Text>
-                        </Pressable>
-                        <Pressable
-                          style={s.flashcardTurtleBtn}
-                          onPress={() => playAudio(currentFlashcard.item, true)}
-                        >
-                          <Text style={s.flashcardTurtleIcon}>🐢 Slow</Text>
-                        </Pressable>
-                      </View>
-                    </View>
-                  ) : (
-                    <View style={s.flashcardContent}>
-                      <Text style={s.flashcardMeaning}>{currentFlashcard.item.en}</Text>
-                      <Text style={s.flashcardLesson}>Chapter: {currentFlashcard.lessonTitle}</Text>
-                      {currentFlashcard.item.notes && (
-                        <Text style={s.flashcardNotes}>{currentFlashcard.item.notes}</Text>
-                      )}
-                    </View>
+                    </Pressable>
                   )}
-                </Pressable>
-              )}
 
-              <View style={s.flashcardNav}>
-                <Pressable
-                  disabled={flashcardIndex === 0}
-                  style={[s.navBtn, flashcardIndex === 0 && s.navBtnDisabled]}
-                  onPress={() => {
-                    setFlashcardIndex((v) => Math.max(0, v - 1));
-                    setIsFlipped(false);
-                  }}
-                >
-                  <Text style={s.navBtnText}>‹ Previous</Text>
-                </Pressable>
-                <Pressable
-                  disabled={flashcardIndex >= flashcardDeck.length - 1}
-                  style={[s.navBtn, flashcardIndex >= flashcardDeck.length - 1 && s.navBtnDisabled]}
-                  onPress={() => {
-                    setFlashcardIndex((v) => Math.min(flashcardDeck.length - 1, v + 1));
-                    setIsFlipped(false);
-                  }}
-                >
-                  <Text style={s.navBtnText}>Next Card ›</Text>
-                </Pressable>
-              </View>
+                  <View style={s.flashcardNav}>
+                    <Pressable
+                      disabled={flashcardIndex === 0}
+                      style={[s.navBtn, flashcardIndex === 0 && s.navBtnDisabled]}
+                      onPress={() => {
+                        setFlashcardIndex((v) => Math.max(0, v - 1));
+                        setIsFlipped(false);
+                      }}
+                    >
+                      <Text style={s.navBtnText}>‹ Previous</Text>
+                    </Pressable>
+                    <Pressable
+                      disabled={flashcardIndex >= flashcardDeck.length - 1}
+                      style={[s.navBtn, flashcardIndex >= flashcardDeck.length - 1 && s.navBtnDisabled]}
+                      onPress={() => {
+                        setFlashcardIndex((v) => Math.min(flashcardDeck.length - 1, v + 1));
+                        setIsFlipped(false);
+                      }}
+                    >
+                      <Text style={s.navBtnText}>Next Card ›</Text>
+                    </Pressable>
+                  </View>
+                </>
+              )}
             </View>
           ) : (
             <>
