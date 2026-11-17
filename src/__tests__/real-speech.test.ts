@@ -61,4 +61,29 @@ describe('Real Pronunciation Assessment & Anti-Gibberish Detection (TDD)', () =>
     assert.equal(result.passed, true);
     assert.ok(result.overallScore >= 80);
   });
+
+  it('handles contraction splitting and token alignment without collapsing score', () => {
+    // Target has contraction: "S'il vous plaît" -> recognizer returns "s il vous plait"
+    const result = evaluatePronunciation(
+      "S'il vous plaît",
+      1300,
+      's il vous plait'
+    );
+
+    assert.equal(result.passed, true, 'Contraction splitting must NOT fail pronunciation!');
+    assert.ok(result.overallScore >= 75, `Expected score >= 75, got ${result.overallScore}`);
+  });
+
+  it('confidence-building threshold accepts partially understood speech (>= 50%) with encouraging guidance', () => {
+    // 3 out of 4 words caught clearly: "Buenos días, mucho gusto" -> "buenos dias gusto"
+    const result = evaluatePronunciation(
+      'Buenos días, mucho gusto',
+      1600,
+      'buenos dias gusto'
+    );
+
+    assert.equal(result.passed, true, 'Speech with >= 50% matching words should pass!');
+    assert.ok(result.overallScore >= 50);
+    assert.ok(result.feedback.toLowerCase().includes('understood'));
+  });
 });

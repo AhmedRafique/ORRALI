@@ -67,38 +67,71 @@ export function evaluatePronunciation(
   // 2. Transcript-based evaluation (if device STT or transcription provided)
   if (spokenTranscript && spokenTranscript.trim().length > 0) {
     const spokenWords = extractCleanWords(spokenTranscript);
-    const words: WordScore[] = targetWords.map((tWord, i) => {
-      const sWord = spokenWords[i] ?? '';
-      if (!sWord) {
-        return { word: tWord, score: 0, status: 'retry' };
+    const usedSpokenIndices = new Set<number>();
+
+    const words: WordScore[] = targetWords.map((tWord, tIdx) => {
+      const normT = stripAccents(norm(tWord));
+
+      // Find the best matching candidate in spokenWords
+      let bestScore = 0;
+      let bestSpokenIdx = -1;
+
+      for (let sIdx = 0; sIdx < spokenWords.length; sIdx++) {
+        if (usedSpokenIndices.has(sIdx)) continue;
+
+        const normS = stripAccents(norm(spokenWords[sIdx]));
+        const dist = levenshteinDistance(normT, normS);
+        const maxLen = Math.max(normT.length, normS.length, 1);
+        const similarity = Math.max(0, 1 - dist / maxLen);
+        const score = Math.round(similarity * 100);
+
+        // Distance penalty for words far away from expected position
+        const positionDistance = Math.abs(tIdx - sIdx);
+        const adjustedScore = Math.max(0, score - (positionDistance > 2 ? 10 : 0));
+
+        if (adjustedScore > bestScore) {
+          bestScore = adjustedScore;
+          bestSpokenIdx = sIdx;
+        }
+
+        // Check if spokenWords[sIdx] + spokenWords[sIdx + 1] together matches normT (contraction splitting e.g. "s'il" -> "s il")
+        if (sIdx + 1 < spokenWords.length && !usedSpokenIndices.has(sIdx + 1)) {
+          const combined = normS + stripAccents(norm(spokenWords[sIdx + 1]));
+          const combDist = levenshteinDistance(normT, combined);
+          const combMaxLen = Math.max(normT.length, combined.length, 1);
+          const combSimilarity = Math.max(0, 1 - combDist / combMaxLen);
+          const combScore = Math.round(combSimilarity * 100);
+          if (combScore > bestScore) {
+            bestScore = combScore;
+            bestSpokenIdx = sIdx;
+          }
+        }
       }
 
-      const normT = stripAccents(norm(tWord));
-      const normS = stripAccents(norm(sWord));
-      const dist = levenshteinDistance(normT, normS);
-      const maxLen = Math.max(normT.length, normS.length, 1);
-      const similarity = Math.max(0, 1 - dist / maxLen);
-      const score = Math.round(similarity * 100);
+      if (bestSpokenIdx !== -1 && bestScore >= 40) {
+        usedSpokenIndices.add(bestSpokenIdx);
+      }
 
       const status: WordScore['status'] =
-        score >= 85 ? 'great' : score >= 70 ? 'good' : 'retry';
+        bestScore >= 80 ? 'great' : bestScore >= 50 ? 'good' : 'retry';
 
-      return { word: tWord, score, status };
+      return { word: tWord, score: bestScore, status };
     });
 
     const sum = words.reduce((acc, w) => acc + w.score, 0);
     const overallScore = Math.round(sum / Math.max(1, words.length));
-    const passed = overallScore >= 70;
+    // Confidence-building passing threshold: >= 50%
+    const passed = overallScore >= 50;
 
     const feedback =
-      overallScore >= 90
+      overallScore >= 85
         ? 'Magnifique! Native-level pronunciation.'
-        : overallScore >= 80
-        ? 'Sehr gut! Clear and articulate.'
         : overallScore >= 70
-        ? 'Good pronunciation! Keep practicing for perfection.'
-        : overallScore >= 40
-        ? 'Pronunciation needs work — listen carefully to the native phrase.'
+        ? 'Sehr gut! Clear and articulate.'
+        : overallScore >= 50
+        ? 'Understood! Good effort — tap the audio button to polish your accent.'
+        : overallScore >= 35
+        ? 'Some words were unclear — listen to the native audio and try again.'
         : 'Unrecognized speech or wrong language. Speak the phrase in the target language.';
 
     return { overallScore, words, feedback, passed };

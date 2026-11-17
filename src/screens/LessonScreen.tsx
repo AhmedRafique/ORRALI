@@ -23,6 +23,7 @@ import {
 } from 'expo-speech-recognition';
 import { findBestVoiceForLanguage, playPhraseAudio, stopAllAudio } from '../audio';
 import { buildExercises, evaluateAnswer, evaluateScramble } from '../exercises';
+import { playEarcon } from '../earcons';
 import { evaluatePronunciation } from '../scoring';
 import { triggerHaptic } from '../sensory';
 import { Course, Item, LessonCheckpoint, PronunciationResult } from '../types';
@@ -299,6 +300,7 @@ export default function LessonScreen({
 
       if (isOk) {
         void triggerHaptic('success');
+        void playEarcon('success');
         const nextCorrect = correctIds.includes(ex.item.id) ? correctIds : [...correctIds, ex.item.id];
         const nextWrong = wrongIds.filter((id) => id !== ex.item.id);
         setCorrectIds(nextCorrect);
@@ -307,6 +309,7 @@ export default function LessonScreen({
         persistCheckpoint(index, nextCorrect, nextWrong);
       } else {
         void triggerHaptic('error');
+        void playEarcon('error');
         const nextWrong = wrongIds.includes(ex.item.id) ? wrongIds : [...wrongIds, ex.item.id];
         const nextCorrect = correctIds.filter((id) => id !== ex.item.id);
         setWrongIds(nextWrong);
@@ -327,6 +330,7 @@ export default function LessonScreen({
 
     if (evalRes.ok) {
       void triggerHaptic('success');
+      void playEarcon('success');
       const nextCorrect = correctIds.includes(ex.item.id) ? correctIds : [...correctIds, ex.item.id];
       const nextWrong = wrongIds.filter((id) => id !== ex.item.id);
       setCorrectIds(nextCorrect);
@@ -335,6 +339,7 @@ export default function LessonScreen({
       persistCheckpoint(index, nextCorrect, nextWrong);
     } else {
       void triggerHaptic('error');
+      void playEarcon('error');
       const nextWrong = wrongIds.includes(ex.item.id) ? wrongIds : [...wrongIds, ex.item.id];
       const nextCorrect = correctIds.filter((id) => id !== ex.item.id);
       setWrongIds(nextWrong);
@@ -346,6 +351,7 @@ export default function LessonScreen({
   const next = () => {
     void stopAllAudio();
     if (index + 1 >= exercises.length) {
+      void playEarcon('fanfare');
       onFinish({ correctIds, wrongIds });
       return;
     }
@@ -524,11 +530,12 @@ export default function LessonScreen({
               </View>
             )}
 
-            {!pronunciation && (
-              <Pressable style={s.skipButton} onPress={next}>
-                <Text style={s.skipButtonText}>Can’t speak right now? Skip</Text>
-              </Pressable>
-            )}
+            {/* Always provide a way to skip or proceed without getting trapped */}
+            <Pressable style={s.skipButton} onPress={next}>
+              <Text style={s.skipButtonText}>
+                {pronunciation ? 'Skip this drill ›' : 'Can’t speak right now? Skip ›'}
+              </Text>
+            </Pressable>
           </View>
         )}
 
@@ -654,6 +661,12 @@ export default function LessonScreen({
               </Text>
             </View>
           )}
+          {ex.kind === 'speak' && pronunciation && !pronunciation.passed && (
+            <Pressable style={s.tryAgainBtn} onPress={startRecording}>
+              <Text style={s.tryAgainBtnText}>🎙️ Try Again to Improve Score</Text>
+            </Pressable>
+          )}
+
           <Pressable
             disabled={
               ex.kind === 'speak'
@@ -661,10 +674,8 @@ export default function LessonScreen({
                 : ex.kind !== 'intro' && !feedback && !canCheck
             }
             onPress={
-              ex.kind === 'intro' || feedback || (ex.kind === 'speak' && pronunciation?.passed)
+              ex.kind === 'intro' || feedback || ex.kind === 'speak'
                 ? next
-                : ex.kind === 'speak' && pronunciation && !pronunciation.passed
-                ? startRecording
                 : check
             }
             style={[
@@ -683,9 +694,9 @@ export default function LessonScreen({
                   ? index + 1 === exercises.length
                     ? 'Finish lesson'
                     : 'Continue'
-                  : pronunciation
-                  ? 'Try again 🎙️'
-                  : 'Record phrase'
+                  : index + 1 === exercises.length
+                  ? 'Finish lesson'
+                  : 'Continue Anyway ›'
                 : feedback
                 ? index + 1 === exercises.length
                   ? 'Finish lesson'
@@ -1002,6 +1013,16 @@ const s = StyleSheet.create({
   feedbackBad: { backgroundColor: '#F8EDEE' },
   feedbackTitle: { fontSize: 14, fontWeight: '900' },
   feedbackAnswer: { color: C.ink, fontSize: 12, marginTop: 4 },
+  tryAgainBtn: {
+    backgroundColor: '#F3EEF8',
+    borderWidth: 1.5,
+    borderColor: '#DED5E6',
+    borderRadius: 16,
+    paddingVertical: 13,
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  tryAgainBtnText: { color: C.midnight, fontSize: 12, fontWeight: '800' },
   cta: { backgroundColor: C.midnight, padding: 17, borderRadius: 16, alignItems: 'center' },
   ctaDisabled: { backgroundColor: '#BDB7C5' },
   ctaText: { color: C.white, fontWeight: '900', fontSize: 13, letterSpacing: 0.6 },

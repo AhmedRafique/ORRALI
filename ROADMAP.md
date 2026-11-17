@@ -28,6 +28,7 @@
 | **4.0.0** | The Ultimate Global Edition | Spanish world launch (Español 🇪🇸), close pedagogical distractors, Speech Lab live waveform, B2 stories, habit notifications, 300 studio MP3s | **COMPLETED** |
 | **4.1.0** | Real Speech Recognition Engine | Native SpeechRecognizer integration (expo-speech-recognition), anti-gibberish transcript matching | **COMPLETED** |
 | **5.0.0** | The Ultimate Store Edition | Complete European Triad (FR, DE, ES through B2, 60 chapters, 360 studio MP3s), Sentence Scramble drills, Google Play AAB bundle | **COMPLETED** |
+| **5.1.0** | Acoustic Harmony & Speech Leniency | Fuzzy word alignment (contraction split fix), confidence leniency (>=50% pass), anti-trapping UI, acoustic chimes | **COMPLETED** |
 
 ---
 

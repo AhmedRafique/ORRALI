@@ -1,4 +1,4 @@
-@startuml ORRALI_Architecture_v5
+@startuml ORRALI_Architecture_v5_1
 !theme plain
 skinparam backgroundColor #F8F6F1
 skinparam defaultFontName Arial
@@ -6,7 +6,7 @@ skinparam packageBackgroundColor #FFFFFF
 skinparam packageBorderColor #1B1536
 skinparam componentStyle uml2
 
-title ORRALI Architecture (Version 5.0.0 — The Ultimate Store Edition)
+title ORRALI Architecture (Version 5.1.0 — Acoustic Harmony & Speech Leniency)
 
 package "Presentation & UI Layer (React Native / Expo)" {
   [App.tsx
@@ -18,9 +18,9 @@ Path, Quests & Hub] as HomeScreen
     [ProgressScreen
 Journey & Course XP] as ProgressScreen
     [ProfileScreen
-Trophy Shelf, Theme & Goals] as ProfileScreen
+Trophy Shelf, Cloud Sync & Goals] as ProfileScreen
     [LessonScreen
-Scaffolding, Word Tiles & Speech Lab] as LessonScreen
+Word Tiles, Anti-Trap Speech & Lab] as LessonScreen
   }
 
   package "Interactive Modals" {
@@ -40,7 +40,7 @@ package "Smart Lexicon & Flashcard Engine" {
 Search, Mastery Filters & Flip Deck] as LexiconEngine
 }
 
-package "Sensory Polish & Theme Engine" {
+package "Sensory Polish, Haptics & Themes" {
   [sensory.ts
 expo-haptics Tactile Engine] as SensoryEngine
   [theme.ts
@@ -60,7 +60,9 @@ package "Domain & Pedagogical Engine" {
   [exercises.ts
 Sentence Scramble, Distractors & Evaluation] as Exercises
   [scoring.ts
-Anti-Gibberish STT & Cadence Scoring] as Scoring
+Fuzzy Token Alignment & Leniency Engine] as Scoring
+  [cloudSync.ts
+Google Drive Checksum & Conflict Resolution] as CloudSync
   [notifications.ts
 Offline Streak & Shield Reminders] as Notifications
   [srs.ts
@@ -75,11 +77,13 @@ Streak Shields & Freeze] as Streak
 Dual-Write Repository] as Store
 }
 
-package "Audio Engine & Studio Assets" {
+package "Audio Engine & Acoustic Harmony" {
   [audio.ts
 expo-audio Playback & Recording] as AudioEngine
   [audioMap.ts
 360 Pre-Rendered Studio MP3s] as AudioMap
+  [earcons.ts
+Acoustic Chimes & Victory Fanfare] as EarconEngine
 }
 
 package "Offline Persistence Layer" {
@@ -111,9 +115,11 @@ RoleplayModal --> RoleplayEngine
 LessonScreen --> Exercises
 LessonScreen --> Scoring
 LessonScreen --> AudioEngine
+LessonScreen --> EarconEngine
 LessonScreen --> SensoryEngine
 ProfileScreen --> ThemeEngine
 ProfileScreen --> SensoryEngine
+ProfileScreen --> CloudSync
 
 ' Domain to Persistence
 Store --> SQLiteDB
