@@ -1,4 +1,4 @@
-# Build status — ORRALI 5.4.0 (Production Hardened Edition)
+# Build status — ORRALI 5.5.0 (Hands-Free Commuter Audio Edition)
 
 | Check | Result |
 |---|---|
@@ -6,8 +6,9 @@
 | TypeScript syntax transpilation | PASS — zero syntax diagnostics |
 | JSON configuration parsing | PASS — `app.json`, `package.json`, `eas.json` valid |
 | Full TypeScript typecheck | PASS — `tsc --noEmit` 0 errors |
-| Automated Unit & Logic Tests | PASS — 151 passing tests across audit remediation, roleplay intent, sequence scoring, clinic workouts, dual-speed audio |
+| Automated Unit & Logic Tests | PASS — 159 passing tests across all engines including commuter audio queue |
 | Expo configuration validation | PASS — SDK 58.0.0 public config validated with plugins |
+| Hands-Free Commuter Audio Mode | **PASS — Pimsleur-style English prompt -> thinking pause -> normal speed (1.0x) -> slow turtle repeat (0.72x)** |
 | Roleplay Semantic Intent Validation | **PASS — Meaningless/off-topic text rejected; XP awarded only when communicative intent is met** |
 | Sequence-Aware Word Order Scoring | **PASS — Word order inversions strictly penalized; natural phrasing rewarded** |
 | Mistake Clinic Workout Preservation | **PASS — Custom remedial exercises preserved and executed directly in LessonScreen** |
@@ -57,20 +58,20 @@
 | Android Hardware Back Press | **PASS — Intercepted via `BackHandler` with exit confirmation** |
 | Android Keyboard Usability | **PASS — Wrapped in `KeyboardAvoidingView` and `ScrollView`** |
 | GitHub Actions CI/CD Pipeline | PASS — Automated build & release workflow in `.github/workflows/build-android.yml` |
-| Android Deliverables Generation | **SUCCESS (5.4.0 Standalone APK + Google Play AAB Bundle)** |
+| Android Deliverables Generation | **SUCCESS (5.5.0 Standalone APK + Google Play AAB Bundle)** |
 
 ---
 
 ## Direct Deliverable Download Links
 
-- **GitHub Release (v5.4.0):** [ORRALI v5.4.0 — Production Hardened Edition](https://github.com/AhmedRafique/ORRALI/releases/tag/v5.4.0)
-- **Direct APK Download:** [ORRALI-5.4.0.apk](https://github.com/AhmedRafique/ORRALI/releases/download/v5.4.0/ORRALI-5.4.0.apk)
-- **Google Play App Bundle (.aab):** [ORRALI-5.4.0.aab](https://github.com/AhmedRafique/ORRALI/releases/download/v5.4.0/ORRALI-5.4.0.aab)
+- **GitHub Release (v5.5.0):** [ORRALI v5.5.0 — Hands-Free Commuter Audio Edition](https://github.com/AhmedRafique/ORRALI/releases/tag/v5.5.0)
+- **Direct APK Download:** [ORRALI-5.5.0.apk](https://github.com/AhmedRafique/ORRALI/releases/download/v5.5.0/ORRALI-5.5.0.apk)
+- **Google Play App Bundle (.aab):** [ORRALI-5.5.0.aab](https://github.com/AhmedRafique/ORRALI/releases/download/v5.5.0/ORRALI-5.5.0.aab)
 - **CI Build Workflow:** [GitHub Actions Build Android Deliverables](https://github.com/AhmedRafique/ORRALI/actions/workflows/build-android.yml)
 
 ---
 
 ## Device Installation (Redmi Note 14 Pro+ / Android)
-1. Download `ORRALI-5.4.0.apk` directly to your phone via browser or transfer via USB.
+1. Download `ORRALI-5.5.0.apk` directly to your phone via browser or transfer via USB.
 2. Tap the downloaded APK to install (uninstall any previous version if prompted).
-3. Launch **ORRALI** — experience verified roleplay intent checking, sequence-aware pronunciation scoring, preserved Mistake Clinic workouts, and persistent dark mode!
+3. Launch **ORRALI** — tap **🎧 Commuter & Walking Mode** from the Home screen companion row to practice hands-free while walking or commuting!

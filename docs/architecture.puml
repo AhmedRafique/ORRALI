@@ -1,4 +1,4 @@
-@startuml ORRALI_Architecture_v5_3
+@startuml ORRALI_Architecture_v5_5
 !theme plain
 skinparam backgroundColor #F8F6F1
 skinparam defaultFontName Arial
@@ -6,7 +6,7 @@ skinparam packageBackgroundColor #FFFFFF
 skinparam packageBorderColor #1B1536
 skinparam componentStyle uml2
 
-title ORRALI Architecture (Version 5.3.0 — The All-Stars Master Edition)
+title ORRALI Architecture (Version 5.5.0 — Commuter Audio Edition)
 
 package "Presentation & UI Layer (React Native / Expo)" {
   [App.tsx
@@ -24,6 +24,8 @@ Sentence Anatomy, Turtle Audio & Speech Lab] as LessonScreen
   }
 
   package "Interactive Modals" {
+    [CommuterAudioModal
+Hands-Free Pimsleur Audio Loop] as CommuterModal
     [MilestoneExamModal
 CEFR Milestone Exams] as MilestoneModal
     [SpeedRecallModal
@@ -39,7 +41,9 @@ Conversational Simulation] as RoleplayModal
   }
 }
 
-package "Sentence Anatomy & Micro-Spark Engines" {
+package "Sentence Anatomy & Commuter Engines" {
+  [commuterAudio.ts
+Hands-Free Sequencing & Queue] as CommuterEngine
   [anatomy.ts
 Sentence Anatomy & Word Breakdown] as AnatomyEngine
   [wordOfDay.ts
