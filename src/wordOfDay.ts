@@ -146,7 +146,9 @@ const SPARK_POOL: Record<LangCode, DailySparkWord[]> = {
  */
 export function getWordOfTheDay(courseCode: LangCode, date = new Date()): DailySparkWord {
   const pool = SPARK_POOL[courseCode] ?? SPARK_POOL.fr;
-  const dayNumber = Math.floor(date.getTime() / (1000 * 60 * 60 * 24));
+  // Compute day number aligned with local calendar day (matching dayKey)
+  const localMidnightUtc = Date.UTC(date.getFullYear(), date.getMonth(), date.getDate());
+  const dayNumber = Math.floor(localMidnightUtc / (1000 * 60 * 60 * 24));
   const index = Math.abs(dayNumber) % pool.length;
   return pool[index];
 }

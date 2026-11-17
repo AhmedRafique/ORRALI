@@ -51,5 +51,21 @@ describe('Deep Immersion & Daily Habit Engine (TDD)', () => {
       assert.equal(reminder.isShieldAtRisk, false);
       assert.ok(reminder.body.includes('6-day streak'));
     });
+
+    it('guarantees notification is scheduled in the future even when checked late at night (>= 20:00)', () => {
+      const p = {
+        ...emptyProgress(),
+        streak: 5,
+        lastDay: '2026-11-15',
+        streakShields: 1,
+      };
+
+      const lateNight = new Date('2026-11-16T21:30:00');
+      const reminder = getNextStreakReminder(p, lateNight);
+      assert.ok(
+        reminder.scheduledTime.getTime() > lateNight.getTime(),
+        'Notification scheduled time must be strictly in the future!'
+      );
+    });
   });
 });

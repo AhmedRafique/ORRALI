@@ -19,9 +19,14 @@ export function getNextStreakReminder(progress: Progress, now = new Date()): Str
   const shields = progress.streakShields ?? 1;
 
   if (!alreadyPracticedToday && streak > 0) {
-    // Has not practiced today -> urgent evening reminder at 20:00 (8 PM)
+    // Has not practiced today -> urgent evening reminder
     const target = new Date(now);
-    target.setHours(20, 0, 0, 0);
+    if (now.getHours() >= 20) {
+      // It is already past 20:00 tonight, schedule in 15 minutes before midnight
+      target.setMinutes(target.getMinutes() + 15);
+    } else {
+      target.setHours(20, 0, 0, 0);
+    }
 
     const shieldText =
       shields > 0

@@ -25,9 +25,9 @@ describe('Daily Word of the Day Micro-Spark Engine (TDD)', () => {
   });
 
   it('generates consistent words for the same day and rotates on next day', () => {
-    const day1 = new Date('2026-11-17T10:00:00Z');
-    const sameDay = new Date('2026-11-17T22:00:00Z');
-    const day2 = new Date('2026-11-18T10:00:00Z');
+    const day1 = new Date(2026, 10, 17, 10, 0, 0);
+    const sameDay = new Date(2026, 10, 17, 22, 0, 0);
+    const day2 = new Date(2026, 10, 18, 10, 0, 0);
 
     const w1 = getWordOfTheDay('fr', day1);
     const wSame = getWordOfTheDay('fr', sameDay);

@@ -33,9 +33,13 @@ export default function MilestoneExamModal({ visible, course, level, onPass, onC
   const [selectedOpt, setSelectedOpt] = useState<string | null>(null);
   const [isAnswerCorrect, setIsAnswerCorrect] = useState<boolean | null>(null);
   const [isFinished, setIsFinished] = useState(false);
+  const [examAttempt, setExamAttempt] = useState(0);
 
   const def = useMemo(() => MILESTONE_DEFS.find((m) => m.level === level) ?? MILESTONE_DEFS[0], [level]);
-  const examExercises = useMemo(() => buildMilestoneExamExercises(course, level, 12), [course, level, visible]);
+  const examExercises = useMemo(
+    () => buildMilestoneExamExercises(course, level, 12),
+    [course, level, visible, examAttempt]
+  );
 
   const currentEx = examExercises[index];
   const totalQuestions = examExercises.length;
@@ -85,6 +89,7 @@ export default function MilestoneExamModal({ visible, course, level, onPass, onC
     setSelectedOpt(null);
     setIsAnswerCorrect(null);
     setIsFinished(false);
+    setExamAttempt((a) => a + 1);
   };
 
   return (

@@ -71,6 +71,7 @@ export default function HomeScreen({
   const [isSpeedRecallOpen, setIsSpeedRecallOpen] = useState(false);
   const [activeExamLevel, setActiveExamLevel] = useState<CEFRLevel | null>(null);
   const [activeRoleplay, setActiveRoleplay] = useState<RoleplayScenario | null>(null);
+  const [roleplayIdx, setRoleplayIdx] = useState(0);
   const [isSparkFlipped, setIsSparkFlipped] = useState(false);
   const [storyAnswer, setStoryAnswer] = useState<number | null>(null);
   const [storyCompleted, setStoryCompleted] = useState(false);
@@ -246,9 +247,11 @@ export default function HomeScreen({
         <Pressable
           style={s.companionBtn}
           onPress={() => {
+            const courseScenarios = ROLEPLAY_SCENARIOS.filter((s) => s.courseCode === course.code);
             const sc =
-              ROLEPLAY_SCENARIOS.find((s) => s.courseCode === course.code) ??
+              courseScenarios[roleplayIdx % Math.max(1, courseScenarios.length)] ??
               ROLEPLAY_SCENARIOS[0];
+            setRoleplayIdx((i) => i + 1);
             setActiveRoleplay(sc);
           }}
         >
