@@ -68,6 +68,7 @@ export function evaluatePronunciation(
   if (spokenTranscript && spokenTranscript.trim().length > 0) {
     const spokenWords = extractCleanWords(spokenTranscript);
     const usedSpokenIndices = new Set<number>();
+    const matchedPositions: number[] = [];
 
     const words: WordScore[] = targetWords.map((tWord, tIdx) => {
       const normT = stripAccents(norm(tWord));
@@ -110,6 +111,9 @@ export function evaluatePronunciation(
 
       if (bestSpokenIdx !== -1 && bestScore >= 40) {
         usedSpokenIndices.add(bestSpokenIdx);
+        matchedPositions.push(bestSpokenIdx);
+      } else {
+        matchedPositions.push(-1);
       }
 
       const status: WordScore['status'] =
@@ -118,13 +122,32 @@ export function evaluatePronunciation(
       return { word: tWord, score: bestScore, status };
     });
 
+    // Sequence order verification: penalize out-of-order / scrambled speech
+    const validPositions = matchedPositions.filter((p) => p !== -1);
+    let inversions = 0;
+    for (let i = 0; i < validPositions.length; i++) {
+      for (let j = i + 1; j < validPositions.length; j++) {
+        if (validPositions[i] > validPositions[j]) {
+          inversions++;
+        }
+      }
+    }
+
+    const maxInversions = Math.max(1, (targetWords.length * (targetWords.length - 1)) / 2);
+    const inversionRatio = targetWords.length > 1 ? inversions / maxInversions : 0;
+    const orderPenalty = Math.round(inversionRatio * 65);
+
     const sum = words.reduce((acc, w) => acc + w.score, 0);
-    const overallScore = Math.round(sum / Math.max(1, words.length));
-    // Confidence-building passing threshold: >= 50%
-    const passed = overallScore >= 50;
+    const rawScore = Math.round(sum / Math.max(1, words.length));
+    const overallScore = Math.max(10, rawScore - orderPenalty);
+
+    // Confidence-building passing threshold: >= 50% AND reasonable word order
+    const passed = overallScore >= 50 && inversionRatio <= 0.35;
 
     const feedback =
-      overallScore >= 85
+      inversionRatio > 0.35
+        ? 'Words were spoken out of order. Follow the correct sentence word order.'
+        : overallScore >= 85
         ? 'Magnifique! Native-level pronunciation.'
         : overallScore >= 70
         ? 'Sehr gut! Clear and articulate.'

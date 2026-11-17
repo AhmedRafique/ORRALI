@@ -15,7 +15,12 @@ let currentPlayer: AudioPlayer | null = null;
 export async function stopAllAudio(): Promise<void> {
   try {
     if (currentPlayer) {
-      currentPlayer.pause();
+      try {
+        currentPlayer.pause();
+        currentPlayer.release();
+      } catch {
+        /* best effort */
+      }
       currentPlayer = null;
     }
   } catch {

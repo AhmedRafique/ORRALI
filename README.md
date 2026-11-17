@@ -1,53 +1,35 @@
-# ORRALI — Stability Release 1.1.1
+# ORRALI — The Master Store Edition (v5.4.0)
 
-An Expo / React Native language-learning app foundation for French and German (A1 starter content).
+A high-performance, offline-first language learning application for French, German, and Spanish, built with React Native / Expo, TypeScript, SQLite relational persistence, and pre-rendered studio-quality neural audio.
 
-## What's New in 1.1.1
-- **Bug 1 Fix**: Enforced mutual exclusion between `correctIds` and `wrongIds` in `LessonScreen.tsx` and `App.tsx`, guaranteeing consistent XP calculations and SRS card reviews.
-- **Bug 2 Fix**: Speech playback lifecycle management via `Speech.stop()` to eliminate overlapping TTS audio across exercise transitions, unmounting, and early exit.
-- **Automated Test Suite**: Added regression test suite (`npm test`) using Node's test runner and `tsx` (16 passing tests).
-- **TypeScript Strictness**: Clean typecheck across all files (`npm run typecheck`).
-- **PlantUML Documentation**: Added `docs/architecture.puml` and `docs/lesson-flow.puml`.
+## Key Features & Highlights
+- **Complete European Triad (French 🇫🇷, German 🇩🇪, Spanish 🇪🇸):** 60 progressive units (360 phrases and sentences) spanning CEFR A1, A2, B1, and B2.
+- **360 Pre-Rendered Studio-Quality Neural Audio Files:** Pitch-preserved dual-speed playback (Normal 🔊 1.0x and Slow Turtle 🐢 0.72x) with sub-millisecond offline response via `expo-audio`.
+- **Authentic Speech Recognition & Sequence Scoring:** Real native speech recognition via `expo-speech-recognition` with sequence-aware token matching and confidence-building leniency.
+- **Interactive Sentence Scramble (Word Tiles):** Reconstruct complex sentence word order with interactive tiles and backtrack support.
+- **AI Companion & Semantic Roleplay:** Contextual AI Tutor, Smart Mistake Clinic with custom workouts, and multi-turn roleplay simulations with intent validation.
+- **Offline SQLite & Android Google Drive Backup:** High-speed SQLite relational database (`orrali.db`) with Write-Ahead Logging (WAL) and automated Google Drive AppData restore.
+- **60-Second Speed Recall Arcade:** High-energy vocabulary challenge against the clock with combo streaks and ranked XP rewards.
+- **Tactile Haptics & Midnight OLED Dark Theme:** Sensory haptic pulses and velvet dark mode toggle with persistent storage.
+- **CEFR Milestone Exams & Official Gold Diplomas:** 12-question synthesis exams awarding Gold Diplomas in the Trophy Shelf.
+- **Tap-to-Inspect Sentence Anatomy:** Interactive word pills revealing isolated root meanings and grammatical roles.
+- **Daily Word of the Day Micro-Spark:** Rotating cultural idioms with flip insights and daily +5 XP streak igniters.
 
-## Learning Features
-- French and German independent courses.
-- Home, Journey, and You/Profile bottom navigation tabs.
-- Spaced Repetition System (SRS) using simplified SM-2 algorithm.
-- Daily goal tracking (10, 20, 30 XP) with streak progression.
-- Interactive exercises: multiple choice, listening comprehension, and typed translation.
-- High-contrast, brand-aligned visual design (Midnight Purple, Champagne Gold, Ivory).
-
-## Run Locally
-```bash
-# Install dependencies
-npm ci
-
-# Run automated tests
-npm test
-
-# Run TypeScript validation
-npm run typecheck
-
-# Start Expo development server
-npx expo start
-```
-## Android APK Download
-[![Build Android APK](https://github.com/AhmedRafique/ORRALI/actions/workflows/build-android.yml/badge.svg)](https://github.com/AhmedRafique/ORRALI/actions/workflows/build-android.yml)
-
+## Android App Download & Store Deliverables
 The verified Android deliverables are generated via GitHub Actions:
-- **Direct APK Download:** [ORRALI-5.3.0.apk](https://github.com/AhmedRafique/ORRALI/releases/download/v5.3.0/ORRALI-5.3.0.apk)
-- **Google Play App Bundle (.aab):** [ORRALI-5.3.0.aab](https://github.com/AhmedRafique/ORRALI/releases/download/v5.3.0/ORRALI-5.3.0.aab)
-- **Release Page:** [ORRALI v5.3.0 — The All-Stars Master Edition](https://github.com/AhmedRafique/ORRALI/releases/tag/v5.3.0)
+- **Direct APK Download:** [ORRALI-5.4.0.apk](https://github.com/AhmedRafique/ORRALI/releases/download/v5.4.0/ORRALI-5.4.0.apk)
+- **Google Play App Bundle (.aab):** [ORRALI-5.4.0.aab](https://github.com/AhmedRafique/ORRALI/releases/download/v5.4.0/ORRALI-5.4.0.aab)
+- **Release Page:** [ORRALI v5.4.0 — Production Hardened Edition](https://github.com/AhmedRafique/ORRALI/releases/tag/v5.4.0)
 
 ### Installation Instructions
-1. Download `ORRALI-5.3.0.apk` directly onto your Android device (e.g. Redmi Note 14 Pro+).
+1. Download `ORRALI-5.4.0.apk` directly onto your Android device (e.g. Redmi Note 14 Pro+).
 2. Tap the APK file to install (enable "Install unknown apps" if prompted).
 3. Open ORRALI and start learning!
 
 ## Documentation & Artifacts
 - `BUILD_STATUS.md`: Build readiness and status matrix.
-- `TEST_REPORT.md`: Exhaustive test execution report.
-- `RELEASE_NOTES.md`: Detailed changelog for version 1.1.1 and 1.1.0.
-- `ROADMAP.md`: Project roadmap from 1.1.1 through 2.0.0.
+- `TEST_REPORT.md`: Comprehensive test report with 151 automated tests passing.
+- `RELEASE_NOTES.md`: Changelog for all versions through 5.4.0.
+- `ROADMAP.md`: Project roadmap and milestone completion log.
 - `docs/architecture.puml`: PlantUML component architecture diagram.
 - `docs/lesson-flow.puml`: PlantUML lesson sequence and audio lifecycle diagram.

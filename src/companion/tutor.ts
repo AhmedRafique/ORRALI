@@ -150,6 +150,76 @@ export const TUTOR_KNOWLEDGE_BASE: TutorKnowledgeEntry[] = [
     ],
     goldenRule: '"Wie spät ist es?" literally means "How late is it?".',
   },
+  {
+    courseCode: 'es',
+    keywords: ['ser', 'estar', 'diferencia', 'cuando', 'estoy', 'soy'],
+    topic: 'Ser vs. Estar: Permanent Traits vs. Location & States',
+    childFriendlySummary:
+      'Use "ser" for who you are and permanent qualities; use "estar" for where you are and temporary moods!',
+    detailedExplanation:
+      'Think of SER for identity and origins: "Soy Carlos", "Es inteligente". Think of ESTAR for location and states: "Estoy cansado", "El hotel está cerca".',
+    examples: [
+      { target: 'Soy estudiante', en: 'I am a student (identity -> ser)' },
+      { target: 'Estoy en Madrid', en: 'I am in Madrid (location -> estar)' },
+    ],
+    goldenRule: 'DOCTOR uses SER (Description, Origin, Characteristic); PLACE uses ESTAR (Position, Location, Condition).',
+  },
+  {
+    courseCode: 'es',
+    keywords: ['gustar', 'gusta', 'gustan', 'encantar', 'encanta', 'me'],
+    topic: 'How to use "Gustar" & "Encantar"',
+    childFriendlySummary:
+      'In Spanish, you don’t like things — things please you! So the ending depends on the thing you like.',
+    detailedExplanation:
+      'Say "Me gusta el café" (One thing pleases me). For plural items, say "Me gustan las tapas" (Plural items please me). Never say "Yo gusto".',
+    examples: [
+      { target: 'Me gusta la música', en: 'I like music (singular -> gusta)' },
+      { target: 'Me gustan las tapas', en: 'I like tapas (plural -> gustan)' },
+    ],
+    goldenRule: 'Singular item = "gusta", plural items = "gustan".',
+  },
+  {
+    courseCode: 'es',
+    keywords: ['por', 'para', 'diferencia', 'motivo', 'destino'],
+    topic: 'Por vs. Para: Reason vs. Destination',
+    childFriendlySummary:
+      '"Para" looks forward to your goal or recipient. "Por" looks backward to the cause or exchange!',
+    detailedExplanation:
+      'Use "para" for goals, destinations, and deadlines ("Para mañana", "Para ti"). Use "por" for causes, exchanges, and gratitude ("Por favor", "Gracias por la ayuda").',
+    examples: [
+      { target: 'Este regalo es para ti', en: 'This gift is for you (recipient -> para)' },
+      { target: 'Gracias por tu ayuda', en: 'Thank you for your help (cause -> por)' },
+    ],
+    goldenRule: 'PARA points toward the goal; POR explains the reason why.',
+  },
+  {
+    courseCode: 'es',
+    keywords: ['pasado', 'ayer', 'preterito', 'pretérito', 'viaje', 'visite'],
+    topic: 'The Past: Pretérito Indefinido',
+    childFriendlySummary:
+      'Use the pretérito to talk about actions that finished in the past, like yesterday’s adventures!',
+    detailedExplanation:
+      'For regular -ar verbs, use endings: -é, -aste, -ó ("viajé"). For -er/-ir verbs, use: -í, -iste, -ió ("aprendí"). Time markers like "ayer" and "el año pasado" signal this past tense.',
+    examples: [
+      { target: 'Ayer viajé a Madrid', en: 'Yesterday I traveled to Madrid' },
+      { target: 'Aprendí mucho', en: 'I learned a lot' },
+    ],
+    goldenRule: 'Actions finished at a specific point in the past use the Pretérito Indefinido.',
+  },
+  {
+    courseCode: 'es',
+    keywords: ['subjuntivo', 'ojala', 'ojalá', 'deseo', 'duda', 'espero'],
+    topic: 'When to use the Subjunctive (El Subjuntivo)',
+    childFriendlySummary:
+      'The subjunctive is the mood of wishes, hopes, and doubts rather than plain facts!',
+    detailedExplanation:
+      'Whenever you express desires or uncertainty ("Espero que...", "Ojalá..."), Spanish switches to the subjunctive: "Espero que tengas un buen día", "Ojalá tengamos suerte".',
+    examples: [
+      { target: '¡Ojalá tengamos buen tiempo!', en: 'Hopefully we have good weather!' },
+      { target: 'Es necesario que salgamos', en: 'It is necessary that we leave' },
+    ],
+    goldenRule: 'Wishes, emotions, doubts, and "Ojalá" always trigger the subjunctive.',
+  },
 ];
 
 /**
@@ -160,6 +230,7 @@ export function askTutor(query: string, courseCode: LangCode): TutorExplanation 
 
   // Search knowledge base entries matching course and keywords
   const courseEntries = TUTOR_KNOWLEDGE_BASE.filter((e) => e.courseCode === courseCode);
+  const queryTokens = normQuery.split(/\s+/).map((w) => w.replace(/[.,!?¿¡;:"']/g, ''));
 
   let bestMatch: TutorKnowledgeEntry | null = null;
   let highestScore = 0;
@@ -167,7 +238,12 @@ export function askTutor(query: string, courseCode: LangCode): TutorExplanation 
   for (const entry of courseEntries) {
     let score = 0;
     for (const kw of entry.keywords) {
-      if (normQuery.includes(kw)) {
+      if (
+        queryTokens.includes(kw) ||
+        normQuery.includes(` ${kw} `) ||
+        normQuery.startsWith(`${kw} `) ||
+        normQuery.endsWith(` ${kw}`)
+      ) {
         score += kw.length;
       }
     }
@@ -187,26 +263,48 @@ export function askTutor(query: string, courseCode: LangCode): TutorExplanation 
     };
   }
 
-  // Encouraging general fallback
-  const isFrench = courseCode === 'fr';
-  return {
-    topic: isFrench ? 'French Learning Tip' : 'German Learning Tip',
-    childFriendlySummary:
-      'You are building a real language foundation step-by-step. Don’t worry about perfection — focus on rhythm and confidence!',
-    detailedExplanation: isFrench
-      ? 'In French, listening to the melodic flow and liaisons (connecting final consonants to vowels) will make you sound natural quickly. Speak out loud every day!'
-      : 'In German, pronouncing words clearly and paying attention to capitalized nouns and compound words will make your meaning crystal clear.',
-    examples: isFrench
-      ? [
-          { target: 'Bonjour', en: 'Hello' },
-          { target: "S'il vous plaît", en: 'Please' },
-          { target: 'Merci beaucoup', en: 'Thank you very much' },
-        ]
-      : [
-          { target: 'Guten Tag', en: 'Good day' },
-          { target: 'Bitte', en: 'Please' },
-          { target: 'Vielen Dank', en: 'Thank you very much' },
-        ],
-    goldenRule: 'Consistency beats intensity: 5 minutes every day creates true fluency.',
-  };
+  // Encouraging course-specific fallback
+  if (courseCode === 'fr') {
+    return {
+      topic: 'French Learning Tip',
+      childFriendlySummary:
+        'You are building a real language foundation step-by-step. Don’t worry about perfection — focus on rhythm and confidence!',
+      detailedExplanation:
+        'In French, listening to the melodic flow and liaisons (connecting final consonants to vowels) will make you sound natural quickly. Speak out loud every day!',
+      examples: [
+        { target: 'Bonjour', en: 'Hello' },
+        { target: "S'il vous plaît", en: 'Please' },
+        { target: 'Merci beaucoup', en: 'Thank you very much' },
+      ],
+      goldenRule: 'Consistency beats intensity: 5 minutes every day creates true fluency.',
+    };
+  } else if (courseCode === 'es') {
+    return {
+      topic: 'Spanish Learning Tip',
+      childFriendlySummary:
+        'Spanish vowels are always pure and clear (a, e, i, o, u). Master "ser" vs "estar" and everyday courtesy to build natural conversational confidence!',
+      detailedExplanation:
+        'Spanish is very phonetic: words are almost always pronounced exactly as written. Focus on the distinction between "ser" (identity) and "estar" (states and locations), and practice greeting people warmly!',
+      examples: [
+        { target: '¡Hola! ¿Cómo estás?', en: 'Hello! How are you?' },
+        { target: 'Por favor y gracias', en: 'Please and thank you' },
+        { target: 'Un placer conocerte', en: 'A pleasure to meet you' },
+      ],
+      goldenRule: 'Listen to the pure vowel sounds and speak out loud with confidence.',
+    };
+  } else {
+    return {
+      topic: 'German Learning Tip',
+      childFriendlySummary:
+        'You are building a real language foundation step-by-step. Don’t worry about perfection — focus on rhythm and confidence!',
+      detailedExplanation:
+        'In German, pronouncing words clearly and paying attention to capitalized nouns and compound words will make your meaning crystal clear.',
+      examples: [
+        { target: 'Guten Tag', en: 'Good day' },
+        { target: 'Bitte', en: 'Please' },
+        { target: 'Vielen Dank', en: 'Thank you very much' },
+      ],
+      goldenRule: 'Consistency beats intensity: 5 minutes every day creates true fluency.',
+    };
+  }
 }

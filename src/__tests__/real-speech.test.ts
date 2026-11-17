@@ -86,4 +86,13 @@ describe('Real Pronunciation Assessment & Anti-Gibberish Detection (TDD)', () =>
     assert.ok(result.overallScore >= 50);
     assert.ok(result.feedback.toLowerCase().includes('understood'));
   });
+
+  it('REJECTS inverted or scrambled word order in speech recognition', () => {
+    // Target: "Je suis prêt"
+    // Learner said words in reversed order: "prêt suis je"
+    const result = evaluatePronunciation('Je suis prêt', 1200, 'prêt suis je');
+
+    assert.equal(result.passed, false, 'Inverted word order must NOT pass pronunciation test!');
+    assert.ok(result.overallScore < 50, `Expected low score for inverted order, got ${result.overallScore}`);
+  });
 });

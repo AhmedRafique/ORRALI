@@ -88,6 +88,11 @@ export const ROLEPLAY_SCENARIOS: RoleplayScenario[] = [
   },
 ];
 
+function containsAny(text: string, keywords: string[]): boolean {
+  const norm = text.toLowerCase();
+  return keywords.some((kw) => norm.includes(kw));
+}
+
 /**
  * Multi-turn conversational evaluation engine for roleplay simulations.
  */
@@ -101,6 +106,44 @@ export function evaluateRoleplayTurn(
   // 1. French Café Roleplay
   if (scenarioId === 'roleplay-fr-cafe') {
     if (turnIndex === 0) {
+      const isOrderIntent = containsAny(normUser, [
+        'cafe',
+        'café',
+        'croissant',
+        'voudrais',
+        'prends',
+        'bonjour',
+        'table',
+        'eau',
+        'the',
+        'thé',
+        'pain',
+        'plaît',
+        'plait',
+        'merci',
+      ]);
+
+      if (!isOrderIntent) {
+        return {
+          reply: {
+            id: `ai-${Date.now()}`,
+            sender: 'ai',
+            speakerName: 'Pierre',
+            avatar: '☕',
+            target: "Pardon ? Je n'ai pas bien compris votre commande. Que désirez-vous boire ou manger ?",
+            en: "Pardon? I didn't quite catch your order. What would you like to drink or eat?",
+            feedback: "Try ordering in French, for example: 'Un café et un croissant, s'il vous plaît.'",
+            timestamp: Date.now(),
+          },
+          isCompleted: false,
+          earnedXp: 0,
+          suggestedNextReplies: [
+            "Un café et un croissant, s'il vous plaît.",
+            "Bonjour, je voudrais un café, s'il vous plaît.",
+          ],
+        };
+      }
+
       return {
         reply: {
           id: `ai-${Date.now()}`,
@@ -121,6 +164,36 @@ export function evaluateRoleplayTurn(
         ],
       };
     } else if (turnIndex === 1) {
+      const isBillIntent = containsAny(normUser, [
+        'addition',
+        'payer',
+        'combien',
+        'compte',
+        'regler',
+        'régler',
+        'merci',
+        'plaît',
+        'plait',
+      ]);
+
+      if (!isBillIntent) {
+        return {
+          reply: {
+            id: `ai-${Date.now()}`,
+            sender: 'ai',
+            speakerName: 'Pierre',
+            avatar: '☕',
+            target: "Désolé, je n'ai pas compris. Désirez-vous l'addition ?",
+            en: "Sorry, I didn't understand. Would you like the bill?",
+            feedback: "Ask for the check: 'L'addition, s'il vous plaît.'",
+            timestamp: Date.now(),
+          },
+          isCompleted: false,
+          earnedXp: 0,
+          suggestedNextReplies: ["L'addition, s'il vous plaît."],
+        };
+      }
+
       return {
         reply: {
           id: `ai-${Date.now()}`,
@@ -141,6 +214,37 @@ export function evaluateRoleplayTurn(
         ],
       };
     } else {
+      const isPayIntent = containsAny(normUser, [
+        'carte',
+        'espece',
+        'espèces',
+        'billet',
+        'euros',
+        'merci',
+        'payer',
+        'regler',
+        'voila',
+        'voilà',
+      ]);
+
+      if (!isPayIntent) {
+        return {
+          reply: {
+            id: `ai-${Date.now()}`,
+            sender: 'ai',
+            speakerName: 'Pierre',
+            avatar: '☕',
+            target: "Comment souhaitez-vous régler ? Par carte ou en espèces ?",
+            en: "How would you like to pay? By card or in cash?",
+            feedback: "Specify payment: 'Par carte, s'il vous plaît.'",
+            timestamp: Date.now(),
+          },
+          isCompleted: false,
+          earnedXp: 0,
+          suggestedNextReplies: ['Par carte bancaire, s’il vous plaît.'],
+        };
+      }
+
       return {
         reply: {
           id: `ai-${Date.now()}`,
@@ -164,6 +268,39 @@ export function evaluateRoleplayTurn(
   // 2. German Train Station Roleplay
   if (scenarioId === 'roleplay-de-station') {
     if (turnIndex === 0) {
+      const isTrainIntent = containsAny(normUser, [
+        'ticket',
+        'fahrkarte',
+        'berlin',
+        'munchen',
+        'münchen',
+        'zug',
+        'nach',
+        'mochte',
+        'möchte',
+        'bitte',
+        'wann',
+        'guten tag',
+      ]);
+
+      if (!isTrainIntent) {
+        return {
+          reply: {
+            id: `ai-${Date.now()}`,
+            sender: 'ai',
+            speakerName: 'Hans',
+            avatar: '🚆',
+            target: 'Entschuldigung, wohin möchten Sie reisen?',
+            en: 'Excuse me, where would you like to travel?',
+            feedback: "Say your destination: 'Eine Fahrkarte nach München, bitte.'",
+            timestamp: Date.now(),
+          },
+          isCompleted: false,
+          earnedXp: 0,
+          suggestedNextReplies: ['Guten Tag, eine Fahrkarte nach München bitte.'],
+        };
+      }
+
       return {
         reply: {
           id: `ai-${Date.now()}`,
@@ -292,6 +429,41 @@ export function evaluateRoleplayTurn(
 
   // 5. Spanish Tapas Bar Roleplay (roleplay-es-tapas)
   if (turnIndex === 0) {
+    const isTapasIntent = containsAny(normUser, [
+      'cafe',
+      'café',
+      'tortilla',
+      'tapas',
+      'cerveza',
+      'agua',
+      'jamon',
+      'jamón',
+      'buenas',
+      'hola',
+      'por favor',
+      'mesa',
+    ]);
+
+    if (!isTapasIntent) {
+      return {
+        reply: {
+          id: `ai-${Date.now()}`,
+          sender: 'ai',
+          speakerName: 'Mateo',
+          avatar: '🥘',
+          target: '¿Qué le pongo de comer o beber?',
+          en: 'What can I get you to eat or drink?',
+          feedback: "Try ordering tapas or drinks in Spanish: 'Un café con leche y una tortilla, por favor.'",
+          timestamp: Date.now(),
+        },
+        isCompleted: false,
+        earnedXp: 0,
+        suggestedNextReplies: [
+          '¡Buenas tardes! Un café con leche y una tortilla española, por favor.',
+        ],
+      };
+    }
+
     return {
       reply: {
         id: `ai-${Date.now()}`,

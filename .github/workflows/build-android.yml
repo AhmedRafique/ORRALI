@@ -73,7 +73,7 @@ jobs:
           fi
           if [ -f "$APK_PATH" ]; then
             echo "Found Standalone Release APK at: $APK_PATH"
-            cp "$APK_PATH" dist-apk/ORRALI-5.3.0.apk
+            cp "$APK_PATH" dist-apk/ORRALI-5.4.0.apk
           else
             echo "Error: No APK file found!"
             find android/app/build/outputs/ -type f || true
@@ -86,14 +86,14 @@ jobs:
           fi
           if [ -f "$AAB_PATH" ]; then
             echo "Found Google Play Bundle at: $AAB_PATH"
-            cp "$AAB_PATH" dist-apk/ORRALI-5.3.0.aab
+            cp "$AAB_PATH" dist-apk/ORRALI-5.4.0.aab
           fi
           ls -la dist-apk/
 
       - name: Upload APK & AAB as Workflow Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: ORRALI-5.3.0-Android-Deliverables
+          name: ORRALI-5.4.0-Android-Deliverables
           path: dist-apk/*
           retention-days: 30
 
@@ -101,12 +101,12 @@ jobs:
         if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: v5.3.0
-          name: ORRALI v5.3.0 — The All-Stars Master Edition (Dual-Speed Audio, CEFR Diplomas, Anatomy & Word of the Day)
+          tag_name: v5.4.0
+          name: ORRALI v5.4.0 — Production Hardened Edition (Review Findings Remediated)
           body_path: RELEASE_NOTES.md
           files: |
-            dist-apk/ORRALI-5.3.0.apk
-            dist-apk/ORRALI-5.3.0.aab
+            dist-apk/ORRALI-5.4.0.apk
+            dist-apk/ORRALI-5.4.0.aab
           draft: false
           prerelease: false
         env:

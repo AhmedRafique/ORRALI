@@ -148,7 +148,9 @@ export default function ProfileScreen({
             <Text style={s.flag}>{course.flag}</Text>
             <View style={{ flex: 1 }}>
               <Text style={s.choiceName}>{course.name}</Text>
-              <Text style={s.choiceMeta}>{course.code === 'fr' ? 'French' : 'German'} · A1 foundations</Text>
+              <Text style={s.choiceMeta}>
+                {course.code === 'fr' ? 'French' : course.code === 'es' ? 'Spanish' : 'German'} · 20 Chapters (A1–B2)
+              </Text>
             </View>
             <Text style={s.check}>{code === course.code ? '✓' : '○'}</Text>
           </Pressable>
@@ -181,14 +183,14 @@ export default function ProfileScreen({
 
       <View style={s.panel}>
         <View style={s.cloudHeader}>
-          <Text style={s.label}>GOOGLE PLAY CLOUD BACKUP</Text>
+          <Text style={s.label}>LOCAL BACKUP & ANDROID RESTORE</Text>
           <View style={s.cloudActivePill}>
-            <Text style={s.cloudActiveText}>● AUTO-BACKUP ACTIVE</Text>
+            <Text style={s.cloudActiveText}>● BACKUP READY</Text>
           </View>
         </View>
 
         <Text style={s.cloudDesc}>
-          Your XP, streaks, SM-2 memory cards, and badges are automatically synced to your private Google Play Drive AppData. Switching or reinstalling phones restores your exact progress seamlessly.
+          Your XP, streaks, SM-2 memory cards, and diplomas are saved locally in SQLite with Android Google Drive auto-backup enabled. Create an integrity-verified checkpoint anytime.
         </Text>
 
         <Pressable
@@ -197,18 +199,18 @@ export default function ProfileScreen({
             void triggerHaptic('success');
             const snap = createCloudBackupSnapshot(progress);
             setBackupStatus(
-              `Checkpoint created at ${new Date(snap.timestamp).toLocaleTimeString([], {
+              `Checkpoint verified at ${new Date(snap.timestamp).toLocaleTimeString([], {
                 hour: '2-digit',
                 minute: '2-digit',
-              })}`
+              })} (${snap.checksum})`
             );
           }}
         >
-          <Text style={s.backupBtnText}>✦ Create Backup Checkpoint</Text>
+          <Text style={s.backupBtnText}>✦ Create Verified Backup Checkpoint</Text>
         </Pressable>
 
         {backupStatus && (
-          <Text style={s.backupStatusText}>✓ {backupStatus} · Verified</Text>
+          <Text style={s.backupStatusText}>✓ {backupStatus}</Text>
         )}
       </View>
 
@@ -233,7 +235,7 @@ export default function ProfileScreen({
         <Text style={s.aboutBrand}>ORRALI</Text>
         <Text style={s.tagline}>Beyond the familiar.</Text>
         <Text style={s.aboutText}>A new world of possibilities. Discover · Connect · Grow.</Text>
-        <Text style={s.version}>ORRALI ALL-STARS EDITION · 5.3.0</Text></View>
+        <Text style={s.version}>ORRALI HARDENED EDITION · 5.4.0</Text></View>
     </ScrollView>
   );
 }

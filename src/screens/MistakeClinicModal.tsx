@@ -32,12 +32,16 @@ export default function MistakeClinicModal({
 }: Props) {
   const allItems = course.lessons.flatMap((l) => l.items);
 
-  // Generate mistake records from cards that have recorded lapses or failed reps
+  // Generate mistake records from cards that have recorded lapses
   const records: MistakeRecord[] = allItems
     .map((item) => {
       const card = progress.cards[item.id];
       const failCount = card?.lapses ?? 0;
-      const passCount = card?.reps ?? 0;
+      // Do not wipe passCount to 0 solely because reps reset on lapse
+      const passCount = Math.max(
+        card?.reps ?? 0,
+        card && card.interval >= 21 ? 5 : card && card.interval >= 6 ? 3 : card && card.interval >= 1 ? 1 : 0
+      );
       return {
         itemId: item.id,
         courseCode: course.code,

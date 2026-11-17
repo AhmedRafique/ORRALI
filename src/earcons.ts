@@ -19,9 +19,11 @@ export async function playEarcon(type: EarconType): Promise<void> {
     if (earconPlayer) {
       try {
         earconPlayer.pause();
+        earconPlayer.release();
       } catch {
         /* best effort */
       }
+      earconPlayer = null;
     }
     const asset = EARCON_ASSETS[type];
     if (asset) {

@@ -1,4 +1,4 @@
-# Build status — ORRALI 5.3.0 (The All-Stars Master Edition)
+# Build status — ORRALI 5.4.0 (Production Hardened Edition)
 
 | Check | Result |
 |---|---|
@@ -6,8 +6,13 @@
 | TypeScript syntax transpilation | PASS — zero syntax diagnostics |
 | JSON configuration parsing | PASS — `app.json`, `package.json`, `eas.json` valid |
 | Full TypeScript typecheck | PASS — `tsc --noEmit` 0 errors |
-| Automated Unit & Logic Tests | PASS — 147 passing tests across dual-speed audio, CEFR milestone exams, sentence anatomy, word of the day, speed arcade, cloud sync |
+| Automated Unit & Logic Tests | PASS — 151 passing tests across audit remediation, roleplay intent, sequence scoring, clinic workouts, dual-speed audio |
 | Expo configuration validation | PASS — SDK 58.0.0 public config validated with plugins |
+| Roleplay Semantic Intent Validation | **PASS — Meaningless/off-topic text rejected; XP awarded only when communicative intent is met** |
+| Sequence-Aware Word Order Scoring | **PASS — Word order inversions strictly penalized; natural phrasing rewarded** |
+| Mistake Clinic Workout Preservation | **PASS — Custom remedial exercises preserved and executed directly in LessonScreen** |
+| Spanish Contextual AI Tutor | **PASS — Dedicated Spanish grammar knowledge base (Ser/Estar, Gustar, Por/Para, Subjuntivo)** |
+| Dark Theme Preference Persistence | **PASS — Saved to and loaded from persistent AsyncStorage** |
 | Dual-Speed Audio Engine | **PASS — Normal 🔊 1.0x & Slow Turtle 🐢 0.72x with pitch correction** |
 | CEFR Milestone Exams & Diplomas | **PASS — 12-question synthesis exams awarding official Gold Diplomas in Profile** |
 | Tap-to-Inspect Sentence Anatomy | **PASS — Interactive word pills with grammatical role & isolated meaning popover** |
@@ -19,7 +24,7 @@
 | Complete European Triad Symmetry | **PASS — 3 Full European Languages (French 🇫🇷, German 🇩🇪, Spanish 🇪🇸) across A1, A2, B1, B2** |
 | Interactive Sentence Scramble (Word Tiles) | **PASS — Scramble drill engine with tile assembly & backtrack support** |
 | Google Play App Bundle (.aab) | **PASS — Automated `./gradlew bundleRelease` producing signed store bundle** |
-| Google Play Cloud Auto-Backup | **PASS — Automated Android Google Drive AppData sync with conflict resolution** |
+| Local Backup & Google Drive Restore | **PASS — Verified local backup checkpoints with Android Google Drive AppData restore** |
 | Real Native Speech Recognition | **PASS — Native SpeechRecognizer integration (`expo-speech-recognition`) in FR/DE/ES** |
 | Anti-Gibberish & Strict Evaluation | **PASS — Speaking gibberish or wrong language is strictly rejected with failing score** |
 | Pedagogical Close Distractor Engine | **PASS — Same-chapter & structural proximity distractor generation** |
@@ -30,7 +35,7 @@
 | Tactile Haptic Feedback | **PASS — Native tactile pulses via `expo-haptics` with R8 keep rules** |
 | Midnight OLED Dark Theme | **PASS — Velvet dark night palette with instant toggle in Profile** |
 | Full Curriculum Scale | **PASS — 60 Units (360 vocabulary items & phrases across French, German, Spanish)** |
-| Pre-Rendered Native Studio Audio | **PASS — 360 Studio Neural MP3 recordings bundled in assets/audio/ (100% offline)** |
+| Pre-Rendered Studio-Quality Neural Audio | **PASS — 360 Studio Neural MP3 recordings bundled in assets/audio/ (100% offline)** |
 | Conversational AI Roleplay Engine | **PASS — Multi-turn simulations across Paris, Munich, and Madrid (+20 XP rewards)** |
 | "Ask ORRALI" AI Contextual Tutor | **PASS — Child-friendly grammar explanations, golden rules & translated examples** |
 | Smart Mistake Clinic | **PASS — SQLite error pattern diagnostics & 5-min remedial workout builder** |
@@ -52,20 +57,20 @@
 | Android Hardware Back Press | **PASS — Intercepted via `BackHandler` with exit confirmation** |
 | Android Keyboard Usability | **PASS — Wrapped in `KeyboardAvoidingView` and `ScrollView`** |
 | GitHub Actions CI/CD Pipeline | PASS — Automated build & release workflow in `.github/workflows/build-android.yml` |
-| Android Deliverables Generation | **SUCCESS (5.3.0 Standalone APK + Google Play AAB Bundle)** |
+| Android Deliverables Generation | **SUCCESS (5.4.0 Standalone APK + Google Play AAB Bundle)** |
 
 ---
 
 ## Direct Deliverable Download Links
 
-- **GitHub Release (v5.3.0):** [ORRALI v5.3.0 — The All-Stars Master Edition](https://github.com/AhmedRafique/ORRALI/releases/tag/v5.3.0)
-- **Direct APK Download:** [ORRALI-5.3.0.apk](https://github.com/AhmedRafique/ORRALI/releases/download/v5.3.0/ORRALI-5.3.0.apk)
-- **Google Play App Bundle (.aab):** [ORRALI-5.3.0.aab](https://github.com/AhmedRafique/ORRALI/releases/download/v5.3.0/ORRALI-5.3.0.aab)
+- **GitHub Release (v5.4.0):** [ORRALI v5.4.0 — Production Hardened Edition](https://github.com/AhmedRafique/ORRALI/releases/tag/v5.4.0)
+- **Direct APK Download:** [ORRALI-5.4.0.apk](https://github.com/AhmedRafique/ORRALI/releases/download/v5.4.0/ORRALI-5.4.0.apk)
+- **Google Play App Bundle (.aab):** [ORRALI-5.4.0.aab](https://github.com/AhmedRafique/ORRALI/releases/download/v5.4.0/ORRALI-5.4.0.aab)
 - **CI Build Workflow:** [GitHub Actions Build Android Deliverables](https://github.com/AhmedRafique/ORRALI/actions/workflows/build-android.yml)
 
 ---
 
 ## Device Installation (Redmi Note 14 Pro+ / Android)
-1. Download `ORRALI-5.3.0.apk` directly to your phone via browser or transfer via USB.
+1. Download `ORRALI-5.4.0.apk` directly to your phone via browser or transfer via USB.
 2. Tap the downloaded APK to install (uninstall any previous version if prompted).
-3. Launch **ORRALI** — explore the Turtle slow audio button, earn your CEFR Gold Diplomas, tap words to inspect their anatomy, and claim your Daily Word of the Day spark!
+3. Launch **ORRALI** — experience verified roleplay intent checking, sequence-aware pronunciation scoring, preserved Mistake Clinic workouts, and persistent dark mode!

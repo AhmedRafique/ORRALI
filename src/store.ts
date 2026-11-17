@@ -1,13 +1,15 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { loadProgressFromDb, saveProgressToDb } from './db';
 import { LangCode, Progress } from './types';
+import { ThemeMode } from './theme';
 import { emptyProgress } from './streak';
 
 export * from './streak';
 
 const KEY = 'orrali.progress.v2';
-const LEGACY_KEY = 'lingo.progress.v1';
-const LANGUAGE_KEY = 'orrali.language.v1';
+const LEGACY_KEY = 'orrali.progress.v1';
+const LANGUAGE_KEY = 'orrali.lang.v1';
+const THEME_KEY = 'orrali.theme.v1';
 
 export async function loadProgress(): Promise<Progress> {
   try {
@@ -70,6 +72,23 @@ export async function loadLanguage(): Promise<LangCode> {
 export async function saveLanguage(value: LangCode): Promise<void> {
   try {
     await AsyncStorage.setItem(LANGUAGE_KEY, value);
+  } catch {
+    /* best-effort */
+  }
+}
+
+export async function loadThemeMode(): Promise<ThemeMode> {
+  try {
+    const value = await AsyncStorage.getItem(THEME_KEY);
+    return value === 'dark' ? 'dark' : 'light';
+  } catch {
+    return 'light';
+  }
+}
+
+export async function saveThemeMode(value: ThemeMode): Promise<void> {
+  try {
+    await AsyncStorage.setItem(THEME_KEY, value);
   } catch {
     /* best-effort */
   }

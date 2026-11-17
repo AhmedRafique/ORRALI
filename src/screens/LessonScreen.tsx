@@ -27,7 +27,7 @@ import { breakdownSentence, WordAnatomy } from '../anatomy';
 import { playEarcon } from '../earcons';
 import { evaluatePronunciation } from '../scoring';
 import { triggerHaptic } from '../sensory';
-import { Course, Item, LessonCheckpoint, PronunciationResult } from '../types';
+import { Course, Exercise, Item, LessonCheckpoint, PronunciationResult } from '../types';
 
 const C = {
   midnight: '#1B1536',
@@ -46,6 +46,7 @@ interface Props {
   course: Course;
   title: string;
   items: Item[];
+  customExercises?: Exercise[];
   lessonId?: string;
   isReview?: boolean;
   initialIndex?: number;
@@ -60,6 +61,7 @@ export default function LessonScreen({
   course,
   title,
   items,
+  customExercises,
   lessonId,
   isReview = false,
   initialIndex = 0,
@@ -69,7 +71,12 @@ export default function LessonScreen({
   onSaveCheckpoint,
   onExit,
 }: Props) {
-  const exercises = useMemo(() => buildExercises(course, items, isReview), [course, items, isReview]);
+  const exercises = useMemo(() => {
+    if (customExercises && customExercises.length > 0) {
+      return customExercises;
+    }
+    return buildExercises(course, items, isReview);
+  }, [course, items, isReview, customExercises]);
   const [index, setIndex] = useState(Math.min(initialIndex, Math.max(0, exercises.length - 1)));
   const [answer, setAnswer] = useState('');
   const [picked, setPicked] = useState<string | null>(null);
@@ -596,7 +603,7 @@ export default function LessonScreen({
         {/* Phase 3: Multiple Choice */}
         {ex.kind === 'choice' && (
           <View style={s.options}>
-            {ex.options!.map((o, i) => (
+            {ex.options!.map((o: string, i: number) => (
               <Pressable
                 key={`${ex.item.id}-${o}-${i}`}
                 disabled={!!feedback}
@@ -645,7 +652,7 @@ export default function LessonScreen({
 
             {/* Word Tiles Bank */}
             <View style={s.tileBank}>
-              {ex.tokens?.map((token, tokenIdx) => {
+              {ex.tokens?.map((token: string, tokenIdx: number) => {
                 const isUsed = selectedIndices.includes(tokenIdx);
                 return (
                   <Pressable

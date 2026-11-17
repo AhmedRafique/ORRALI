@@ -41,6 +41,29 @@ describe('Google Play Cloud Sync & Backup Engine (TDD)', () => {
     assert.equal(verifyCloudBackupSnapshot(tampered), false);
   });
 
+  it('detects tampering or interval change on cards even when card count is identical', () => {
+    const p: Progress = {
+      ...emptyProgress(),
+      cards: {
+        'fr-1-1': { due: 1000, interval: 1, ease: 2.5, reps: 1, lapses: 0 },
+      },
+    };
+    const snapshot = createCloudBackupSnapshot(p);
+
+    // Tamper with card interval without changing card count
+    const tampered = {
+      ...snapshot,
+      progress: {
+        ...p,
+        cards: {
+          'fr-1-1': { due: 1000, interval: 21, ease: 2.5, reps: 5, lapses: 0 },
+        },
+      },
+    };
+
+    assert.equal(verifyCloudBackupSnapshot(tampered), false);
+  });
+
   it('merges local and remote cloud progress with conflict resolution', () => {
     const local: Progress = {
       ...emptyProgress(),

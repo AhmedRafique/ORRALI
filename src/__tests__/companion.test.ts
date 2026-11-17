@@ -74,10 +74,24 @@ describe('AI Companion & Roleplay Engine (TDD)', () => {
       assert.ok(answer.examples.some((ex) => ex.target.includes('Kaffee')));
     });
 
-    it('provides encouraging fallback for open-ended queries', () => {
-      const answer = askTutor('How can I sound more natural when speaking?', 'fr');
-      assert.ok(answer.childFriendlySummary.length > 0);
-      assert.ok(answer.goldenRule.length > 0);
+    it('answers Spanish Ser vs Estar and Gustar questions accurately', () => {
+      const answerSer = askTutor('When do I use ser versus estar?', 'es');
+      assert.ok(answerSer.topic.toLowerCase().includes('ser'));
+      assert.ok(answerSer.detailedExplanation.includes('DOCTOR') || answerSer.detailedExplanation.includes('identity'));
+
+      const answerGustar = askTutor('How does me gusta work in Spanish?', 'es');
+      assert.ok(answerGustar.topic.toLowerCase().includes('gustar'));
+    });
+
+    it('provides encouraging language-specific fallback for open-ended queries', () => {
+      const frAns = askTutor('How can I sound more natural?', 'fr');
+      assert.equal(frAns.topic, 'French Learning Tip');
+
+      const esAns = askTutor('How can I sound more natural?', 'es');
+      assert.equal(esAns.topic, 'Spanish Learning Tip');
+
+      const deAns = askTutor('How can I sound more natural?', 'de');
+      assert.equal(deAns.topic, 'German Learning Tip');
     });
 
     it('knowledge base covers all core A1 grammar themes', () => {
@@ -126,6 +140,19 @@ describe('AI Companion & Roleplay Engine (TDD)', () => {
       const turn2 = evaluateRoleplayTurn(scenario.id, 1, 'Kann ich mit Karte zahlen? Vielen Dank!');
       assert.equal(turn2.isCompleted, true);
       assert.equal(turn2.earnedXp, 20);
+    });
+
+    it('rejects off-topic or meaningless gibberish in roleplay without advancing or awarding XP', () => {
+      const scenario = ROLEPLAY_SCENARIOS.find((s) => s.id === 'roleplay-fr-cafe')!;
+
+      // Off-topic or random gibberish
+      const offTopic = evaluateRoleplayTurn(scenario.id, 0, 'asdf random blabla 123');
+      assert.equal(offTopic.isCompleted, false);
+      assert.equal(offTopic.earnedXp ?? 0, 0);
+      assert.ok(
+        offTopic.reply.feedback?.toLowerCase().includes('try') ||
+          offTopic.reply.target.toLowerCase().includes('pardon')
+      );
     });
   });
 });

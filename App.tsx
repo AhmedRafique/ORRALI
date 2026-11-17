@@ -24,8 +24,10 @@ import {
   emptyProgress,
   loadLanguage,
   loadProgress,
+  loadThemeMode,
   saveLanguage,
   saveProgress,
+  saveThemeMode,
   touchStreak,
 } from './src/store';
 import { Exercise, Item, LangCode, LessonCheckpoint, Progress } from './src/types';
@@ -37,6 +39,7 @@ type Session = {
   initialIndex?: number;
   initialCorrectIds?: string[];
   initialWrongIds?: string[];
+  customExercises?: Exercise[];
 } | null;
 
 type Tab = 'home' | 'journey' | 'profile';
@@ -59,7 +62,11 @@ export default function App() {
   const theme = getThemeColors(themeMode);
 
   const toggleActiveTheme = useCallback(() => {
-    setThemeMode((m) => toggleTheme(m));
+    setThemeMode((m) => {
+      const next = toggleTheme(m);
+      void saveThemeMode(next);
+      return next;
+    });
   }, []);
 
   const [resumeTarget, setResumeTarget] = useState<{
@@ -69,11 +76,14 @@ export default function App() {
 
   useEffect(() => {
     let active = true;
-    Promise.all([loadProgress(), loadLanguage()]).then(([savedProgress, savedLanguage]) => {
-      if (!active) return;
-      setProgress(savedProgress);
-      setCode(savedLanguage);
-    });
+    Promise.all([loadProgress(), loadLanguage(), loadThemeMode()]).then(
+      ([savedProgress, savedLanguage, savedTheme]) => {
+        if (!active) return;
+        setProgress(savedProgress);
+        setCode(savedLanguage);
+        setThemeMode(savedTheme);
+      }
+    );
     return () => {
       active = false;
     };
@@ -188,6 +198,7 @@ export default function App() {
     setSession({
       title: 'Mistake Clinic Workout',
       items: unique,
+      customExercises: exercises,
     });
   }, []);
 
@@ -318,6 +329,7 @@ export default function App() {
           course={course}
           title={session.title}
           items={session.items}
+          customExercises={session.customExercises}
           lessonId={session.lessonId}
           isReview={!session.lessonId}
           initialIndex={session.initialIndex}

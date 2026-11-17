@@ -8,16 +8,23 @@ export interface CloudBackupSnapshot {
 }
 
 /**
- * Generates a simple, deterministic checksum for progress verification.
+ * Generates a comprehensive, deterministic checksum for progress verification.
+ * Accurately detects changes to XP, streaks, completed chapters, and individual card intervals.
  */
 export function computeProgressChecksum(progress: Progress): string {
+  const cardSummary = Object.entries(progress.cards ?? {})
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([id, c]) => `${id}:${c.interval}:${c.reps}:${c.lapses}`)
+    .join('|');
+
   const serialized = JSON.stringify({
     xp: progress.xp,
     streak: progress.streak,
     lastDay: progress.lastDay,
     shields: progress.streakShields,
-    completedCount: Object.keys(progress.completed ?? {}).length,
-    cardsCount: Object.keys(progress.cards ?? {}).length,
+    completed: Object.keys(progress.completed ?? {}).sort(),
+    diplomas: Object.keys(progress.diplomas ?? {}).sort(),
+    cardSummary,
   });
 
   let hash = 0;
