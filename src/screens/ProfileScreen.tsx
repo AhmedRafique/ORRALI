@@ -107,7 +107,36 @@ export default function ProfileScreen({
         ))}
       </View>
 
-      <Text style={[s.sectionTitle, { marginTop: 24 }]}>Learning preferences</Text>
+      <View style={[s.sectionTop, { marginTop: 20 }]}>
+        <Text style={s.sectionTitle}>Official CEFR Diplomas</Text>
+        <Text style={s.sectionCounter}>
+          {Object.keys(progress.diplomas ?? {}).filter((k) => k.startsWith(code)).length} of 4 certified
+        </Text>
+      </View>
+
+      <View style={s.diplomasRow}>
+        {(['A1', 'A2', 'B1', 'B2'] as const).map((lvl) => {
+          const key = `${code}-${lvl}`;
+          const earnedTimestamp = progress.diplomas?.[key];
+          const isCertified = !!earnedTimestamp;
+
+          return (
+            <View key={lvl} style={[s.diplomaCard, isCertified && s.diplomaCardCertified]}>
+              <Text style={s.diplomaCardIcon}>{isCertified ? '🏅' : '🔒'}</Text>
+              <Text style={[s.diplomaCardLevel, isCertified && s.diplomaCardLevelCertified]}>
+                CEFR {lvl}
+              </Text>
+              <Text style={s.diplomaCardStatus}>
+                {isCertified
+                  ? `Certified`
+                  : '80% on Exam'}
+              </Text>
+            </View>
+          );
+        })}
+      </View>
+
+      <Text style={[s.sectionTitle, { marginTop: 20 }]}>Learning preferences</Text>
       <View style={s.panel}>
         <Text style={s.label}>CURRENT LEARNING WORLD</Text>
         {courses.map((course) => (
@@ -204,7 +233,7 @@ export default function ProfileScreen({
         <Text style={s.aboutBrand}>ORRALI</Text>
         <Text style={s.tagline}>Beyond the familiar.</Text>
         <Text style={s.aboutText}>A new world of possibilities. Discover · Connect · Grow.</Text>
-        <Text style={s.version}>ORRALI ARCADE SPEED EDITION · 5.2.0</Text></View>
+        <Text style={s.version}>ORRALI ALL-STARS EDITION · 5.3.0</Text></View>
     </ScrollView>
   );
 }
@@ -289,6 +318,21 @@ const s = StyleSheet.create({
     marginTop: 10,
   },
   badgeFill: { height: 4, backgroundColor: C.gold, borderRadius: 4 },
+  diplomasRow: { flexDirection: 'row', gap: 8, marginBottom: 16 },
+  diplomaCard: {
+    flex: 1,
+    backgroundColor: C.white,
+    borderRadius: 14,
+    padding: 10,
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: C.line,
+  },
+  diplomaCardCertified: { backgroundColor: '#FCFAF5', borderColor: C.gold },
+  diplomaCardIcon: { fontSize: 20, marginBottom: 4 },
+  diplomaCardLevel: { color: C.muted, fontSize: 11, fontWeight: '900' },
+  diplomaCardLevelCertified: { color: '#8A5D1E' },
+  diplomaCardStatus: { color: C.muted, fontSize: 8, marginTop: 2, textAlign: 'center' },
   panel: { backgroundColor: C.white, borderRadius: 18, padding: 16, borderWidth: 1, borderColor: C.line, marginBottom: 13 },
   cloudHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 },
   cloudActivePill: { backgroundColor: '#E4F2E8', paddingHorizontal: 8, paddingVertical: 4, borderRadius: 6 },

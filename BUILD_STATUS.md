@@ -1,4 +1,4 @@
-# Build status — ORRALI 5.2.0 (Speed Recall Arcade Edition)
+# Build status — ORRALI 5.3.0 (The All-Stars Master Edition)
 
 | Check | Result |
 |---|---|
@@ -6,8 +6,12 @@
 | TypeScript syntax transpilation | PASS — zero syntax diagnostics |
 | JSON configuration parsing | PASS — `app.json`, `package.json`, `eas.json` valid |
 | Full TypeScript typecheck | PASS — `tsc --noEmit` 0 errors |
-| Automated Unit & Logic Tests | PASS — 133 passing tests across adversarial audit, speed recall arcade, speech alignment, leniency threshold, cloud sync |
+| Automated Unit & Logic Tests | PASS — 147 passing tests across dual-speed audio, CEFR milestone exams, sentence anatomy, word of the day, speed arcade, cloud sync |
 | Expo configuration validation | PASS — SDK 58.0.0 public config validated with plugins |
+| Dual-Speed Audio Engine | **PASS — Normal 🔊 1.0x & Slow Turtle 🐢 0.72x with pitch correction** |
+| CEFR Milestone Exams & Diplomas | **PASS — 12-question synthesis exams awarding official Gold Diplomas in Profile** |
+| Tap-to-Inspect Sentence Anatomy | **PASS — Interactive word pills with grammatical role & isolated meaning popover** |
+| Daily Word of the Day Micro-Spark | **PASS — Featured cultural idiom rotating daily with flip context & +5 XP claim** |
 | 60-Second Speed Recall Arcade | **PASS — Live 60s countdown, combo multipliers & ranked tier XP rewards** |
 | Fuzzy Speech Alignment & Anti-Trap | **PASS — Resolved contraction index shift bug & added Continue Anyway button** |
 | Pedagogical Leniency Threshold (≥50%) | **PASS — Accepted with accent polish tip instead of blocking learner** |
@@ -48,20 +52,20 @@
 | Android Hardware Back Press | **PASS — Intercepted via `BackHandler` with exit confirmation** |
 | Android Keyboard Usability | **PASS — Wrapped in `KeyboardAvoidingView` and `ScrollView`** |
 | GitHub Actions CI/CD Pipeline | PASS — Automated build & release workflow in `.github/workflows/build-android.yml` |
-| Android Deliverables Generation | **SUCCESS (5.2.0 Standalone APK + Google Play AAB Bundle)** |
+| Android Deliverables Generation | **SUCCESS (5.3.0 Standalone APK + Google Play AAB Bundle)** |
 
 ---
 
 ## Direct Deliverable Download Links
 
-- **GitHub Release (v5.2.0):** [ORRALI v5.2.0 — 60-Second Speed Recall Arcade, Earcons & Play Store Ready](https://github.com/AhmedRafique/ORRALI/releases/tag/v5.2.0)
-- **Direct APK Download:** [ORRALI-5.2.0.apk](https://github.com/AhmedRafique/ORRALI/releases/download/v5.2.0/ORRALI-5.2.0.apk)
-- **Google Play App Bundle (.aab):** [ORRALI-5.2.0.aab](https://github.com/AhmedRafique/ORRALI/releases/download/v5.2.0/ORRALI-5.2.0.aab)
+- **GitHub Release (v5.3.0):** [ORRALI v5.3.0 — The All-Stars Master Edition](https://github.com/AhmedRafique/ORRALI/releases/tag/v5.3.0)
+- **Direct APK Download:** [ORRALI-5.3.0.apk](https://github.com/AhmedRafique/ORRALI/releases/download/v5.3.0/ORRALI-5.3.0.apk)
+- **Google Play App Bundle (.aab):** [ORRALI-5.3.0.aab](https://github.com/AhmedRafique/ORRALI/releases/download/v5.3.0/ORRALI-5.3.0.aab)
 - **CI Build Workflow:** [GitHub Actions Build Android Deliverables](https://github.com/AhmedRafique/ORRALI/actions/workflows/build-android.yml)
 
 ---
 
 ## Device Installation (Redmi Note 14 Pro+ / Android)
-1. Download `ORRALI-5.2.0.apk` directly to your phone via browser or transfer via USB.
+1. Download `ORRALI-5.3.0.apk` directly to your phone via browser or transfer via USB.
 2. Tap the downloaded APK to install (uninstall any previous version if prompted).
-3. Launch **ORRALI** — tap "Speed Recall Arcade" in the Companion Hub to test your reflexes against the 60-second timer!
+3. Launch **ORRALI** — explore the Turtle slow audio button, earn your CEFR Gold Diplomas, tap words to inspect their anatomy, and claim your Daily Word of the Day spark!

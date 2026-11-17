@@ -1,6 +1,9 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Modal, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { playPhraseAudio, stopAllAudio } from '../audio';
+import { playEarcon } from '../earcons';
+import { triggerHaptic } from '../sensory';
+import { getWordOfTheDay, isDailySparkClaimed, DailySparkWord } from '../wordOfDay';
 import { ROLEPLAY_SCENARIOS } from '../companion/roleplay';
 import { stories } from '../content';
 import { isDue } from '../srs';
@@ -11,6 +14,8 @@ import RoleplayModal from './RoleplayModal';
 import TutorModal from './TutorModal';
 import LexiconModal from './LexiconModal';
 import SpeedRecallModal from './SpeedRecallModal';
+import MilestoneExamModal from './MilestoneExamModal';
+import { CEFRLevel } from '../milestones';
 
 const C = {
   midnight: '#1B1536',
@@ -39,6 +44,8 @@ interface Props {
   onStartRemedialWorkout?: (exercises: Exercise[]) => void;
   onCompleteRoleplay?: (earnedXp: number) => void;
   onCompleteSpeedRecall?: (earnedXp: number) => void;
+  onPassMilestoneExam?: (earnedXp: number, diplomaKey: string) => void;
+  onClaimDailySpark?: (sparkWord: DailySparkWord) => void;
 }
 
 export default function HomeScreen({
@@ -53,6 +60,8 @@ export default function HomeScreen({
   onStartRemedialWorkout,
   onCompleteRoleplay,
   onCompleteSpeedRecall,
+  onPassMilestoneExam,
+  onClaimDailySpark,
 }: Props) {
   const [activeCapsule, setActiveCapsule] = useState<GrammarCapsule | null>(null);
   const [activeStory, setActiveStory] = useState<StoryScenario | null>(null);
@@ -60,9 +69,15 @@ export default function HomeScreen({
   const [isClinicOpen, setIsClinicOpen] = useState(false);
   const [isLexiconOpen, setIsLexiconOpen] = useState(false);
   const [isSpeedRecallOpen, setIsSpeedRecallOpen] = useState(false);
+  const [activeExamLevel, setActiveExamLevel] = useState<CEFRLevel | null>(null);
   const [activeRoleplay, setActiveRoleplay] = useState<RoleplayScenario | null>(null);
+  const [isSparkFlipped, setIsSparkFlipped] = useState(false);
   const [storyAnswer, setStoryAnswer] = useState<number | null>(null);
   const [storyCompleted, setStoryCompleted] = useState(false);
+
+  const today = dayKey(new Date());
+  const sparkWord = useMemo(() => getWordOfTheDay(course.code), [course.code]);
+  const sparkClaimed = isDailySparkClaimed(progress, today);
 
   const goal = progress.dailyGoal;
   const todayXp = progress.dailyXpDay === dayKey(new Date()) ? progress.dailyXp : 0;
@@ -116,6 +131,54 @@ export default function HomeScreen({
             {getEffectiveStreak(progress)} day streak {shields > 0 ? `· 🛡️ ${shields}` : ''}
           </Text>
         </View>
+      </View>
+
+      {/* Daily Word of the Day Micro-Spark Card */}
+      <View style={s.sparkCard}>
+        <View style={s.sparkTop}>
+          <View style={s.sparkBadge}>
+            <Text style={s.sparkBadgeText}>✦ WORD OF THE DAY · {sparkWord.category.toUpperCase()}</Text>
+          </View>
+          {sparkClaimed ? (
+            <View style={s.sparkClaimedPill}>
+              <Text style={s.sparkClaimedText}>✓ +5 XP CLAIMED</Text>
+            </View>
+          ) : (
+            <Pressable
+              style={s.claimSparkBtn}
+              onPress={() => {
+                void triggerHaptic('success');
+                void playEarcon('success');
+                onClaimDailySpark?.(sparkWord);
+              }}
+            >
+              <Text style={s.claimSparkText}>Claim +5 XP Spark</Text>
+            </Pressable>
+          )}
+        </View>
+
+        <Pressable
+          style={s.sparkBody}
+          onPress={() => {
+            void triggerHaptic('selection');
+            setIsSparkFlipped(!isSparkFlipped);
+          }}
+        >
+          {!isSparkFlipped ? (
+            <View>
+              <Text style={s.sparkPhrase}>{sparkWord.phrase}</Text>
+              <Text style={s.sparkPhonetic}>/{sparkWord.phonetic}/</Text>
+              <Text style={s.sparkMeaning}>"{sparkWord.meaningEn}"</Text>
+              <Text style={s.sparkFlipHint}>Tap card for cultural insight ↻</Text>
+            </View>
+          ) : (
+            <View>
+              <Text style={s.sparkInsightTitle}>Cultural Context & Wisdom</Text>
+              <Text style={s.sparkInsightText}>{sparkWord.culturalInsight}</Text>
+              <Text style={s.sparkFlipHint}>Tap card to flip back ↻</Text>
+            </View>
+          )}
+        </Pressable>
       </View>
 
       {/* Goal & Daily Spark Card */}
@@ -211,6 +274,15 @@ export default function HomeScreen({
           <View style={{ flex: 1 }}>
             <Text style={s.companionTitle}>Speed Recall Arcade</Text>
             <Text style={s.companionSub}>60s rapid-fire matching challenge</Text>
+          </View>
+          <Text style={s.companionArrow}>›</Text>
+        </Pressable>
+
+        <Pressable style={s.companionBtn} onPress={() => setActiveExamLevel('A1')}>
+          <Text style={s.companionIcon}>🏅</Text>
+          <View style={{ flex: 1 }}>
+            <Text style={s.companionTitle}>CEFR Milestone Exams</Text>
+            <Text style={s.companionSub}>Synthesis exams & Official Gold Diplomas</Text>
           </View>
           <Text style={s.companionArrow}>›</Text>
         </Pressable>
@@ -559,6 +631,20 @@ export default function HomeScreen({
         }}
         onClose={() => setIsSpeedRecallOpen(false)}
       />
+
+      {/* CEFR Milestone Exam Modal */}
+      {activeExamLevel && (
+        <MilestoneExamModal
+          visible={!!activeExamLevel}
+          course={course}
+          level={activeExamLevel}
+          onPass={(earnedXp, diplomaKey) => {
+            setActiveExamLevel(null);
+            onPassMilestoneExam?.(earnedXp, diplomaKey);
+          }}
+          onClose={() => setActiveExamLevel(null)}
+        />
+      )}
     </ScrollView>
   );
 }
@@ -596,6 +682,33 @@ const s = StyleSheet.create({
   },
   streakIcon: { color: '#A8793F', fontSize: 13 },
   streakText: { color: '#77562E', fontSize: 10, fontWeight: '800' },
+  sparkCard: {
+    backgroundColor: '#FCFAF5',
+    borderRadius: 22,
+    borderWidth: 1.5,
+    borderColor: '#E6D7BD',
+    padding: 18,
+    marginBottom: 16,
+    shadowColor: C.gold,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.12,
+    shadowRadius: 8,
+    elevation: 3,
+  },
+  sparkTop: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 },
+  sparkBadge: { backgroundColor: '#F1E5CF', paddingHorizontal: 9, paddingVertical: 4, borderRadius: 8 },
+  sparkBadgeText: { color: '#82591F', fontSize: 8, fontWeight: '900', letterSpacing: 1 },
+  sparkClaimedPill: { backgroundColor: '#E4F2E8', paddingHorizontal: 8, paddingVertical: 4, borderRadius: 6 },
+  sparkClaimedText: { color: '#3A704B', fontSize: 9, fontWeight: '900' },
+  claimSparkBtn: { backgroundColor: C.midnight, paddingHorizontal: 10, paddingVertical: 5, borderRadius: 8 },
+  claimSparkText: { color: C.gold, fontSize: 9, fontWeight: '800' },
+  sparkBody: { paddingVertical: 4 },
+  sparkPhrase: { color: C.midnight, fontSize: 21, fontWeight: '800' },
+  sparkPhonetic: { color: C.gold, fontSize: 13, fontWeight: '700', marginTop: 3 },
+  sparkMeaning: { color: C.ink, fontSize: 14, fontWeight: '600', marginTop: 4 },
+  sparkFlipHint: { color: C.muted, fontSize: 9, fontWeight: '700', marginTop: 10 },
+  sparkInsightTitle: { color: '#82591F', fontSize: 12, fontWeight: '800', marginBottom: 4 },
+  sparkInsightText: { color: C.ink, fontSize: 12, lineHeight: 18, fontWeight: '600' },
   goalCard: { backgroundColor: C.midnight, borderRadius: 22, padding: 19, marginBottom: 28 },
   goalTop: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start' },
   cardKicker: { color: '#C8B7D9', fontSize: 9, letterSpacing: 1.6, fontWeight: '800' },

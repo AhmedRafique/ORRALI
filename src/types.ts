@@ -194,4 +194,6 @@ export interface Progress {
   cards: Record<string, Card>;
   checkpoints?: Record<string, LessonCheckpoint>;
   badges?: Record<string, number>;
+  diplomas?: Record<string, number>;
+  dailySparkClaimedDay?: string;
 }

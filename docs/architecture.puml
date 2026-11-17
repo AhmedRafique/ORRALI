@@ -1,4 +1,4 @@
-@startuml ORRALI_Architecture_v5_2
+@startuml ORRALI_Architecture_v5_3
 !theme plain
 skinparam backgroundColor #F8F6F1
 skinparam defaultFontName Arial
@@ -6,7 +6,7 @@ skinparam packageBackgroundColor #FFFFFF
 skinparam packageBorderColor #1B1536
 skinparam componentStyle uml2
 
-title ORRALI Architecture (Version 5.2.0 — Speed Recall Arcade & Acoustic Harmony)
+title ORRALI Architecture (Version 5.3.0 — The All-Stars Master Edition)
 
 package "Presentation & UI Layer (React Native / Expo)" {
   [App.tsx
@@ -14,20 +14,22 @@ Root Orchestrator] as App
   
   package "Screens & Dashboards" {
     [HomeScreen
-Path, Quests & Hub] as HomeScreen
+Word of Day, Path & Hub] as HomeScreen
     [ProgressScreen
 Journey & Course XP] as ProgressScreen
     [ProfileScreen
-Trophy Shelf, Cloud Sync & Goals] as ProfileScreen
+Diplomas, Cloud Sync & Goals] as ProfileScreen
     [LessonScreen
-Word Tiles, Anti-Trap Speech & Lab] as LessonScreen
+Sentence Anatomy, Turtle Audio & Speech Lab] as LessonScreen
   }
 
   package "Interactive Modals" {
+    [MilestoneExamModal
+CEFR Milestone Exams] as MilestoneModal
     [SpeedRecallModal
 60s Speed Arcade] as SpeedModal
     [LexiconModal
-Smart Search & Flashcards] as LexiconModal
+Smart Search & Dual-Speed Flashcards] as LexiconModal
     [TutorModal
 Ask ORRALI Tutor] as TutorModal
     [MistakeClinicModal
@@ -37,9 +39,15 @@ Conversational Simulation] as RoleplayModal
   }
 }
 
-package "Arcade & Speed Challenge Engine" {
+package "Sentence Anatomy & Micro-Spark Engines" {
+  [anatomy.ts
+Sentence Anatomy & Word Breakdown] as AnatomyEngine
+  [wordOfDay.ts
+Daily Idiom Pool & Micro-Spark] as WordOfDayEngine
+  [milestones.ts
+Milestone Exams & CEFR Diplomas] as MilestoneEngine
   [speedRecall.ts
-Deck Generator & Score Engine] as SpeedEngine
+Speed Arcade & Combo Streaks] as SpeedEngine
 }
 
 package "Smart Lexicon & Flashcard Engine" {
@@ -87,6 +95,8 @@ Dual-Write Repository] as Store
 package "Audio Engine & Acoustic Harmony" {
   [audio.ts
 expo-audio Playback & Recording] as AudioEngine
+  [audioSpeed.ts
+Dual-Speed Rate Engine (Normal & Turtle)] as AudioSpeed
   [audioMap.ts
 360 Pre-Rendered Studio MP3s] as AudioMap
   [earcons.ts
@@ -106,13 +116,16 @@ App --> ProfileScreen
 App --> LessonScreen
 App --> ThemeEngine
 
+HomeScreen --> MilestoneModal
 HomeScreen --> SpeedModal
 HomeScreen --> LexiconModal
 HomeScreen --> TutorModal
 HomeScreen --> ClinicModal
 HomeScreen --> RoleplayModal
+HomeScreen --> WordOfDayEngine
 
 ' Modals to Engines
+MilestoneModal --> MilestoneEngine
 SpeedModal --> SpeedEngine
 SpeedModal --> EarconEngine
 SpeedModal --> SensoryEngine
@@ -125,7 +138,9 @@ RoleplayModal --> RoleplayEngine
 ' Screen to Domain
 LessonScreen --> Exercises
 LessonScreen --> Scoring
+LessonScreen --> AnatomyEngine
 LessonScreen --> AudioEngine
+LessonScreen --> AudioSpeed
 LessonScreen --> EarconEngine
 LessonScreen --> SensoryEngine
 ProfileScreen --> ThemeEngine
@@ -137,6 +152,7 @@ Store --> SQLiteDB
 Store --> AsyncBackup
 Exercises --> Content
 AudioEngine --> AudioMap
+AudioEngine --> AudioSpeed
 SRS --> Store
 
 @enduml

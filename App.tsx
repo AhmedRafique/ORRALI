@@ -18,6 +18,7 @@ import { review, isDue } from './src/srs';
 import { recordAttemptToDb } from './src/db';
 import { evaluateBadges } from './src/badges';
 import { getThemeColors, toggleTheme, ThemeMode } from './src/theme';
+import { DailySparkWord } from './src/wordOfDay';
 import {
   dayKey,
   emptyProgress,
@@ -234,6 +235,57 @@ export default function App() {
     [course.code, progress, updateProgress],
   );
 
+  const passMilestoneExam = useCallback(
+    (earnedXp: number, diplomaKey: string) => {
+      const current = progress ?? emptyProgress();
+      let p = touchStreak(current);
+      const today = dayKey(new Date());
+      const currentCourseXp = p.courseXp?.[course.code] ?? 0;
+      p = {
+        ...p,
+        xp: p.xp + earnedXp,
+        courseXp: {
+          ...(p.courseXp ?? {}),
+          [course.code]: currentCourseXp + earnedXp,
+        },
+        dailyXp: (p.dailyXpDay === today ? p.dailyXp : 0) + earnedXp,
+        dailyXpDay: today,
+        diplomas: {
+          ...(p.diplomas ?? {}),
+          [diplomaKey]: Date.now(),
+        },
+      };
+      const { updatedProgress } = evaluateBadges(p, courses);
+      updateProgress(updatedProgress);
+    },
+    [course.code, progress, updateProgress],
+  );
+
+  const claimDailySpark = useCallback(
+    (sparkWord: DailySparkWord) => {
+      const current = progress ?? emptyProgress();
+      const today = dayKey(new Date());
+      if (current.dailySparkClaimedDay === today) return;
+
+      let p = touchStreak(current);
+      const currentCourseXp = p.courseXp?.[course.code] ?? 0;
+      p = {
+        ...p,
+        xp: p.xp + sparkWord.bonusXp,
+        courseXp: {
+          ...(p.courseXp ?? {}),
+          [course.code]: currentCourseXp + sparkWord.bonusXp,
+        },
+        dailyXp: (p.dailyXpDay === today ? p.dailyXp : 0) + sparkWord.bonusXp,
+        dailyXpDay: today,
+        dailySparkClaimedDay: today,
+      };
+      const { updatedProgress } = evaluateBadges(p, courses);
+      updateProgress(updatedProgress);
+    },
+    [course.code, progress, updateProgress],
+  );
+
   if (!progress) {
     return (
       <SafeAreaView style={s.loading}>
@@ -290,6 +342,8 @@ export default function App() {
                 onStartRemedialWorkout={startRemedialWorkout}
                 onCompleteRoleplay={completeRoleplay}
                 onCompleteSpeedRecall={completeSpeedRecall}
+                onPassMilestoneExam={passMilestoneExam}
+                onClaimDailySpark={claimDailySpark}
                 onStartReview={() => {
                   const due = course.lessons
                     .flatMap((lesson) => lesson.items)

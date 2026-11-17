@@ -3,6 +3,10 @@ import { createAudioPlayer, AudioPlayer } from 'expo-audio';
 import { AUDIO_ASSETS } from './audioMap';
 import { Item } from './types';
 
+import { resolvePlaybackRate } from './audioSpeed';
+
+export * from './audioSpeed';
+
 let currentPlayer: AudioPlayer | null = null;
 
 /**
@@ -62,14 +66,18 @@ export async function findBestVoiceForLanguage(langCode: string): Promise<string
 /**
  * Play an item's phrase:
  * 1. Uses pre-rendered high-fidelity human studio audio if available in bundle.
+ *    Supports pitch-preserved slow turtle playback (0.72x) or normal speed (1.0x).
  * 2. Falls back to high-definition neural TTS speech synthesis.
  */
 export async function playPhraseAudio(
   item: Item,
   langCode: string,
-  preferredVoiceId?: string
+  preferredVoiceId?: string,
+  isSlow = false
 ): Promise<void> {
   await stopAllAudio();
+
+  const { playerRate, ttsRate } = resolvePlaybackRate(isSlow);
 
   // 1. Play pre-rendered studio human audio from bundled assets
   const audioSource = item.audio ?? AUDIO_ASSETS[item.id];
@@ -77,6 +85,8 @@ export async function playPhraseAudio(
     try {
       const player = createAudioPlayer(audioSource);
       currentPlayer = player;
+      player.shouldCorrectPitch = true;
+      player.setPlaybackRate(playerRate);
       player.play();
       return;
     } catch (err) {
@@ -88,7 +98,7 @@ export async function playPhraseAudio(
   Speech.speak(item.target, {
     language: langCode,
     voice: preferredVoiceId,
-    rate: 0.88,
+    rate: ttsRate,
     pitch: 1.0,
   });
 }

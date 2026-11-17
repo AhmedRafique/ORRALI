@@ -50,8 +50,8 @@ export default function LexiconModal({ visible, course, progress, onClose }: Pro
 
   const currentFlashcard = flashcardDeck[flashcardIndex];
 
-  const playAudio = (item: Item) => {
-    void playPhraseAudio(item, course.code);
+  const playAudio = (item: Item, isSlow = false) => {
+    void playPhraseAudio(item, course.code, undefined, isSlow);
   };
 
   const handleClose = () => {
@@ -113,12 +113,20 @@ export default function LexiconModal({ visible, course, progress, onClose }: Pro
                       {currentFlashcard.item.phonetic && (
                         <Text style={s.flashcardPhonetic}>/{currentFlashcard.item.phonetic}/</Text>
                       )}
-                      <Pressable
-                        style={s.flashcardAudioBtn}
-                        onPress={() => playAudio(currentFlashcard.item)}
-                      >
-                        <Text style={s.flashcardAudioIcon}>🔊 Hear pronunciation</Text>
-                      </Pressable>
+                      <View style={s.flashcardAudioRow}>
+                        <Pressable
+                          style={s.flashcardAudioBtn}
+                          onPress={() => playAudio(currentFlashcard.item, false)}
+                        >
+                          <Text style={s.flashcardAudioIcon}>🔊 Normal</Text>
+                        </Pressable>
+                        <Pressable
+                          style={s.flashcardTurtleBtn}
+                          onPress={() => playAudio(currentFlashcard.item, true)}
+                        >
+                          <Text style={s.flashcardTurtleIcon}>🐢 Slow</Text>
+                        </Pressable>
+                      </View>
                     </View>
                   ) : (
                     <View style={s.flashcardContent}>
@@ -239,12 +247,20 @@ export default function LexiconModal({ visible, course, progress, onClose }: Pro
                               <Text style={s.entryPhonetic}>/{entry.item.phonetic}/</Text>
                             )}
                           </View>
-                          <Pressable
-                            style={s.entryAudioBtn}
-                            onPress={() => playAudio(entry.item)}
-                          >
-                            <Text style={s.entryAudioIcon}>🔊</Text>
-                          </Pressable>
+                          <View style={s.entryAudioGroup}>
+                            <Pressable
+                              style={s.entryAudioBtn}
+                              onPress={() => playAudio(entry.item, false)}
+                            >
+                              <Text style={s.entryAudioIcon}>🔊</Text>
+                            </Pressable>
+                            <Pressable
+                              style={s.entryTurtleBtn}
+                              onPress={() => playAudio(entry.item, true)}
+                            >
+                              <Text style={s.entryTurtleIcon}>🐢</Text>
+                            </Pressable>
+                          </View>
                         </View>
 
                         <Text style={s.entryEn}>{entry.item.en}</Text>
@@ -375,8 +391,11 @@ const s = StyleSheet.create({
   entryTop: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start' },
   entryTarget: { color: C.midnight, fontSize: 15, fontWeight: '800' },
   entryPhonetic: { color: C.gold, fontSize: 12, fontWeight: '700', marginTop: 2 },
+  entryAudioGroup: { flexDirection: 'row', gap: 6, alignItems: 'center' },
   entryAudioBtn: { padding: 4 },
   entryAudioIcon: { fontSize: 14 },
+  entryTurtleBtn: { padding: 4 },
+  entryTurtleIcon: { fontSize: 13 },
   entryEn: { color: C.ink, fontSize: 12, marginTop: 4, marginBottom: 8 },
   entryBottom: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   entryLesson: { color: C.muted, fontSize: 10 },
@@ -409,8 +428,11 @@ const s = StyleSheet.create({
   flashcardContent: { alignItems: 'center' },
   flashcardTarget: { color: C.white, fontSize: 26, fontWeight: '800', textAlign: 'center', marginBottom: 6 },
   flashcardPhonetic: { color: C.gold, fontSize: 15, fontWeight: '700', marginBottom: 14 },
+  flashcardAudioRow: { flexDirection: 'row', gap: 8 },
   flashcardAudioBtn: { backgroundColor: '#43345E', paddingHorizontal: 12, paddingVertical: 6, borderRadius: 10 },
   flashcardAudioIcon: { color: C.gold, fontSize: 11, fontWeight: '800' },
+  flashcardTurtleBtn: { backgroundColor: '#3A2C52', paddingHorizontal: 10, paddingVertical: 6, borderRadius: 10 },
+  flashcardTurtleIcon: { color: C.gold, fontSize: 11, fontWeight: '800' },
   flashcardMeaning: { color: C.white, fontSize: 20, fontWeight: '800', textAlign: 'center', marginBottom: 8 },
   flashcardLesson: { color: C.gold, fontSize: 11, fontWeight: '800', marginBottom: 8 },
   flashcardNotes: { color: '#E4DBEC', fontSize: 11, textAlign: 'center', paddingHorizontal: 10 },

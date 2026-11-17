@@ -23,6 +23,7 @@ import {
 } from 'expo-speech-recognition';
 import { findBestVoiceForLanguage, playPhraseAudio, stopAllAudio } from '../audio';
 import { buildExercises, evaluateAnswer, evaluateScramble } from '../exercises';
+import { breakdownSentence, WordAnatomy } from '../anatomy';
 import { playEarcon } from '../earcons';
 import { evaluatePronunciation } from '../scoring';
 import { triggerHaptic } from '../sensory';
@@ -84,6 +85,7 @@ export default function LessonScreen({
   const [recordedUri, setRecordedUri] = useState<string | null>(null);
   const [liveTranscript, setLiveTranscript] = useState('');
   const [selectedIndices, setSelectedIndices] = useState<number[]>([]);
+  const [inspectedWord, setInspectedWord] = useState<WordAnatomy | null>(null);
   const [pronunciation, setPronunciation] = useState<PronunciationResult | null>(null);
 
   useSpeechRecognitionEvent('result', (event) => {
@@ -99,6 +101,11 @@ export default function LessonScreen({
 
   const ex = exercises[index];
   const progress = (index + (feedback ? 1 : 0)) / Math.max(1, exercises.length);
+
+  const anatomyTokens = useMemo(
+    () => (ex?.item ? breakdownSentence(ex.item.target, course.code) : []),
+    [ex?.item, course.code]
+  );
 
   // Discover and set highest quality neural voice for course language (e.g. French / German)
   useEffect(() => {
@@ -127,6 +134,7 @@ export default function LessonScreen({
     setIsRecording(false);
     setRecordedUri(null);
     setSelectedIndices([]);
+    setInspectedWord(null);
 
     if (ex?.kind === 'intro') {
       const timer = setTimeout(() => {
@@ -190,8 +198,8 @@ export default function LessonScreen({
     );
   };
 
-  const speak = (item: Item) => {
-    void playPhraseAudio(item, course.code, voiceId);
+  const speak = (item: Item, isSlow = false) => {
+    void playPhraseAudio(item, course.code, voiceId, isSlow);
   };
 
   // Speaking Recording Handlers
@@ -426,10 +434,50 @@ export default function LessonScreen({
             <Text style={s.introTarget}>{ex.item.target}</Text>
             {ex.item.phonetic && <Text style={s.introPhonetic}>/{ex.item.phonetic}/</Text>}
             <Text style={s.introMeaning}>{ex.item.en}</Text>
-            <Pressable style={s.playButton} onPress={() => speak(ex.item)}>
-              <Text style={s.playIcon}>▶</Text>
-              <Text style={s.playText}>Listen carefully</Text>
-            </Pressable>
+
+            {/* Tap-to-Inspect Sentence Anatomy */}
+            <View style={s.anatomyRow}>
+              {anatomyTokens.map((t, idx) => (
+                <Pressable
+                  key={`${t.word}-${idx}`}
+                  style={[s.wordPillInteractive, inspectedWord?.word === t.word && s.wordPillInspected]}
+                  onPress={() => {
+                    void triggerHaptic('light');
+                    setInspectedWord(inspectedWord?.word === t.word ? null : t);
+                  }}
+                >
+                  <Text
+                    style={[
+                      s.wordPillInteractiveText,
+                      inspectedWord?.word === t.word && s.wordPillInspectedText,
+                    ]}
+                  >
+                    {t.word}
+                  </Text>
+                </Pressable>
+              ))}
+            </View>
+
+            {inspectedWord && (
+              <View style={s.anatomyPopover}>
+                <View style={s.popoverTop}>
+                  <Text style={s.popoverWord}>{inspectedWord.cleanWord}</Text>
+                  <Text style={s.popoverRole}>{inspectedWord.role}</Text>
+                </View>
+                <Text style={s.popoverMeaning}>Meaning: {inspectedWord.meaningEn}</Text>
+              </View>
+            )}
+
+            <View style={s.audioRow}>
+              <Pressable style={s.playButton} onPress={() => speak(ex.item, false)}>
+                <Text style={s.playIcon}>▶</Text>
+                <Text style={s.playText}>Normal</Text>
+              </Pressable>
+              <Pressable style={s.turtleButton} onPress={() => speak(ex.item, true)}>
+                <Text style={s.turtleIcon}>🐢</Text>
+                <Text style={s.turtleText}>Slow</Text>
+              </Pressable>
+            </View>
             {ex.item.notes && (
               <View style={s.notesBox}>
                 <Text style={s.notesTitle}>CULTURAL & USAGE TIP</Text>
@@ -446,10 +494,16 @@ export default function LessonScreen({
             {ex.item.phonetic && <Text style={s.speakPhonetic}>/{ex.item.phonetic}/</Text>}
             <Text style={s.speakMeaning}>{ex.item.en}</Text>
 
-            <Pressable style={s.playButton} onPress={() => speak(ex.item)}>
-              <Text style={s.playIcon}>▶</Text>
-              <Text style={s.playText}>Listen to pronunciation</Text>
-            </Pressable>
+            <View style={s.audioRow}>
+              <Pressable style={s.playButton} onPress={() => speak(ex.item, false)}>
+                <Text style={s.playIcon}>▶</Text>
+                <Text style={s.playText}>Normal</Text>
+              </Pressable>
+              <Pressable style={s.turtleButton} onPress={() => speak(ex.item, true)}>
+                <Text style={s.turtleIcon}>🐢</Text>
+                <Text style={s.turtleText}>Slow</Text>
+              </Pressable>
+            </View>
 
             <View style={s.micArea}>
               <Pressable
@@ -614,10 +668,16 @@ export default function LessonScreen({
         {/* Phase 4: Listen & Write */}
         {ex.kind === 'listen' && (
           <View style={s.listenPanel}>
-            <Pressable style={s.playButton} onPress={() => speak(ex.item)}>
-              <Text style={s.playIcon}>▶</Text>
-              <Text style={s.playText}>Play audio</Text>
-            </Pressable>
+            <View style={s.audioRow}>
+              <Pressable style={s.playButton} onPress={() => speak(ex.item, false)}>
+                <Text style={s.playIcon}>▶</Text>
+                <Text style={s.playText}>Normal</Text>
+              </Pressable>
+              <Pressable style={s.turtleButton} onPress={() => speak(ex.item, true)}>
+                <Text style={s.turtleIcon}>🐢</Text>
+                <Text style={s.turtleText}>Slow</Text>
+              </Pressable>
+            </View>
             <Text style={s.listenHint}>Listen to the pronunciation, then write the phrase.</Text>
             <TextInput
               style={s.input}
@@ -769,8 +829,52 @@ const s = StyleSheet.create({
     color: C.ink,
     fontSize: 18,
     fontWeight: '600',
-    marginBottom: 20,
+    marginBottom: 10,
   },
+  anatomyRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 6,
+    marginVertical: 10,
+  },
+  wordPillInteractive: {
+    backgroundColor: '#F3EEF8',
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#E2D7EC',
+  },
+  wordPillInspected: {
+    backgroundColor: C.midnight,
+    borderColor: C.midnight,
+  },
+  wordPillInteractiveText: {
+    color: C.midnight,
+    fontSize: 13,
+    fontWeight: '800',
+  },
+  wordPillInspectedText: {
+    color: C.gold,
+  },
+  anatomyPopover: {
+    backgroundColor: '#FCFAF5',
+    borderRadius: 14,
+    borderWidth: 1.5,
+    borderColor: C.gold,
+    padding: 12,
+    marginBottom: 12,
+    width: '100%',
+  },
+  popoverTop: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 4,
+  },
+  popoverWord: { color: C.midnight, fontSize: 14, fontWeight: '800' },
+  popoverRole: { color: '#8A5D1E', fontSize: 10, fontWeight: '800', textTransform: 'uppercase' },
+  popoverMeaning: { color: C.ink, fontSize: 12, fontWeight: '600' },
   notesBox: {
     backgroundColor: '#FBF9F4',
     borderLeftWidth: 3,
@@ -983,19 +1087,37 @@ const s = StyleSheet.create({
   optionTextPicked: { color: C.midnight },
   optionLetter: { color: '#A69DAC', fontSize: 10, fontWeight: '800', marginLeft: 10 },
   listenPanel: { marginTop: 12 },
-  playButton: {
+  audioRow: {
     alignSelf: 'center',
     flexDirection: 'row',
-    alignItems: 'center',
     gap: 10,
-    backgroundColor: C.midnight,
-    paddingHorizontal: 18,
-    paddingVertical: 12,
-    borderRadius: 15,
     marginBottom: 6,
+    alignItems: 'center',
+  },
+  playButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    backgroundColor: C.midnight,
+    paddingHorizontal: 16,
+    paddingVertical: 11,
+    borderRadius: 14,
   },
   playIcon: { color: C.gold, fontSize: 12 },
   playText: { color: C.white, fontWeight: '800', fontSize: 12 },
+  turtleButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    backgroundColor: '#F3EEF8',
+    borderWidth: 1.5,
+    borderColor: '#DED5E6',
+    paddingHorizontal: 14,
+    paddingVertical: 10,
+    borderRadius: 14,
+  },
+  turtleIcon: { fontSize: 14 },
+  turtleText: { color: C.midnight, fontWeight: '800', fontSize: 12 },
   listenHint: { color: C.muted, fontSize: 12, lineHeight: 18, marginTop: 16, marginBottom: 12, textAlign: 'center' },
   input: {
     backgroundColor: C.white,
