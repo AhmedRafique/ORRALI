@@ -2,7 +2,7 @@
   "expo": {
     "name": "ORRALI",
     "slug": "orrali",
-    "version": "5.1.0",
+    "version": "5.2.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -22,7 +22,7 @@
       },
       "predictiveBackGestureEnabled": false,
       "package": "com.orrali.app",
-      "versionCode": 6,
+      "versionCode": 7,
       "allowBackup": true
     },
     "plugins": [

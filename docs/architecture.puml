@@ -1,4 +1,4 @@
-@startuml ORRALI_Architecture_v5_1
+@startuml ORRALI_Architecture_v5_2
 !theme plain
 skinparam backgroundColor #F8F6F1
 skinparam defaultFontName Arial
@@ -6,7 +6,7 @@ skinparam packageBackgroundColor #FFFFFF
 skinparam packageBorderColor #1B1536
 skinparam componentStyle uml2
 
-title ORRALI Architecture (Version 5.1.0 — Acoustic Harmony & Speech Leniency)
+title ORRALI Architecture (Version 5.2.0 — Speed Recall Arcade & Acoustic Harmony)
 
 package "Presentation & UI Layer (React Native / Expo)" {
   [App.tsx
@@ -24,6 +24,8 @@ Word Tiles, Anti-Trap Speech & Lab] as LessonScreen
   }
 
   package "Interactive Modals" {
+    [SpeedRecallModal
+60s Speed Arcade] as SpeedModal
     [LexiconModal
 Smart Search & Flashcards] as LexiconModal
     [TutorModal
@@ -33,6 +35,11 @@ Smart Mistake Clinic] as ClinicModal
     [RoleplayModal
 Conversational Simulation] as RoleplayModal
   }
+}
+
+package "Arcade & Speed Challenge Engine" {
+  [speedRecall.ts
+Deck Generator & Score Engine] as SpeedEngine
 }
 
 package "Smart Lexicon & Flashcard Engine" {
@@ -99,12 +106,16 @@ App --> ProfileScreen
 App --> LessonScreen
 App --> ThemeEngine
 
+HomeScreen --> SpeedModal
 HomeScreen --> LexiconModal
 HomeScreen --> TutorModal
 HomeScreen --> ClinicModal
 HomeScreen --> RoleplayModal
 
 ' Modals to Engines
+SpeedModal --> SpeedEngine
+SpeedModal --> EarconEngine
+SpeedModal --> SensoryEngine
 LexiconModal --> LexiconEngine
 LexiconModal --> AudioEngine
 ClinicModal --> ClinicEngine

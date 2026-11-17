@@ -212,6 +212,28 @@ export default function App() {
     [course.code, progress, updateProgress],
   );
 
+  const completeSpeedRecall = useCallback(
+    (earnedXp: number) => {
+      const current = progress ?? emptyProgress();
+      let p = touchStreak(current);
+      const today = dayKey(new Date());
+      const currentCourseXp = p.courseXp?.[course.code] ?? 0;
+      p = {
+        ...p,
+        xp: p.xp + earnedXp,
+        courseXp: {
+          ...(p.courseXp ?? {}),
+          [course.code]: currentCourseXp + earnedXp,
+        },
+        dailyXp: (p.dailyXpDay === today ? p.dailyXp : 0) + earnedXp,
+        dailyXpDay: today,
+      };
+      const { updatedProgress } = evaluateBadges(p, courses);
+      updateProgress(updatedProgress);
+    },
+    [course.code, progress, updateProgress],
+  );
+
   if (!progress) {
     return (
       <SafeAreaView style={s.loading}>
@@ -267,6 +289,7 @@ export default function App() {
                 onCompleteStory={completeStory}
                 onStartRemedialWorkout={startRemedialWorkout}
                 onCompleteRoleplay={completeRoleplay}
+                onCompleteSpeedRecall={completeSpeedRecall}
                 onStartReview={() => {
                   const due = course.lessons
                     .flatMap((lesson) => lesson.items)

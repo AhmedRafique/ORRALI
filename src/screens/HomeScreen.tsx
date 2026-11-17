@@ -10,6 +10,7 @@ import MistakeClinicModal from './MistakeClinicModal';
 import RoleplayModal from './RoleplayModal';
 import TutorModal from './TutorModal';
 import LexiconModal from './LexiconModal';
+import SpeedRecallModal from './SpeedRecallModal';
 
 const C = {
   midnight: '#1B1536',
@@ -37,6 +38,7 @@ interface Props {
   onCompleteStory?: (storyId: string, earnedXp: number) => void;
   onStartRemedialWorkout?: (exercises: Exercise[]) => void;
   onCompleteRoleplay?: (earnedXp: number) => void;
+  onCompleteSpeedRecall?: (earnedXp: number) => void;
 }
 
 export default function HomeScreen({
@@ -50,12 +52,14 @@ export default function HomeScreen({
   onCompleteStory,
   onStartRemedialWorkout,
   onCompleteRoleplay,
+  onCompleteSpeedRecall,
 }: Props) {
   const [activeCapsule, setActiveCapsule] = useState<GrammarCapsule | null>(null);
   const [activeStory, setActiveStory] = useState<StoryScenario | null>(null);
   const [isTutorOpen, setIsTutorOpen] = useState(false);
   const [isClinicOpen, setIsClinicOpen] = useState(false);
   const [isLexiconOpen, setIsLexiconOpen] = useState(false);
+  const [isSpeedRecallOpen, setIsSpeedRecallOpen] = useState(false);
   const [activeRoleplay, setActiveRoleplay] = useState<RoleplayScenario | null>(null);
   const [storyAnswer, setStoryAnswer] = useState<number | null>(null);
   const [storyCompleted, setStoryCompleted] = useState(false);
@@ -197,7 +201,16 @@ export default function HomeScreen({
           <Text style={s.companionIcon}>📖</Text>
           <View style={{ flex: 1 }}>
             <Text style={s.companionTitle}>Smart Lexicon & Flashcards</Text>
-            <Text style={s.companionSub}>Search 240 words & flip drill cards</Text>
+            <Text style={s.companionSub}>Search vocabulary & flip drill cards</Text>
+          </View>
+          <Text style={s.companionArrow}>›</Text>
+        </Pressable>
+
+        <Pressable style={s.companionBtn} onPress={() => setIsSpeedRecallOpen(true)}>
+          <Text style={s.companionIcon}>⚡</Text>
+          <View style={{ flex: 1 }}>
+            <Text style={s.companionTitle}>Speed Recall Arcade</Text>
+            <Text style={s.companionSub}>60s rapid-fire matching challenge</Text>
           </View>
           <Text style={s.companionArrow}>›</Text>
         </Pressable>
@@ -534,6 +547,17 @@ export default function HomeScreen({
         course={course}
         progress={progress}
         onClose={() => setIsLexiconOpen(false)}
+      />
+
+      {/* Speed Recall Arcade Modal */}
+      <SpeedRecallModal
+        visible={isSpeedRecallOpen}
+        course={course}
+        onFinish={(earnedXp) => {
+          setIsSpeedRecallOpen(false);
+          onCompleteSpeedRecall?.(earnedXp);
+        }}
+        onClose={() => setIsSpeedRecallOpen(false)}
       />
     </ScrollView>
   );
