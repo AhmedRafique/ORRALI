@@ -1,0 +1,1802 @@
+[
+  {
+    "id": "fr-1-1",
+    "target": "Bonjour",
+    "en": "Hello"
+  },
+  {
+    "id": "fr-1-2",
+    "target": "Bonsoir",
+    "en": "Good evening"
+  },
+  {
+    "id": "fr-1-3",
+    "target": "Merci beaucoup",
+    "en": "Thank you very much"
+  },
+  {
+    "id": "fr-1-4",
+    "target": "S'il vous plaît",
+    "en": "Please"
+  },
+  {
+    "id": "fr-1-5",
+    "target": "Au revoir",
+    "en": "Goodbye"
+  },
+  {
+    "id": "fr-1-6",
+    "target": "Comment ça va ?",
+    "en": "How are you?"
+  },
+  {
+    "id": "fr-2-1",
+    "target": "Un, deux, trois",
+    "en": "One, two, three"
+  },
+  {
+    "id": "fr-2-2",
+    "target": "Dix, vingt, trente",
+    "en": "Ten, twenty, thirty"
+  },
+  {
+    "id": "fr-2-3",
+    "target": "Combien de personnes ?",
+    "en": "How many people?"
+  },
+  {
+    "id": "fr-2-4",
+    "target": "Une table pour deux",
+    "en": "A table for two"
+  },
+  {
+    "id": "fr-2-5",
+    "target": "Deux cafés, s'il vous plaît",
+    "en": "Two coffees, please"
+  },
+  {
+    "id": "fr-2-6",
+    "target": "C’est le numéro cinq",
+    "en": "It is number five"
+  },
+  {
+    "id": "fr-3-1",
+    "target": "Je m'appelle Ahmed",
+    "en": "My name is Ahmed"
+  },
+  {
+    "id": "fr-3-2",
+    "target": "J'habite en Égypte",
+    "en": "I live in Egypt"
+  },
+  {
+    "id": "fr-3-3",
+    "target": "Je suis ingénieur",
+    "en": "I am an engineer"
+  },
+  {
+    "id": "fr-3-4",
+    "target": "Je parle un peu français",
+    "en": "I speak a little French"
+  },
+  {
+    "id": "fr-3-5",
+    "target": "Enchanté",
+    "en": "Nice to meet you"
+  },
+  {
+    "id": "fr-3-6",
+    "target": "Je ne comprends pas",
+    "en": "I don't understand"
+  },
+  {
+    "id": "fr-4-1",
+    "target": "Un café, s’il vous plaît",
+    "en": "A coffee, please"
+  },
+  {
+    "id": "fr-4-2",
+    "target": "L'addition, s'il vous plaît",
+    "en": "The bill, please"
+  },
+  {
+    "id": "fr-4-3",
+    "target": "Je voudrais de l’eau",
+    "en": "I would like some water"
+  },
+  {
+    "id": "fr-4-4",
+    "target": "Combien ça coûte ?",
+    "en": "How much does it cost?"
+  },
+  {
+    "id": "fr-4-5",
+    "target": "C'est délicieux",
+    "en": "It's delicious"
+  },
+  {
+    "id": "fr-4-6",
+    "target": "Où sont les toilettes ?",
+    "en": "Where is the restroom?"
+  },
+  {
+    "id": "fr-5-1",
+    "target": "Où est la gare ?",
+    "en": "Where is the train station?"
+  },
+  {
+    "id": "fr-5-2",
+    "target": "Tournez à gauche",
+    "en": "Turn left"
+  },
+  {
+    "id": "fr-5-3",
+    "target": "Continuez tout droit",
+    "en": "Continue straight ahead"
+  },
+  {
+    "id": "fr-5-4",
+    "target": "Prenez le métro",
+    "en": "Take the subway"
+  },
+  {
+    "id": "fr-5-5",
+    "target": "C’est près d’ici",
+    "en": "It is close to here"
+  },
+  {
+    "id": "fr-5-6",
+    "target": "Où est la station de taxi ?",
+    "en": "Where is the taxi stand?"
+  },
+  {
+    "id": "fr-6-1",
+    "target": "Quelle heure est-il ?",
+    "en": "What time is it?"
+  },
+  {
+    "id": "fr-6-2",
+    "target": "Il est huit heures",
+    "en": "It is eight o’clock"
+  },
+  {
+    "id": "fr-6-3",
+    "target": "À demain",
+    "en": "See you tomorrow"
+  },
+  {
+    "id": "fr-6-4",
+    "target": "Aujourd’hui c’est lundi",
+    "en": "Today is Monday"
+  },
+  {
+    "id": "fr-6-5",
+    "target": "Le matin et le soir",
+    "en": "In the morning and in the evening"
+  },
+  {
+    "id": "fr-6-6",
+    "target": "Je suis en retard",
+    "en": "I am late"
+  },
+  {
+    "id": "fr-7-1",
+    "target": "Je peux vous aider ?",
+    "en": "Can I help you?"
+  },
+  {
+    "id": "fr-7-2",
+    "target": "Je regarde seulement",
+    "en": "I am just looking"
+  },
+  {
+    "id": "fr-7-3",
+    "target": "Avez-vous cette taille ?",
+    "en": "Do you have this size?"
+  },
+  {
+    "id": "fr-7-4",
+    "target": "C’est trop cher",
+    "en": "It is too expensive"
+  },
+  {
+    "id": "fr-7-5",
+    "target": "Je peux payer par carte ?",
+    "en": "Can I pay by card?"
+  },
+  {
+    "id": "fr-7-6",
+    "target": "Je vais le prendre",
+    "en": "I will take it"
+  },
+  {
+    "id": "fr-8-1",
+    "target": "J’ai une réservation",
+    "en": "I have a reservation"
+  },
+  {
+    "id": "fr-8-2",
+    "target": "Quel est le mot de passe du Wi-Fi ?",
+    "en": "What is the Wi-Fi password?"
+  },
+  {
+    "id": "fr-8-3",
+    "target": "À quelle heure est le petit-déjeuner ?",
+    "en": "What time is breakfast?"
+  },
+  {
+    "id": "fr-8-4",
+    "target": "La clé de la chambre",
+    "en": "The room key"
+  },
+  {
+    "id": "fr-8-5",
+    "target": "Pouvez-vous m’aider ?",
+    "en": "Can you help me?"
+  },
+  {
+    "id": "fr-8-6",
+    "target": "Où est l’ascenseur ?",
+    "en": "Where is the elevator?"
+  },
+  {
+    "id": "fr-9-1",
+    "target": "J’ai besoin d’un médecin",
+    "en": "I need a doctor"
+  },
+  {
+    "id": "fr-9-2",
+    "target": "Où est la pharmacie ?",
+    "en": "Where is the pharmacy?"
+  },
+  {
+    "id": "fr-9-3",
+    "target": "J’ai mal à la tête",
+    "en": "I have a headache"
+  },
+  {
+    "id": "fr-9-4",
+    "target": "C’est urgent",
+    "en": "It is urgent"
+  },
+  {
+    "id": "fr-9-5",
+    "target": "Aidez-moi, s’il vous plaît",
+    "en": "Help me, please"
+  },
+  {
+    "id": "fr-9-6",
+    "target": "Je ne me sens pas bien",
+    "en": "I do not feel well"
+  },
+  {
+    "id": "fr-10-1",
+    "target": "Il fait beau aujourd’hui",
+    "en": "The weather is nice today"
+  },
+  {
+    "id": "fr-10-2",
+    "target": "Il fait très chaud",
+    "en": "It is very hot"
+  },
+  {
+    "id": "fr-10-3",
+    "target": "Je suis très content",
+    "en": "I am very happy"
+  },
+  {
+    "id": "fr-10-4",
+    "target": "Je suis fatigué",
+    "en": "I am tired"
+  },
+  {
+    "id": "fr-10-5",
+    "target": "J’aime la France",
+    "en": "I love France"
+  },
+  {
+    "id": "fr-10-6",
+    "target": "Passez une bonne journée",
+    "en": "Have a wonderful day"
+  },
+  {
+    "id": "fr-11-1",
+    "target": "Hier, j’ai visité le musée",
+    "en": "Yesterday, I visited the museum"
+  },
+  {
+    "id": "fr-11-2",
+    "target": "Je suis allé au restaurant",
+    "en": "I went to the restaurant"
+  },
+  {
+    "id": "fr-11-3",
+    "target": "Nous avons passé un bon moment",
+    "en": "We had a wonderful time"
+  },
+  {
+    "id": "fr-11-4",
+    "target": "J’ai beaucoup appris",
+    "en": "I learned a lot"
+  },
+  {
+    "id": "fr-11-5",
+    "target": "Elle est arrivée en retard",
+    "en": "She arrived late"
+  },
+  {
+    "id": "fr-11-6",
+    "target": "C’était une belle journée",
+    "en": "It was a beautiful day"
+  },
+  {
+    "id": "fr-12-1",
+    "target": "Je vais voyager en France",
+    "en": "I am going to travel to France"
+  },
+  {
+    "id": "fr-12-2",
+    "target": "Nous allons réserver une table",
+    "en": "We are going to reserve a table"
+  },
+  {
+    "id": "fr-12-3",
+    "target": "Demain, je vais commencer",
+    "en": "Tomorrow, I am going to start"
+  },
+  {
+    "id": "fr-12-4",
+    "target": "Je serai là à dix heures",
+    "en": "I will be there at ten o’clock"
+  },
+  {
+    "id": "fr-12-5",
+    "target": "Qu’est-ce que tu vas faire ?",
+    "en": "What are you going to do?"
+  },
+  {
+    "id": "fr-12-6",
+    "target": "On va y aller ensemble",
+    "en": "We are going to go there together"
+  },
+  {
+    "id": "fr-13-1",
+    "target": "À mon avis, c’est important",
+    "en": "In my opinion, it is important"
+  },
+  {
+    "id": "fr-13-2",
+    "target": "Je pense que vous avez raison",
+    "en": "I think that you are right"
+  },
+  {
+    "id": "fr-13-3",
+    "target": "Je ne suis pas d’accord",
+    "en": "I do not agree"
+  },
+  {
+    "id": "fr-13-4",
+    "target": "Je trouve que c’est fascinant",
+    "en": "I find that fascinating"
+  },
+  {
+    "id": "fr-13-5",
+    "target": "D’un côté oui, de l’autre non",
+    "en": "On one hand yes, on the other hand no"
+  },
+  {
+    "id": "fr-13-6",
+    "target": "Qu’en pensez-vous ?",
+    "en": "What do you think of it?"
+  },
+  {
+    "id": "fr-14-1",
+    "target": "Si j’avais le temps, je voyagerais plus",
+    "en": "If I had time, I would travel more"
+  },
+  {
+    "id": "fr-14-2",
+    "target": "Ce serait merveilleux",
+    "en": "That would be wonderful"
+  },
+  {
+    "id": "fr-14-3",
+    "target": "J’aimerais vous poser une question",
+    "en": "I would like to ask you a question"
+  },
+  {
+    "id": "fr-14-4",
+    "target": "Pourriez-vous répéter, s’il vous plaît ?",
+    "en": "Could you repeat that, please?"
+  },
+  {
+    "id": "fr-14-5",
+    "target": "On pourrait se voir demain",
+    "en": "We could see each other tomorrow"
+  },
+  {
+    "id": "fr-14-6",
+    "target": "Si c’était possible, je le ferais",
+    "en": "If it were possible, I would do it"
+  },
+  {
+    "id": "fr-15-1",
+    "target": "Il faut que je parte maintenant",
+    "en": "I must leave right now"
+  },
+  {
+    "id": "fr-15-2",
+    "target": "J’espère que tout va bien",
+    "en": "I hope that all is well"
+  },
+  {
+    "id": "fr-15-3",
+    "target": "Je veux que tu réussisses",
+    "en": "I want you to succeed"
+  },
+  {
+    "id": "fr-15-4",
+    "target": "Bien que ce soit difficile",
+    "en": "Although it is difficult"
+  },
+  {
+    "id": "fr-15-5",
+    "target": "Il est essentiel de pratiquer",
+    "en": "It is essential to practice"
+  },
+  {
+    "id": "fr-15-6",
+    "target": "Je suis ravi que vous soyez là",
+    "en": "I am delighted that you are here"
+  },
+  {
+    "id": "fr-16-1",
+    "target": "J’ai acquis une solide expérience en ingénierie",
+    "en": "I have acquired solid experience in engineering"
+  },
+  {
+    "id": "fr-16-2",
+    "target": "Quelles sont les opportunités d’évolution dans votre entreprise ?",
+    "en": "What are the growth opportunities in your company?"
+  },
+  {
+    "id": "fr-16-3",
+    "target": "Je suis capable de gérer des projets complexes",
+    "en": "I am capable of managing complex projects"
+  },
+  {
+    "id": "fr-16-4",
+    "target": "Mes points forts sont la rigueur et l’autonomie",
+    "en": "My strengths are precision and autonomy"
+  },
+  {
+    "id": "fr-16-5",
+    "target": "Je m’adapte facilement aux nouvelles technologies",
+    "en": "I easily adapt to new technologies"
+  },
+  {
+    "id": "fr-16-6",
+    "target": "Je reste à votre entière disposition pour tout renseignement",
+    "en": "I remain at your complete disposal for any information"
+  },
+  {
+    "id": "fr-17-1",
+    "target": "Nous devons trouver un compromis avantageux",
+    "en": "We must find a mutually beneficial compromise"
+  },
+  {
+    "id": "fr-17-2",
+    "target": "Les délais de livraison doivent être respectés",
+    "en": "Delivery deadlines must be strictly respected"
+  },
+  {
+    "id": "fr-17-3",
+    "target": "Nous proposons un partenariat à long terme",
+    "en": "We propose a long-term partnership"
+  },
+  {
+    "id": "fr-17-4",
+    "target": "Quel est le budget alloué pour ce projet ?",
+    "en": "What is the budget allocated for this project?"
+  },
+  {
+    "id": "fr-17-5",
+    "target": "Je partage votre point de vue sur ce dossier",
+    "en": "I share your perspective on this file"
+  },
+  {
+    "id": "fr-17-6",
+    "target": "Nous avons conclu un accord satisfaisant",
+    "en": "We have concluded a satisfactory agreement"
+  },
+  {
+    "id": "fr-18-1",
+    "target": "La transition écologique est un défi majeur",
+    "en": "The ecological transition is a major challenge"
+  },
+  {
+    "id": "fr-18-2",
+    "target": "Il est primordial de sensibiliser le public",
+    "en": "It is essential to raise public awareness"
+  },
+  {
+    "id": "fr-18-3",
+    "target": "Les énergies renouvelables jouent un rôle crucial",
+    "en": "Renewable energies play a crucial role"
+  },
+  {
+    "id": "fr-18-4",
+    "target": "On constate une évolution significative des mentalités",
+    "en": "We observe a significant evolution in mindsets"
+  },
+  {
+    "id": "fr-18-5",
+    "target": "Il ne fait aucun doute que des mesures s’imposent",
+    "en": "There is no doubt that decisive measures are required"
+  },
+  {
+    "id": "fr-18-6",
+    "target": "Chacun peut contribuer à son échelle",
+    "en": "Everyone can contribute at their own level"
+  },
+  {
+    "id": "fr-19-1",
+    "target": "C’est la goutte d’eau qui fait déborder le vase",
+    "en": "It is the straw that broke the camel’s back"
+  },
+  {
+    "id": "fr-19-2",
+    "target": "Il ne faut pas baisser les bras",
+    "en": "One must not give up"
+  },
+  {
+    "id": "fr-19-3",
+    "target": "Avoir le coup de foudre pour une ville",
+    "en": "To fall in love at first sight with a city"
+  },
+  {
+    "id": "fr-19-4",
+    "target": "Ça ne mange pas de pain d’essayer",
+    "en": "It doesn’t hurt to try"
+  },
+  {
+    "id": "fr-19-5",
+    "target": "Je te tiens au courant très vite",
+    "en": "I will keep you posted very soon"
+  },
+  {
+    "id": "fr-19-6",
+    "target": "C’est simple comme bonjour",
+    "en": "It is as easy as pie"
+  },
+  {
+    "id": "fr-20-1",
+    "target": "Je doute que nous ayons terminé à temps",
+    "en": "I doubt that we will have finished on time"
+  },
+  {
+    "id": "fr-20-2",
+    "target": "À moins que vous n’ayez une meilleure suggestion",
+    "en": "Unless you have a better suggestion"
+  },
+  {
+    "id": "fr-20-3",
+    "target": "C’est la solution la plus efficace que j’aie trouvée",
+    "en": "It is the most effective solution I have found"
+  },
+  {
+    "id": "fr-20-4",
+    "target": "Quoi qu’il arrive, nous persévérerons",
+    "en": "Whatever happens, we will persevere"
+  },
+  {
+    "id": "fr-20-5",
+    "target": "Pourvu que les conditions soient réunies",
+    "en": "Provided that the conditions are met"
+  },
+  {
+    "id": "fr-20-6",
+    "target": "Je vous félicite pour cette belle réussite",
+    "en": "I congratulate you on this wonderful achievement"
+  },
+  {
+    "id": "de-1-1",
+    "target": "Hallo",
+    "en": "Hello"
+  },
+  {
+    "id": "de-1-2",
+    "target": "Guten Abend",
+    "en": "Good evening"
+  },
+  {
+    "id": "de-1-3",
+    "target": "Vielen Dank",
+    "en": "Thank you very much"
+  },
+  {
+    "id": "de-1-4",
+    "target": "Bitte",
+    "en": "Please"
+  },
+  {
+    "id": "de-1-5",
+    "target": "Auf Wiedersehen",
+    "en": "Goodbye"
+  },
+  {
+    "id": "de-1-6",
+    "target": "Wie geht es dir?",
+    "en": "How are you?"
+  },
+  {
+    "id": "de-2-1",
+    "target": "Eins, zwei, drei",
+    "en": "One, two, three"
+  },
+  {
+    "id": "de-2-2",
+    "target": "Zehn, zwanzig, dreißig",
+    "en": "Ten, twenty, thirty"
+  },
+  {
+    "id": "de-2-3",
+    "target": "Ein Tisch für zwei",
+    "en": "A table for two"
+  },
+  {
+    "id": "de-2-4",
+    "target": "Zwei Kaffee, bitte",
+    "en": "Two coffees, please"
+  },
+  {
+    "id": "de-2-5",
+    "target": "Wie viele Personen?",
+    "en": "How many people?"
+  },
+  {
+    "id": "de-2-6",
+    "target": "Das ist Nummer fünf",
+    "en": "That is number five"
+  },
+  {
+    "id": "de-3-1",
+    "target": "Ich heiße Ahmed",
+    "en": "My name is Ahmed"
+  },
+  {
+    "id": "de-3-2",
+    "target": "Ich wohne in Ägypten",
+    "en": "I live in Egypt"
+  },
+  {
+    "id": "de-3-3",
+    "target": "Ich bin Ingenieur",
+    "en": "I am an engineer"
+  },
+  {
+    "id": "de-3-4",
+    "target": "Ich spreche ein bisschen Deutsch",
+    "en": "I speak a little German"
+  },
+  {
+    "id": "de-3-5",
+    "target": "Freut mich",
+    "en": "Nice to meet you"
+  },
+  {
+    "id": "de-3-6",
+    "target": "Ich verstehe nicht",
+    "en": "I don't understand"
+  },
+  {
+    "id": "de-4-1",
+    "target": "Einen Kaffee, bitte",
+    "en": "A coffee, please"
+  },
+  {
+    "id": "de-4-2",
+    "target": "Die Rechnung, bitte",
+    "en": "The bill, please"
+  },
+  {
+    "id": "de-4-3",
+    "target": "Ich möchte Wasser",
+    "en": "I would like some water"
+  },
+  {
+    "id": "de-4-4",
+    "target": "Wie viel kostet das?",
+    "en": "How much does it cost?"
+  },
+  {
+    "id": "de-4-5",
+    "target": "Das ist lecker",
+    "en": "It's delicious"
+  },
+  {
+    "id": "de-4-6",
+    "target": "Wo ist die Toilette?",
+    "en": "Where is the restroom?"
+  },
+  {
+    "id": "de-5-1",
+    "target": "Wo ist der Bahnhof?",
+    "en": "Where is the train station?"
+  },
+  {
+    "id": "de-5-2",
+    "target": "Biegen Sie links ab",
+    "en": "Turn left"
+  },
+  {
+    "id": "de-5-3",
+    "target": "Gehen Sie geradeaus",
+    "en": "Go straight ahead"
+  },
+  {
+    "id": "de-5-4",
+    "target": "Nehmen Sie die U-Bahn",
+    "en": "Take the subway"
+  },
+  {
+    "id": "de-5-5",
+    "target": "Es ist in der Nähe",
+    "en": "It is nearby"
+  },
+  {
+    "id": "de-5-6",
+    "target": "Wo ist der Taxistand?",
+    "en": "Where is the taxi stand?"
+  },
+  {
+    "id": "de-6-1",
+    "target": "Wie spät ist es?",
+    "en": "What time is it?"
+  },
+  {
+    "id": "de-6-2",
+    "target": "Es ist acht Uhr",
+    "en": "It is eight o’clock"
+  },
+  {
+    "id": "de-6-3",
+    "target": "Bis morgen",
+    "en": "See you tomorrow"
+  },
+  {
+    "id": "de-6-4",
+    "target": "Heute ist Montag",
+    "en": "Today is Monday"
+  },
+  {
+    "id": "de-6-5",
+    "target": "Am Morgen und am Abend",
+    "en": "In the morning and in the evening"
+  },
+  {
+    "id": "de-6-6",
+    "target": "Ich habe Verspätung",
+    "en": "I am delayed / running late"
+  },
+  {
+    "id": "de-7-1",
+    "target": "Kann ich Ihnen helfen?",
+    "en": "Can I help you?"
+  },
+  {
+    "id": "de-7-2",
+    "target": "Ich schaue mich nur um",
+    "en": "I am just looking around"
+  },
+  {
+    "id": "de-7-3",
+    "target": "Haben Sie das in meiner Größe?",
+    "en": "Do you have this in my size?"
+  },
+  {
+    "id": "de-7-4",
+    "target": "Das ist zu teuer",
+    "en": "That is too expensive"
+  },
+  {
+    "id": "de-7-5",
+    "target": "Kann ich mit Karte zahlen?",
+    "en": "Can I pay by card?"
+  },
+  {
+    "id": "de-7-6",
+    "target": "Ich nehme das",
+    "en": "I will take that"
+  },
+  {
+    "id": "de-8-1",
+    "target": "Ich habe eine Reservierung",
+    "en": "I have a reservation"
+  },
+  {
+    "id": "de-8-2",
+    "target": "Wie ist das WLAN-Passwort?",
+    "en": "What is the Wi-Fi password?"
+  },
+  {
+    "id": "de-8-3",
+    "target": "Wann gibt es Frühstück?",
+    "en": "When is breakfast served?"
+  },
+  {
+    "id": "de-8-4",
+    "target": "Der Zimmerschlüssel",
+    "en": "The room key"
+  },
+  {
+    "id": "de-8-5",
+    "target": "Können Sie mir helfen?",
+    "en": "Can you help me?"
+  },
+  {
+    "id": "de-8-6",
+    "target": "Wo ist der Aufzug?",
+    "en": "Where is the elevator?"
+  },
+  {
+    "id": "de-9-1",
+    "target": "Ich brauche einen Arzt",
+    "en": "I need a doctor"
+  },
+  {
+    "id": "de-9-2",
+    "target": "Wo ist die Apotheke?",
+    "en": "Where is the pharmacy?"
+  },
+  {
+    "id": "de-9-3",
+    "target": "Ich habe Kopfschmerzen",
+    "en": "I have a headache"
+  },
+  {
+    "id": "de-9-4",
+    "target": "Das ist ein Notfall",
+    "en": "This is an emergency"
+  },
+  {
+    "id": "de-9-5",
+    "target": "Helfen Sie mir bitte",
+    "en": "Help me, please"
+  },
+  {
+    "id": "de-9-6",
+    "target": "Mir geht es nicht gut",
+    "en": "I do not feel well"
+  },
+  {
+    "id": "de-10-1",
+    "target": "Das Wetter ist schön heute",
+    "en": "The weather is nice today"
+  },
+  {
+    "id": "de-10-2",
+    "target": "Es ist sehr warm",
+    "en": "It is very warm"
+  },
+  {
+    "id": "de-10-3",
+    "target": "Ich bin sehr glücklich",
+    "en": "I am very happy"
+  },
+  {
+    "id": "de-10-4",
+    "target": "Ich bin müde",
+    "en": "I am tired"
+  },
+  {
+    "id": "de-10-5",
+    "target": "Ich mag Deutschland",
+    "en": "I like Germany"
+  },
+  {
+    "id": "de-10-6",
+    "target": "Schönen Tag noch",
+    "en": "Have a wonderful day"
+  },
+  {
+    "id": "de-11-1",
+    "target": "Gestern habe ich das Museum besucht",
+    "en": "Yesterday I visited the museum"
+  },
+  {
+    "id": "de-11-2",
+    "target": "Ich bin nach Berlin gefahren",
+    "en": "I traveled to Berlin"
+  },
+  {
+    "id": "de-11-3",
+    "target": "Wir haben viel gelernt",
+    "en": "We learned a lot"
+  },
+  {
+    "id": "de-11-4",
+    "target": "Ich habe gut geschlafen",
+    "en": "I slept well"
+  },
+  {
+    "id": "de-11-5",
+    "target": "Sie ist spät angekommen",
+    "en": "She arrived late"
+  },
+  {
+    "id": "de-11-6",
+    "target": "Das hat viel Spaß gemacht",
+    "en": "That was a lot of fun"
+  },
+  {
+    "id": "de-12-1",
+    "target": "Ich werde nach Deutschland reisen",
+    "en": "I will travel to Germany"
+  },
+  {
+    "id": "de-12-2",
+    "target": "Wir werden einen Tisch reservieren",
+    "en": "We will reserve a table"
+  },
+  {
+    "id": "de-12-3",
+    "target": "Morgen werde ich anfangen",
+    "en": "Tomorrow I will begin"
+  },
+  {
+    "id": "de-12-4",
+    "target": "Ich werde um zehn Uhr da sein",
+    "en": "I will be there at ten o’clock"
+  },
+  {
+    "id": "de-12-5",
+    "target": "Was wirst du morgen machen?",
+    "en": "What will you do tomorrow?"
+  },
+  {
+    "id": "de-12-6",
+    "target": "Alles wird gut werden",
+    "en": "Everything will be fine"
+  },
+  {
+    "id": "de-13-1",
+    "target": "Meiner Meinung nach ist das wichtig",
+    "en": "In my opinion, that is important"
+  },
+  {
+    "id": "de-13-2",
+    "target": "Ich denke, dass Sie recht haben",
+    "en": "I think that you are right"
+  },
+  {
+    "id": "de-13-3",
+    "target": "Ich bin nicht einverstanden",
+    "en": "I do not agree"
+  },
+  {
+    "id": "de-13-4",
+    "target": "Ich finde das sehr interessant",
+    "en": "I find that very interesting"
+  },
+  {
+    "id": "de-13-5",
+    "target": "Ich lerne Deutsch, weil es nützlich ist",
+    "en": "I learn German because it is useful"
+  },
+  {
+    "id": "de-13-6",
+    "target": "Was halten Sie davon?",
+    "en": "What do you think of that?"
+  },
+  {
+    "id": "de-14-1",
+    "target": "Wenn ich Zeit hätte, würde ich reisen",
+    "en": "If I had time, I would travel"
+  },
+  {
+    "id": "de-14-2",
+    "target": "Das wäre wirklich wunderbar",
+    "en": "That would be truly wonderful"
+  },
+  {
+    "id": "de-14-3",
+    "target": "Ich hätte gerne eine Auskunft",
+    "en": "I would like some information"
+  },
+  {
+    "id": "de-14-4",
+    "target": "Könnten Sie das bitte wiederholen?",
+    "en": "Could you please repeat that?"
+  },
+  {
+    "id": "de-14-5",
+    "target": "Wir könnten uns morgen treffen",
+    "en": "We could meet tomorrow"
+  },
+  {
+    "id": "de-14-6",
+    "target": "Ich würde das gerne tun",
+    "en": "I would gladly do that"
+  },
+  {
+    "id": "de-15-1",
+    "target": "Obwohl es schwierig ist, gebe ich nicht auf",
+    "en": "Although it is difficult, I do not give up"
+  },
+  {
+    "id": "de-15-2",
+    "target": "Ich hoffe, dass alles gut geht",
+    "en": "I hope that all goes well"
+  },
+  {
+    "id": "de-15-3",
+    "target": "Es ist wichtig, jeden Tag zu üben",
+    "en": "It is important to practice every day"
+  },
+  {
+    "id": "de-15-4",
+    "target": "Wenn es möglich ist, mache ich es",
+    "en": "If it is possible, I will do it"
+  },
+  {
+    "id": "de-15-5",
+    "target": "Ich freue mich, dass Sie hier sind",
+    "en": "I am glad that you are here"
+  },
+  {
+    "id": "de-15-6",
+    "target": "Es kommt darauf an",
+    "en": "It depends"
+  },
+  {
+    "id": "de-16-1",
+    "target": "Ich verfüge über fundierte Erfahrung im Ingenieurwesen",
+    "en": "I possess extensive experience in engineering"
+  },
+  {
+    "id": "de-16-2",
+    "target": "Welche Entwicklungsmöglichkeiten bietet Ihr Unternehmen?",
+    "en": "What growth opportunities does your company offer?"
+  },
+  {
+    "id": "de-16-3",
+    "target": "Ich bin es gewohnt, komplexe Projekte eigenverantwortlich zu leiten",
+    "en": "I am accustomed to independently managing complex projects"
+  },
+  {
+    "id": "de-16-4",
+    "target": "Zu meinen Stärken zählen Zuverlässigkeit und Teamgeist",
+    "en": "My key strengths include reliability and team spirit"
+  },
+  {
+    "id": "de-16-5",
+    "target": "Ich freue mich auf neue fachliche Herausforderungen",
+    "en": "I look forward to new professional challenges"
+  },
+  {
+    "id": "de-16-6",
+    "target": "Für weitere Fragen stehe ich Ihnen gerne zur Verfügung",
+    "en": "I remain gladly at your disposal for any further questions"
+  },
+  {
+    "id": "de-17-1",
+    "target": "Wir müssen einen fairen Kompromiss erzielen",
+    "en": "We must reach a fair compromise"
+  },
+  {
+    "id": "de-17-2",
+    "target": "Die vereinbarten Lieferfristen sind einzuhalten",
+    "en": "The agreed delivery deadlines must be adhered to"
+  },
+  {
+    "id": "de-17-3",
+    "target": "Wir streben eine langfristige Zusammenarbeit an",
+    "en": "We aim for a long-term partnership"
+  },
+  {
+    "id": "de-17-4",
+    "target": "Wie hoch ist das vorgesehene Budget für dieses Projekt?",
+    "en": "How high is the allocated budget for this project?"
+  },
+  {
+    "id": "de-17-5",
+    "target": "Ich stimme Ihrer Einschätzung vollkommen zu",
+    "en": "I completely agree with your assessment"
+  },
+  {
+    "id": "de-17-6",
+    "target": "Wir haben eine erfolgreiche Vereinbarung getroffen",
+    "en": "We have reached a successful agreement"
+  },
+  {
+    "id": "de-18-1",
+    "target": "Die Energiewende stellt eine zentrale Herausforderung dar",
+    "en": "The energy transition represents a central challenge"
+  },
+  {
+    "id": "de-18-2",
+    "target": "Es ist von entscheidender Bedeutung, das Bewusstsein zu schärfen",
+    "en": "It is of crucial importance to raise awareness"
+  },
+  {
+    "id": "de-18-3",
+    "target": "Erneuerbare Energien spielen eine unverzichtbare Rolle",
+    "en": "Renewable energies play an indispensable role"
+  },
+  {
+    "id": "de-18-4",
+    "target": "Es lässt sich ein deutlicher Wandel beobachten",
+    "en": "A clear change can be observed"
+  },
+  {
+    "id": "de-18-5",
+    "target": "Es steht außer Zweifel, dass schnelles Handeln erforderlich ist",
+    "en": "There is no doubt that rapid action is required"
+  },
+  {
+    "id": "de-18-6",
+    "target": "Jeder Einzelne kann einen wirksamen Beitrag leisten",
+    "en": "Every individual can make an effective contribution"
+  },
+  {
+    "id": "de-19-1",
+    "target": "Das war das Zünglein an der Waage",
+    "en": "That was the tipping point / decisive factor"
+  },
+  {
+    "id": "de-19-2",
+    "target": "Man soll den Kopf nicht in den Sand stecken",
+    "en": "One shouldn’t bury one’s head in the sand"
+  },
+  {
+    "id": "de-19-3",
+    "target": "Ich drücke dir ganz fest die Daumen",
+    "en": "I am crossing my fingers for you tightly"
+  },
+  {
+    "id": "de-19-4",
+    "target": "Das schlägt zwei Fliegen mit einer Klappe",
+    "en": "That kills two birds with one stone"
+  },
+  {
+    "id": "de-19-5",
+    "target": "Ich halte dich auf dem Laufenden",
+    "en": "I will keep you updated / in the loop"
+  },
+  {
+    "id": "de-19-6",
+    "target": "Übung macht den Meister",
+    "en": "Practice makes perfect"
+  },
+  {
+    "id": "de-20-1",
+    "target": "Der Sprecher betonte, die Verhandlungen seien auf gutem Wege",
+    "en": "The spokesperson emphasized that negotiations were on a good track"
+  },
+  {
+    "id": "de-20-2",
+    "target": "Es sei denn, Sie haben einen besseren Vorschlag",
+    "en": "Unless you have a better proposal"
+  },
+  {
+    "id": "de-20-3",
+    "target": "Je mehr man übt, desto sicherer wird man",
+    "en": "The more one practices, the more confident one becomes"
+  },
+  {
+    "id": "de-20-4",
+    "target": "Wie dem auch sei, wir machen weiter",
+    "en": "Be that as it may, we carry on"
+  },
+  {
+    "id": "de-20-5",
+    "target": "Vorausgesetzt, die Bedingungen werden erfüllt",
+    "en": "Provided that the conditions are met"
+  },
+  {
+    "id": "de-20-6",
+    "target": "Herzlichen Glückwunsch zu diesem beeindruckenden Erfolg",
+    "en": "Heartfelt congratulations on this impressive achievement"
+  },
+  {
+    "id": "es-1-1",
+    "target": "¡Hola! ¿Cómo estás?",
+    "en": "Hello! How are you?"
+  },
+  {
+    "id": "es-1-2",
+    "target": "Buenos días, mucho gusto",
+    "en": "Good morning, nice to meet you"
+  },
+  {
+    "id": "es-1-3",
+    "target": "Por favor y gracias",
+    "en": "Please and thank you"
+  },
+  {
+    "id": "es-1-4",
+    "target": "De nada, un placer",
+    "en": "You are welcome, a pleasure"
+  },
+  {
+    "id": "es-1-5",
+    "target": "Disculpe, ¿dónde está el baño?",
+    "en": "Excuse me, where is the restroom?"
+  },
+  {
+    "id": "es-1-6",
+    "target": "¡Hasta luego y que tenga un buen día!",
+    "en": "See you later and have a great day!"
+  },
+  {
+    "id": "es-2-1",
+    "target": "Uno, dos, tres",
+    "en": "One, two, three"
+  },
+  {
+    "id": "es-2-2",
+    "target": "Cuatro, cinco, seis",
+    "en": "Four, five, six"
+  },
+  {
+    "id": "es-2-3",
+    "target": "Siete, ocho, nueve",
+    "en": "Seven, eight, nine"
+  },
+  {
+    "id": "es-2-4",
+    "target": "Diez, veinte, treinta",
+    "en": "Ten, twenty, thirty"
+  },
+  {
+    "id": "es-2-5",
+    "target": "Cincuenta y cien",
+    "en": "Fifty and one hundred"
+  },
+  {
+    "id": "es-2-6",
+    "target": "¿Cuánto cuesta esto?",
+    "en": "How much does this cost?"
+  },
+  {
+    "id": "es-3-1",
+    "target": "Un café con leche, por favor",
+    "en": "A coffee with milk, please"
+  },
+  {
+    "id": "es-3-2",
+    "target": "Una tortilla española deliciosa",
+    "en": "A delicious Spanish potato omelette"
+  },
+  {
+    "id": "es-3-3",
+    "target": "La cuenta, por favor",
+    "en": "The check, please"
+  },
+  {
+    "id": "es-3-4",
+    "target": "¿Tiene una mesa para dos?",
+    "en": "Do you have a table for two?"
+  },
+  {
+    "id": "es-3-5",
+    "target": "El agua mineral sin gas",
+    "en": "Still mineral water"
+  },
+  {
+    "id": "es-3-6",
+    "target": "¡Buen provecho!",
+    "en": "Enjoy your meal!"
+  },
+  {
+    "id": "es-4-1",
+    "target": "Tengo una reserva a nombre de Carlos",
+    "en": "I have a reservation under the name Carlos"
+  },
+  {
+    "id": "es-4-2",
+    "target": "¿A qué hora es el desayuno?",
+    "en": "What time is breakfast?"
+  },
+  {
+    "id": "es-4-3",
+    "target": "La llave de la habitación, por favor",
+    "en": "The room key, please"
+  },
+  {
+    "id": "es-4-4",
+    "target": "¿Hay conexión wifi gratis aquí?",
+    "en": "Is there free wifi connection here?"
+  },
+  {
+    "id": "es-4-5",
+    "target": "El ascensor está a la derecha",
+    "en": "The elevator is on the right"
+  },
+  {
+    "id": "es-4-6",
+    "target": "Quisiera pagar con tarjeta de crédito",
+    "en": "I would like to pay by credit card"
+  },
+  {
+    "id": "es-5-1",
+    "target": "Siga todo recto y luego gire a la izquierda",
+    "en": "Go straight ahead and then turn left"
+  },
+  {
+    "id": "es-5-2",
+    "target": "La estación de tren está muy cerca",
+    "en": "The train station is very close"
+  },
+  {
+    "id": "es-5-3",
+    "target": "¿Dónde puedo comprar un billete de metro?",
+    "en": "Where can I buy a metro ticket?"
+  },
+  {
+    "id": "es-5-4",
+    "target": "Cruce la plaza principal",
+    "en": "Cross the main square"
+  },
+  {
+    "id": "es-5-5",
+    "target": "Está al lado de la catedral",
+    "en": "It is next to the cathedral"
+  },
+  {
+    "id": "es-5-6",
+    "target": "Muchas gracias por su ayuda",
+    "en": "Thank you very much for your help"
+  },
+  {
+    "id": "es-6-1",
+    "target": "Un kilo de naranjas frescas, por favor",
+    "en": "A kilo of fresh oranges, please"
+  },
+  {
+    "id": "es-6-2",
+    "target": "¿Aceptan tarjeta o solo efectivo?",
+    "en": "Do you accept card or cash only?"
+  },
+  {
+    "id": "es-6-3",
+    "target": "Son dos euros con cincuenta céntimos",
+    "en": "It is two euros and fifty cents"
+  },
+  {
+    "id": "es-6-4",
+    "target": "¿Tiene algo más maduro?",
+    "en": "Do you have something riper?"
+  },
+  {
+    "id": "es-6-5",
+    "target": "Esta fruta está riquísima",
+    "en": "This fruit is delicious"
+  },
+  {
+    "id": "es-6-6",
+    "target": "Póngame medio kilo de tomates",
+    "en": "Give me half a kilo of tomatoes"
+  },
+  {
+    "id": "es-7-1",
+    "target": "Me duele la cabeza desde ayer",
+    "en": "My head has been hurting since yesterday"
+  },
+  {
+    "id": "es-7-2",
+    "target": "¿Tiene algo para el dolor de garganta?",
+    "en": "Do you have something for a sore throat?"
+  },
+  {
+    "id": "es-7-3",
+    "target": "Tome este medicamento dos veces al día",
+    "en": "Take this medicine twice a day"
+  },
+  {
+    "id": "es-7-4",
+    "target": "Tengo un poco de fiebre",
+    "en": "I have a slight fever"
+  },
+  {
+    "id": "es-7-5",
+    "target": "¿Dónde hay una farmacia de guardia?",
+    "en": "Where is an on-duty pharmacy?"
+  },
+  {
+    "id": "es-7-6",
+    "target": "¡Que te mejores pronto!",
+    "en": "Get well soon!"
+  },
+  {
+    "id": "es-8-1",
+    "target": "Esta es mi hermana mayor",
+    "en": "This is my older sister"
+  },
+  {
+    "id": "es-8-2",
+    "target": "Mis padres viven en Barcelona",
+    "en": "My parents live in Barcelona"
+  },
+  {
+    "id": "es-8-3",
+    "target": "Tengo dos sobrinos encantadores",
+    "en": "I have two charming nephews"
+  },
+  {
+    "id": "es-8-4",
+    "target": "¿Tienes hermanos o hermanas?",
+    "en": "Do you have brothers or sisters?"
+  },
+  {
+    "id": "es-8-5",
+    "target": "Nos reunimos todos los domingos",
+    "en": "We get together every Sunday"
+  },
+  {
+    "id": "es-8-6",
+    "target": "La familia es lo más importante",
+    "en": "Family is the most important thing"
+  },
+  {
+    "id": "es-9-1",
+    "target": "Me encanta escuchar música y viajar",
+    "en": "I love listening to music and traveling"
+  },
+  {
+    "id": "es-9-2",
+    "target": "Los fines de semana juego al fútbol",
+    "en": "On weekends I play soccer"
+  },
+  {
+    "id": "es-9-3",
+    "target": "¿Qué te gusta hacer en tu tiempo libre?",
+    "en": "What do you like to do in your free time?"
+  },
+  {
+    "id": "es-9-4",
+    "target": "Prefiero leer un buen libro por la tarde",
+    "en": "I prefer reading a good book in the afternoon"
+  },
+  {
+    "id": "es-9-5",
+    "target": "Vamos a dar un paseo por la playa",
+    "en": "Let’s go for a walk on the beach"
+  },
+  {
+    "id": "es-9-6",
+    "target": "Es un pasatiempo muy relajante",
+    "en": "It is a very relaxing hobby"
+  },
+  {
+    "id": "es-10-1",
+    "target": "Ayer visité el museo del Prado",
+    "en": "Yesterday I visited the Prado museum"
+  },
+  {
+    "id": "es-10-2",
+    "target": "El año pasado viajé a Madrid",
+    "en": "Last year I traveled to Madrid"
+  },
+  {
+    "id": "es-10-3",
+    "target": "Pasamos unas vacaciones maravillosas",
+    "en": "We had a wonderful vacation"
+  },
+  {
+    "id": "es-10-4",
+    "target": "Aprendí muchísimo durante el curso",
+    "en": "I learned a lot during the course"
+  },
+  {
+    "id": "es-10-5",
+    "target": "Llegó a tiempo a la reunión",
+    "en": "He arrived on time for the meeting"
+  },
+  {
+    "id": "es-10-6",
+    "target": "Fue una experiencia inolvidable",
+    "en": "It was an unforgettable experience"
+  },
+  {
+    "id": "es-11-1",
+    "target": "El próximo mes voy a viajar a España",
+    "en": "Next month I am going to travel to Spain"
+  },
+  {
+    "id": "es-11-2",
+    "target": "Vamos a reservar una mesa en la terraza",
+    "en": "We are going to reserve a table on the terrace"
+  },
+  {
+    "id": "es-11-3",
+    "target": "Mañana empezaré las clases de guitarra",
+    "en": "Tomorrow I will start guitar lessons"
+  },
+  {
+    "id": "es-11-4",
+    "target": "Estaré allí a las diez en punto",
+    "en": "I will be there at ten o’clock sharp"
+  },
+  {
+    "id": "es-11-5",
+    "target": "¿Qué vas a hacer este fin de semana?",
+    "en": "What are you going to do this weekend?"
+  },
+  {
+    "id": "es-11-6",
+    "target": "Todo saldrá perfectamente bien",
+    "en": "Everything will turn out perfectly well"
+  },
+  {
+    "id": "es-12-1",
+    "target": "Madrid es más grande que Valencia",
+    "en": "Madrid is bigger than Valencia"
+  },
+  {
+    "id": "es-12-2",
+    "target": "Este restaurante es tan bueno como el otro",
+    "en": "This restaurant is as good as the other one"
+  },
+  {
+    "id": "es-12-3",
+    "target": "Prefiero el tren porque es más rápido",
+    "en": "I prefer the train because it is faster"
+  },
+  {
+    "id": "es-12-4",
+    "target": "Es el mejor café de la ciudad",
+    "en": "It is the best coffee in the city"
+  },
+  {
+    "id": "es-12-5",
+    "target": "Hoy hace menos frío que ayer",
+    "en": "Today it is less cold than yesterday"
+  },
+  {
+    "id": "es-12-6",
+    "target": "Me parece una opción fantástica",
+    "en": "It seems like a fantastic option to me"
+  },
+  {
+    "id": "es-13-1",
+    "target": "En mi opinión, la educación es fundamental",
+    "en": "In my opinion, education is fundamental"
+  },
+  {
+    "id": "es-13-2",
+    "target": "Creo que usted tiene toda la razón",
+    "en": "I believe that you are completely right"
+  },
+  {
+    "id": "es-13-3",
+    "target": "No estoy de acuerdo con esa postura",
+    "en": "I do not agree with that stance"
+  },
+  {
+    "id": "es-13-4",
+    "target": "Sin embargo, hay que considerar los riesgos",
+    "en": "However, one must consider the risks"
+  },
+  {
+    "id": "es-13-5",
+    "target": "Por un lado sí, pero por otro lado no",
+    "en": "On one hand yes, but on the other hand no"
+  },
+  {
+    "id": "es-13-6",
+    "target": "¿Qué opina usted al respecto?",
+    "en": "What is your opinion regarding this?"
+  },
+  {
+    "id": "es-14-1",
+    "target": "Si tuviera más tiempo, viajaría por el mundo",
+    "en": "If I had more time, I would travel the world"
+  },
+  {
+    "id": "es-14-2",
+    "target": "Sería un verdadero placer colaborar con ustedes",
+    "en": "It would be a true pleasure to collaborate with you"
+  },
+  {
+    "id": "es-14-3",
+    "target": "¿Podría repetir eso más despacio, por favor?",
+    "en": "Could you repeat that more slowly, please?"
+  },
+  {
+    "id": "es-14-4",
+    "target": "Nos gustaría hacer una pregunta importante",
+    "en": "We would like to ask an important question"
+  },
+  {
+    "id": "es-14-5",
+    "target": "Podríamos reunirnos mañana por la tarde",
+    "en": "We could meet tomorrow afternoon"
+  },
+  {
+    "id": "es-14-6",
+    "target": "Si fuera posible, lo haría con mucho gusto",
+    "en": "If it were possible, I would do it with pleasure"
+  },
+  {
+    "id": "es-15-1",
+    "target": "Es necesario que salgamos temprano",
+    "en": "It is necessary that we leave early"
+  },
+  {
+    "id": "es-15-2",
+    "target": "Espero que todo salga según lo previsto",
+    "en": "I hope that everything turns out as planned"
+  },
+  {
+    "id": "es-15-3",
+    "target": "¡Ojalá tengamos buen tiempo mañana!",
+    "en": "Hopefully we will have good weather tomorrow!"
+  },
+  {
+    "id": "es-15-4",
+    "target": "Quiero que tengas mucho éxito",
+    "en": "I want you to have great success"
+  },
+  {
+    "id": "es-15-5",
+    "target": "Aunque sea difícil, vale la pena intentar",
+    "en": "Even if it is difficult, it is worth trying"
+  },
+  {
+    "id": "es-15-6",
+    "target": "Me alegro mucho de que estés aquí",
+    "en": "I am very glad that you are here"
+  },
+  {
+    "id": "es-16-1",
+    "target": "Cuento con una amplia experiencia en gestión de equipos",
+    "en": "I have extensive experience in team management"
+  },
+  {
+    "id": "es-16-2",
+    "target": "¿Cuáles son las perspectivas de crecimiento en la empresa?",
+    "en": "What are the growth prospects in the company?"
+  },
+  {
+    "id": "es-16-3",
+    "target": "Soy capaz de liderar proyectos bajo presión",
+    "en": "I am capable of leading projects under pressure"
+  },
+  {
+    "id": "es-16-4",
+    "target": "Mis mayores fortalezas son la iniciativa y el compromiso",
+    "en": "My greatest strengths are initiative and commitment"
+  },
+  {
+    "id": "es-16-5",
+    "target": "Me adapto con rapidez a entornos multiculturales",
+    "en": "I adapt quickly to multicultural environments"
+  },
+  {
+    "id": "es-16-6",
+    "target": "Quedo a su entera disposición para cualquier aclaración",
+    "en": "I remain at your complete disposal for any clarification"
+  },
+  {
+    "id": "es-17-1",
+    "target": "Debemos alcanzar un acuerdo mutuamente beneficioso",
+    "en": "We must reach a mutually beneficial agreement"
+  },
+  {
+    "id": "es-17-2",
+    "target": "Los plazos pactados deben cumplirse estrictamente",
+    "en": "The agreed deadlines must be strictly met"
+  },
+  {
+    "id": "es-17-3",
+    "target": "Proponemos una alianza estratégica a largo plazo",
+    "en": "We propose a strategic long-term partnership"
+  },
+  {
+    "id": "es-17-4",
+    "target": "¿Cuál es el presupuesto asignado para esta fase?",
+    "en": "What is the budget allocated for this phase?"
+  },
+  {
+    "id": "es-17-5",
+    "target": "Coincido plenamente con su punto de vista",
+    "en": "I completely agree with your point of view"
+  },
+  {
+    "id": "es-17-6",
+    "target": "Hemos cerrado un contrato muy satisfactorio",
+    "en": "We have closed a very satisfactory contract"
+  },
+  {
+    "id": "es-18-1",
+    "target": "La sostenibilidad es un compromiso inaplazable",
+    "en": "Sustainability is an urgent, non-negotiable commitment"
+  },
+  {
+    "id": "es-18-2",
+    "target": "Resulta imprescindible fomentar las energías renovables",
+    "en": "It is essential to promote renewable energies"
+  },
+  {
+    "id": "es-18-3",
+    "target": "Se aprecia una mayor conciencia ambiental en los jóvenes",
+    "en": "Greater environmental awareness is seen among young people"
+  },
+  {
+    "id": "es-18-4",
+    "target": "No cabe duda de que hacen falta medidas concretas",
+    "en": "There is no doubt that concrete measures are needed"
+  },
+  {
+    "id": "es-18-5",
+    "target": "Cada pequeña acción suma en la lucha climática",
+    "en": "Every small action adds up in the climate fight"
+  },
+  {
+    "id": "es-18-6",
+    "target": "El progreso tecnológico debe ir de la mano con la ética",
+    "en": "Technological progress must go hand in hand with ethics"
+  },
+  {
+    "id": "es-19-1",
+    "target": "Eso fue la gota que colmó el vaso",
+    "en": "That was the straw that broke the camel’s back"
+  },
+  {
+    "id": "es-19-2",
+    "target": "No hay que tirar la toalla antes de tiempo",
+    "en": "One must not throw in the towel prematurely"
+  },
+  {
+    "id": "es-19-3",
+    "target": "Matar dos pájaros de un tiro",
+    "en": "To kill two birds with one stone"
+  },
+  {
+    "id": "es-19-4",
+    "target": "Estar en las nubes durante la reunión",
+    "en": "To have one’s head in the clouds during the meeting"
+  },
+  {
+    "id": "es-19-5",
+    "target": "Te mantendré informado en cuanto sepa algo",
+    "en": "I will keep you posted as soon as I know anything"
+  },
+  {
+    "id": "es-19-6",
+    "target": "Querer es poder cuando hay dedicación",
+    "en": "Where there is a will there is a way with dedication"
+  },
+  {
+    "id": "es-20-1",
+    "target": "Dudo mucho que hayan concluido el informe a tiempo",
+    "en": "I highly doubt that they have finished the report on time"
+  },
+  {
+    "id": "es-20-2",
+    "target": "A menos que surja un imprevisto, asistiré al evento",
+    "en": "Unless an unforeseen issue arises, I will attend the event"
+  },
+  {
+    "id": "es-20-3",
+    "target": "Es la propuesta más sólida que hayamos recibido",
+    "en": "It is the most solid proposal we have received"
+  },
+  {
+    "id": "es-20-4",
+    "target": "Pase lo que pase, seguiremos adelante con optimismo",
+    "en": "Whatever happens, we will move forward with optimism"
+  },
+  {
+    "id": "es-20-5",
+    "target": "Siempre que se respeten las normas establecidas",
+    "en": "As long as established guidelines are respected"
+  },
+  {
+    "id": "es-20-6",
+    "target": "Le doy mi más sincera enhorabuena por este gran logro",
+    "en": "I give you my warmest congratulations on this great achievement"
+  }
+]

@@ -4,10 +4,11 @@ import os
 import ssl
 import edge_tts
 
-# Patch SSL for corporate proxy
-unverified = ssl._create_unverified_context()
-edge_tts.voices._SSL_CTX = unverified
-edge_tts.communicate._SSL_CTX = unverified
+# Standard secure SSL context by default; optional corporate proxy override via INSECURE_SSL=1
+if os.environ.get("INSECURE_SSL") == "1":
+    unverified = ssl._create_unverified_context()
+    edge_tts.voices._SSL_CTX = unverified
+    edge_tts.communicate._SSL_CTX = unverified
 
 FRENCH_VOICE = "fr-FR-VivienneMultilingualNeural"
 GERMAN_VOICE = "de-DE-TanjaNeural"

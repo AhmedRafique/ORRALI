@@ -27,6 +27,7 @@
     "web": "expo start --web",
     "typecheck": "tsc --noEmit",
     "test": "tsx --test src/__tests__/**/*.test.ts",
+    "export:items": "tsx -e \"import { courses } from './src/content'; import * as fs from 'fs'; const items = courses.flatMap(c => c.lessons.flatMap(l => l.items)).map(i => ({ id: i.id, target: i.target, en: i.en })); fs.writeFileSync('scripts/items.json', JSON.stringify(items, null, 2), 'utf-8'); console.log('Exported', items.length, 'items');\"",
     "build:preview": "eas build --platform android --profile preview"
   },
   "private": true
