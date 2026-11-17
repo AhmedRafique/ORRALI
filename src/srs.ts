@@ -22,7 +22,7 @@ export function review(card: Card | undefined, correct: boolean): Card {
     };
   }
   const reps = c.reps + 1;
-  const interval = reps === 1 ? 1 : reps === 2 ? 3 : Math.round(c.interval * c.ease);
+  const interval = reps === 1 ? 1 : reps === 2 ? 3 : Math.max(6, Math.round((c.interval || 3) * c.ease));
   return {
     reps,
     interval,

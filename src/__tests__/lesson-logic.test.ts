@@ -224,6 +224,13 @@ describe('ORRALI Learning Engine & Lesson State Logic', () => {
 
       assert.equal(isDue(undefined), false);
     });
+
+    it('prevents mathematical 0-interval lock when reps >= 3', () => {
+      const stuckCard = { due: Date.now(), interval: 0, ease: 2.5, reps: 2, lapses: 1, lastReviewed: Date.now() };
+      const progressed = review(stuckCard, true);
+      assert.equal(progressed.reps, 3);
+      assert.ok(progressed.interval >= 6, `Interval must graduate to at least 6 days, got ${progressed.interval}`);
+    });
   });
 
   describe('Store streak and progress logic', () => {

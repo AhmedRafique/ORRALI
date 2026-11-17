@@ -14,7 +14,7 @@ import HomeScreen from './src/screens/HomeScreen';
 import LessonScreen from './src/screens/LessonScreen';
 import ProgressScreen from './src/screens/ProgressScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
-import { review, isDue } from './src/srs';
+import { review, isDue, newCard } from './src/srs';
 import { recordAttemptToDb } from './src/db';
 import { evaluateBadges } from './src/badges';
 import { getThemeColors, toggleTheme, ThemeMode } from './src/theme';
@@ -131,6 +131,13 @@ export default function App() {
         void recordAttemptToDb(id, course.code, 'lesson', isCorrect);
       }
 
+      // Ensure any skipped items in the completed lesson are initialized in spaced repetition
+      for (const item of session?.items ?? []) {
+        if (!cards[item.id]) {
+          cards[item.id] = newCard();
+        }
+      }
+
       const earnedXp = finalCorrectIds.length * 5;
       const today = dayKey(new Date());
       const currentCourseXp = p.courseXp?.[course.code] ?? 0;
@@ -169,17 +176,20 @@ export default function App() {
   const completeStory = useCallback(
     (storyId: string, earnedXp: number) => {
       const current = progress ?? emptyProgress();
+      const alreadyDone = !!current.completedStories?.[storyId];
+      const storyXp = alreadyDone ? 0 : earnedXp;
+
       let p = touchStreak(current);
       const today = dayKey(new Date());
       const currentCourseXp = p.courseXp?.[course.code] ?? 0;
       p = {
         ...p,
-        xp: p.xp + earnedXp,
+        xp: p.xp + storyXp,
         courseXp: {
           ...(p.courseXp ?? {}),
-          [course.code]: currentCourseXp + earnedXp,
+          [course.code]: currentCourseXp + storyXp,
         },
-        dailyXp: (p.dailyXpDay === today ? p.dailyXp : 0) + earnedXp,
+        dailyXp: (p.dailyXpDay === today ? p.dailyXp : 0) + storyXp,
         dailyXpDay: today,
         completedStories: {
           ...(p.completedStories ?? {}),
@@ -249,17 +259,20 @@ export default function App() {
   const passMilestoneExam = useCallback(
     (earnedXp: number, diplomaKey: string) => {
       const current = progress ?? emptyProgress();
+      const alreadyCertified = !!current.diplomas?.[diplomaKey];
+      const examXp = alreadyCertified ? 0 : earnedXp;
+
       let p = touchStreak(current);
       const today = dayKey(new Date());
       const currentCourseXp = p.courseXp?.[course.code] ?? 0;
       p = {
         ...p,
-        xp: p.xp + earnedXp,
+        xp: p.xp + examXp,
         courseXp: {
           ...(p.courseXp ?? {}),
-          [course.code]: currentCourseXp + earnedXp,
+          [course.code]: currentCourseXp + examXp,
         },
-        dailyXp: (p.dailyXpDay === today ? p.dailyXp : 0) + earnedXp,
+        dailyXp: (p.dailyXpDay === today ? p.dailyXp : 0) + examXp,
         dailyXpDay: today,
         diplomas: {
           ...(p.diplomas ?? {}),

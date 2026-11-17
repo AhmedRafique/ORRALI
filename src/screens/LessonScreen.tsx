@@ -127,10 +127,20 @@ export default function LessonScreen({
     };
   }, [course.code]);
 
-  // Stop audio on unmount
+  // Stop audio on unmount & release native microphone if still recording
   useEffect(() => {
     return () => {
       void stopAllAudio();
+      try {
+        recorder.stop();
+      } catch {
+        /* best effort */
+      }
+      try {
+        ExpoSpeechRecognitionModule.stop();
+      } catch {
+        /* best effort */
+      }
     };
   }, []);
 
@@ -168,6 +178,16 @@ export default function LessonScreen({
   // Handle exit with audio stop and checkpoint save
   const handleExit = () => {
     void stopAllAudio();
+    try {
+      recorder.stop();
+    } catch {
+      /* best effort */
+    }
+    try {
+      ExpoSpeechRecognitionModule.stop();
+    } catch {
+      /* best effort */
+    }
     persistCheckpoint(index, correctIds, wrongIds);
     onExit();
   };

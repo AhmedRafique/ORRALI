@@ -89,3 +89,20 @@ export async function recordAttemptToDb(
     console.warn('[ORRALI SQLite] recordAttemptToDb error:', err);
   }
 }
+
+export async function getAttemptsCountFromDb(): Promise<{ total: number; correct: number }> {
+  try {
+    const db = await getDb();
+    if (!db) return { total: 0, correct: 0 };
+    const row = await db.getFirstAsync<{ total: number; correct: number }>(
+      'SELECT COUNT(*) as total, SUM(is_correct) as correct FROM exercise_attempts;'
+    );
+    return {
+      total: row?.total ?? 0,
+      correct: row?.correct ?? 0,
+    };
+  } catch (err) {
+    console.warn('[ORRALI SQLite] getAttemptsCountFromDb error:', err);
+    return { total: 0, correct: 0 };
+  }
+}

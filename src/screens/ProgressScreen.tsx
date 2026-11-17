@@ -6,9 +6,9 @@ const C = { midnight: '#1B1536', gold: '#D4AF7C', ivory: '#F8F6F1', ink: '#211B3
 
 export default function ProgressScreen({ courses, progress }: { courses: Course[]; progress: Progress }) {
   const totalLessons = courses.reduce((sum, c) => sum + c.lessons.length, 0);
-  const completed = Object.keys(progress.completed).length;
-  const learnedCards = Object.keys(progress.cards).length;
-  const mastered = Object.values(progress.cards).filter((card) => card.interval >= 21).length;
+  const completed = Object.keys(progress?.completed ?? {}).length;
+  const learnedCards = Object.keys(progress?.cards ?? {}).length;
+  const mastered = Object.values(progress?.cards ?? {}).filter((card) => (card?.interval ?? 0) >= 21).length;
   const percent = Math.min(100, Math.round((completed / Math.max(1, totalLessons)) * 100));
 
   return <ScrollView style={s.root} contentContainerStyle={s.content} showsVerticalScrollIndicator={false}>
@@ -28,7 +28,7 @@ export default function ProgressScreen({ courses, progress }: { courses: Course[
     <View style={s.section}>
       <Text style={s.sectionTitle}>Your worlds</Text>
       {courses.map((course) => {
-        const done = course.lessons.filter((lesson) => !!progress.completed[lesson.id]).length;
+        const done = course.lessons.filter((lesson) => !!progress?.completed?.[lesson.id]).length;
         const ratio = done / Math.max(1, course.lessons.length);
         const courseXp = progress.courseXp?.[course.code] ?? 0;
         return <View key={course.code} style={s.course}>

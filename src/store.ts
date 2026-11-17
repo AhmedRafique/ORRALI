@@ -12,21 +12,30 @@ const LANGUAGE_KEY = 'orrali.lang.v1';
 const THEME_KEY = 'orrali.theme.v1';
 
 export async function loadProgress(): Promise<Progress> {
+  let raw: string | null = null;
   try {
     // 1. Try primary SQLite database
-    let raw = await loadProgressFromDb();
+    raw = await loadProgressFromDb();
+  } catch {
+    raw = null;
+  }
 
-    // 2. Fall back to AsyncStorage if SQLite had no record
-    if (!raw) {
+  // 2. Fall back to AsyncStorage if SQLite had no record
+  if (!raw) {
+    try {
       raw = (await AsyncStorage.getItem(KEY)) ?? (await AsyncStorage.getItem(LEGACY_KEY));
       // Auto-migrate from AsyncStorage into SQLite
       if (raw) {
         void saveProgressToDb(raw);
       }
+    } catch {
+      raw = null;
     }
+  }
 
-    if (!raw) return emptyProgress();
+  if (!raw) return emptyProgress();
 
+  try {
     const parsed = JSON.parse(raw) as Partial<Progress>;
     return {
       ...emptyProgress(),
@@ -38,7 +47,20 @@ export async function loadProgress(): Promise<Progress> {
       dailyXpDay: parsed.dailyXpDay ?? '',
     };
   } catch (err) {
-    console.warn('[ORRALI Store] loadProgress error:', err);
+    console.warn('[ORRALI Store] Primary data parse error, attempting backup recovery:', err);
+    // Emergency recovery from secondary AsyncStorage backup
+    try {
+      const backupRaw = await AsyncStorage.getItem(KEY);
+      if (backupRaw && backupRaw !== raw) {
+        const parsedBackup = JSON.parse(backupRaw) as Partial<Progress>;
+        return {
+          ...emptyProgress(),
+          ...parsedBackup,
+        };
+      }
+    } catch {
+      /* fallback to empty */
+    }
     return emptyProgress();
   }
 }
