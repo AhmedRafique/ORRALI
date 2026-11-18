@@ -197,4 +197,174 @@ export interface Progress {
   badges?: Record<string, number>;
   diplomas?: Record<string, number>;
   dailySparkClaimedDay?: string;
+  completedMissions?: Record<string, number>;
 }
+
+export type LearningActivityKind =
+  | 'lesson'
+  | 'speed_recall'
+  | 'mistake_clinic'
+  | 'verb_gym'
+  | 'radio_lab'
+  | 'roleplay'
+  | 'cafe_library'
+  | 'placement'
+  | 'express_review'
+  | 'shadowing'
+  | 'commuter'
+  | 'milestone_exam'
+  | 'mission'
+  | 'writing_lab';
+
+export type LearningEventResult =
+  | 'correct'
+  | 'incorrect'
+  | 'partially_correct'
+  | 'abandoned'
+  | 'hint_used';
+
+export type LearningErrorCategory =
+  | 'vocabulary'
+  | 'grammar'
+  | 'conjugation'
+  | 'gender'
+  | 'word_order'
+  | 'listening'
+  | 'pronunciation'
+  | 'spelling'
+  | 'naturalness'
+  | 'communication_intent';
+
+export interface LearningEvent {
+  id: string;
+  languageId: LangCode;
+  activityId: LearningActivityKind;
+  objectiveIds: string[];
+  result: LearningEventResult;
+  score?: number;
+  difficulty: 'A1' | 'A2' | 'B1' | 'B2' | string;
+  durationMs: number;
+  hintsUsed: number;
+  attemptsCount: number;
+  confidence: number;
+  errorCategory?: LearningErrorCategory;
+  payload?: Record<string, any>;
+  createdAt: number;
+}
+
+export interface LearningEventFilter {
+  languageId?: LangCode;
+  activityId?: LearningActivityKind;
+  objectiveId?: string;
+  result?: LearningEventResult;
+  errorCategory?: LearningErrorCategory;
+  sinceTimestamp?: number;
+  untilTimestamp?: number;
+  limit?: number;
+}
+
+export interface LearningEventsSummary {
+  totalEvents: number;
+  correctCount: number;
+  incorrectCount: number;
+  partiallyCorrectCount: number;
+  overallAccuracyPercent: number;
+  averageConfidence: number;
+  totalDurationMs: number;
+  errorDistribution: Record<LearningErrorCategory, number>;
+  activityDistribution: Record<LearningActivityKind, number>;
+  topStumbleObjectives: Array<{
+    objectiveId: string;
+    failureCount: number;
+    totalAttempts: number;
+    failureRatePercent: number;
+  }>;
+}
+
+export type SkillDomain =
+  | 'vocabulary'
+  | 'grammar_present'
+  | 'grammar_past'
+  | 'grammar_future'
+  | 'listening'
+  | 'speaking'
+  | 'writing'
+  | 'reading'
+  | 'syntax'
+  | 'communication';
+
+export interface ObjectiveMastery {
+  objectiveId: string;
+  domain: SkillDomain;
+  level: 'A1' | 'A2' | 'B1' | 'B2';
+  mastery: number;
+  confidence: number;
+  totalAttempts: number;
+  correctAttempts: number;
+  failCount: number;
+  streak: number;
+  recentAccuracy: number;
+  lastPracticedAt: number;
+  nextReviewAt: number;
+  errorDistribution: Partial<Record<LearningErrorCategory, number>>;
+}
+
+export interface DomainSummary {
+  domain: SkillDomain;
+  mastery: number;
+  confidence: number;
+  totalAttempts: number;
+  needsPractice: boolean;
+}
+
+export interface LearnerLanguageProfile {
+  languageId: LangCode;
+  updatedAt: number;
+  overallMastery: number;
+  overallConfidence: number;
+  domains: Record<SkillDomain, DomainSummary>;
+  objectives: Record<string, ObjectiveMastery>;
+  activeStumbles: string[];
+}
+
+export type RecommendationActionType =
+  | 'review_stumbles'
+  | 'practice_grammar'
+  | 'train_listening'
+  | 'advance_curriculum'
+  | 'roleplay_simulation'
+  | 'conjugation_gym'
+  | 'speed_challenge'
+  | 'maintain_streak';
+
+export interface LearningRecommendation {
+  id: string;
+  actionType: RecommendationActionType;
+  title: string;
+  reason: string;
+  priority: 'urgent' | 'high' | 'recommended' | 'maintenance';
+  targetDomain: SkillDomain;
+  estimatedDurationMinutes: number;
+  targetObjectiveIds: string[];
+  suggestedActivity: LearningActivityKind;
+  metadata?: Record<string, any>;
+}
+
+export type SessionWorkoutType = 'quick' | 'balanced' | 'deep';
+
+export interface PersonalizedSession {
+  workoutType: SessionWorkoutType;
+  targetDurationMinutes: number;
+  title: string;
+  focusExplanation: string;
+  activities: Array<{
+    activityId: LearningActivityKind;
+    title: string;
+    durationMinutes: number;
+    objectiveIds: string[];
+    rationale: string;
+  }>;
+}
+
+
+
