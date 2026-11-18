@@ -300,6 +300,40 @@ export default function App() {
     [course.code, progress, updateProgress],
   );
 
+  const completeExpressReview = useCallback(
+    (result: { correctIds: string[]; wrongIds: string[]; earnedXp: number }) => {
+      const current = progress ?? emptyProgress();
+      let p = touchStreak(current);
+      
+      const cards = { ...p.cards };
+      const wrong = new Set(result.wrongIds);
+      
+      for (const id of new Set([...result.correctIds, ...result.wrongIds])) {
+        const isCorrect = !wrong.has(id);
+        cards[id] = review(cards[id] ?? newCard(), isCorrect);
+        void recordAttemptToDb(id, course.code, 'express', isCorrect);
+      }
+
+      const today = dayKey(new Date());
+      const currentCourseXp = p.courseXp?.[course.code] ?? 0;
+      p = {
+        ...p,
+        cards,
+        xp: p.xp + result.earnedXp,
+        courseXp: {
+          ...(p.courseXp ?? {}),
+          [course.code]: currentCourseXp + result.earnedXp,
+        },
+        dailyXp: (p.dailyXpDay === today ? p.dailyXp : 0) + result.earnedXp,
+        dailyXpDay: today,
+      };
+      
+      const { updatedProgress } = evaluateBadges(p, courses);
+      updateProgress(updatedProgress);
+    },
+    [course.code, progress, updateProgress],
+  );
+
   const passMilestoneExam = useCallback(
     (earnedXp: number, diplomaKey: string) => {
       const current = progress ?? emptyProgress();
@@ -413,6 +447,7 @@ export default function App() {
                 onCompleteSpeedRecall={completeSpeedRecall}
                 onCompleteCommuterSession={completeCommuterSession}
                 onCompleteRadioLab={completeRadioLab}
+                onCompleteExpressReview={completeExpressReview}
                 onPassMilestoneExam={passMilestoneExam}
                 onClaimDailySpark={claimDailySpark}
                 onStartReview={() => {

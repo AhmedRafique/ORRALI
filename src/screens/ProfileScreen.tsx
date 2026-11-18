@@ -235,7 +235,7 @@ export default function ProfileScreen({
         <Text style={s.aboutBrand}>ORRALI</Text>
         <Text style={s.tagline}>Beyond the familiar.</Text>
         <Text style={s.aboutText}>A new world of possibilities. Discover · Connect · Grow.</Text>
-        <Text style={s.version}>ORRALI RADIO LAB EDITION · 5.7.0</Text></View>
+        <Text style={s.version}>ORRALI EXPRESS REVIEW EDITION · 5.8.0</Text></View>
     </ScrollView>
   );
 }

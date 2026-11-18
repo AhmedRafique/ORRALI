@@ -1,4 +1,4 @@
-# Build status — ORRALI 5.7.0 (Radio Lab Dictation Edition)
+# Build status — ORRALI 5.8.0 (3-Minute Express Review Edition)
 
 | Check | Result |
 |---|---|
@@ -6,8 +6,9 @@
 | TypeScript syntax transpilation | PASS — zero syntax diagnostics |
 | JSON configuration parsing | PASS — `app.json`, `package.json`, `eas.json` valid |
 | Full TypeScript typecheck | PASS — `tsc --noEmit` 0 errors |
-| Automated Unit & Logic Tests | PASS — 176 passing tests across all engines including dictation cloze generation and semantic connected speech |
+| Automated Unit & Logic Tests | PASS — 180 passing tests across all engines including dictation cloze generation and semantic connected speech |
 | Expo configuration validation | PASS — SDK 58.0.0 public config validated with plugins |
+| 3-Minute Express Review Widget | **PASS — 90-second swipe-based fast-track review to quickly clear 5 urgently due cards** |
 | Radio Lab Dictation Engine | **PASS — Native connected speech dictation, cloze target blank generation, and distractor bank assembly** |
 | Acoustic Connected Speech Insights | **PASS — Resolves French liaisons (/z/, /t/), German contractions (am/im), and Spanish sinalefa vowel blending** |
 | Visual Chromatic Gender Immersion | **PASS — Subconscious color-coding: Cobalt Blue ♂ (Masc), Rose Crimson ♀ (Fem), Sage Emerald ⚲ (Neut) across Word Tiles, Anatomy Pills, and Lexicon** |
@@ -61,20 +62,20 @@
 | Android Hardware Back Press | **PASS — Intercepted via `BackHandler` with exit confirmation** |
 | Android Keyboard Usability | **PASS — Wrapped in `KeyboardAvoidingView` and `ScrollView`** |
 | GitHub Actions CI/CD Pipeline | PASS — Automated build & release workflow in `.github/workflows/build-android.yml` |
-| Android Deliverables Generation | **SUCCESS (5.7.0 Standalone APK + Google Play AAB Bundle)** |
+| Android Deliverables Generation | **SUCCESS (5.8.0 Standalone APK + Google Play AAB Bundle)** |
 
 ---
 
 ## Direct Deliverable Download Links
 
-- **GitHub Release (v5.7.0):** [ORRALI v5.7.0 — Radio Lab Dictation Edition](https://github.com/AhmedRafique/ORRALI/releases/tag/v5.7.0)
-- **Direct APK Download:** [ORRALI-5.7.0.apk](https://github.com/AhmedRafique/ORRALI/releases/download/v5.7.0/ORRALI-5.7.0.apk)
-- **Google Play App Bundle (.aab):** [ORRALI-5.7.0.aab](https://github.com/AhmedRafique/ORRALI/releases/download/v5.7.0/ORRALI-5.7.0.aab)
+- **GitHub Release (v5.8.0):** [ORRALI v5.8.0 — 3-Minute Express Review Edition](https://github.com/AhmedRafique/ORRALI/releases/tag/v5.8.0)
+- **Direct APK Download:** [ORRALI-5.8.0.apk](https://github.com/AhmedRafique/ORRALI/releases/download/v5.8.0/ORRALI-5.8.0.apk)
+- **Google Play App Bundle (.aab):** [ORRALI-5.8.0.aab](https://github.com/AhmedRafique/ORRALI/releases/download/v5.8.0/ORRALI-5.8.0.aab)
 - **CI Build Workflow:** [GitHub Actions Build Android Deliverables](https://github.com/AhmedRafique/ORRALI/actions/workflows/build-android.yml)
 
 ---
 
 ## Device Installation (Redmi Note 14 Pro+ / Android)
-1. Download `ORRALI-5.7.0.apk` directly to your phone via browser or transfer via USB.
+1. Download `ORRALI-5.8.0.apk` directly to your phone via browser or transfer via USB.
 2. Tap the downloaded APK to install (uninstall any previous version if prompted).
-3. Launch **ORRALI** — tap **📻 Radio Lab · Dictation** on the home screen to master connected speech and fast native cadence!
+3. Launch **ORRALI** — instantly save your daily streak with the new **⚡ 3-Minute Express Review** widget at the top of the Home screen!

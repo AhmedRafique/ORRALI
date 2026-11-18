@@ -1,6 +1,6 @@
 # ORRALI — Development Roadmap
 
-**Current Release:** 5.7.0 (Radio Lab Dictation Edition)  
+**Current Release:** 5.8.0 (3-Minute Express Review Edition)  
 **Status Date:** November 17, 2026  
 
 ---
@@ -35,3 +35,4 @@
 | **5.5.0** | Hands-Free Commuter Audio | Pimsleur-style English prompt -> thinking pause -> normal speed (1.0x) -> slow phonetic repeat (0.72x) audio loop | **COMPLETED** |
 | **5.6.0** | Visual Chromatic Gender Immersion | Cobalt Blue ♂ (Masc), Rose Crimson ♀ (Fem), Sage Emerald ⚲ (Neut) across Word Tiles, Anatomy Pills, and Lexicon | **COMPLETED** |
 | **5.7.0** | Radio Lab Audio Dictation | Connected speech dictation engine, cloze gap assembly, and acoustic liaison analysis | **COMPLETED** |
+| **5.8.0** | 3-Minute Express Review | 90-second swipe-based fast-track review to quickly clear 5 urgently due cards and save daily streak | **COMPLETED** |

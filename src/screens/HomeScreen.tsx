@@ -17,6 +17,7 @@ import SpeedRecallModal from './SpeedRecallModal';
 import MilestoneExamModal from './MilestoneExamModal';
 import CommuterAudioModal from './CommuterAudioModal';
 import RadioLabModal from './RadioLabModal';
+import ExpressReviewModal from './ExpressReviewModal';
 import { CEFRLevel } from '../milestones';
 
 const C = {
@@ -50,6 +51,7 @@ interface Props {
   onClaimDailySpark?: (sparkWord: DailySparkWord) => void;
   onCompleteCommuterSession?: (earnedXp: number) => void;
   onCompleteRadioLab?: (earnedXp: number) => void;
+  onCompleteExpressReview?: (result: { correctIds: string[]; wrongIds: string[]; earnedXp: number }) => void;
 }
 
 export default function HomeScreen({
@@ -68,6 +70,7 @@ export default function HomeScreen({
   onClaimDailySpark,
   onCompleteCommuterSession,
   onCompleteRadioLab,
+  onCompleteExpressReview,
 }: Props) {
   const [activeCapsule, setActiveCapsule] = useState<GrammarCapsule | null>(null);
   const [activeStory, setActiveStory] = useState<StoryScenario | null>(null);
@@ -79,6 +82,7 @@ export default function HomeScreen({
   const [activeRoleplay, setActiveRoleplay] = useState<RoleplayScenario | null>(null);
   const [isCommuterOpen, setIsCommuterOpen] = useState(false);
   const [isRadioLabOpen, setIsRadioLabOpen] = useState(false);
+  const [isExpressReviewOpen, setIsExpressReviewOpen] = useState(false);
   const [roleplayIdx, setRoleplayIdx] = useState(0);
   const [isSparkFlipped, setIsSparkFlipped] = useState(false);
   const [storyAnswer, setStoryAnswer] = useState<number | null>(null);
@@ -141,6 +145,26 @@ export default function HomeScreen({
           </Text>
         </View>
       </View>
+
+      {/* 3-Minute Express Review Fast-Track Widget */}
+      {dueCount > 0 && (
+        <Pressable
+          style={s.expressWidget}
+          onPress={() => {
+            void triggerHaptic('selection');
+            setIsExpressReviewOpen(true);
+          }}
+        >
+          <View style={s.expressLeft}>
+            <Text style={s.expressIcon}>⚡</Text>
+            <View>
+              <Text style={s.expressTitle}>3-Minute Express Review</Text>
+              <Text style={s.expressSub}>Clear {Math.min(5, dueCount)} due cards in 90 seconds!</Text>
+            </View>
+          </View>
+          <Text style={s.expressArrow}>›</Text>
+        </Pressable>
+      )}
 
       {/* Daily Word of the Day Micro-Spark Card */}
       <View style={s.sparkCard}>
@@ -709,6 +733,18 @@ export default function HomeScreen({
         }}
         onClose={() => setIsRadioLabOpen(false)}
       />
+
+      {/* 3-Minute Express Review Fast-Track Modal */}
+      <ExpressReviewModal
+        visible={isExpressReviewOpen}
+        course={course}
+        progress={progress}
+        onFinish={(result) => {
+          setIsExpressReviewOpen(false);
+          onCompleteExpressReview?.(result);
+        }}
+        onClose={() => setIsExpressReviewOpen(false)}
+      />
     </ScrollView>
   );
 }
@@ -1077,4 +1113,20 @@ const s = StyleSheet.create({
   },
   storyDoneBtnDisabled: { backgroundColor: '#D4CFDC' },
   storyDoneText: { color: C.white, fontWeight: '800', fontSize: 13 },
+  expressWidget: {
+    backgroundColor: '#FAF9FC',
+    borderRadius: 16,
+    padding: 16,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 16,
+    borderWidth: 1.5,
+    borderColor: '#ECE6F2',
+  },
+  expressLeft: { flexDirection: 'row', alignItems: 'center', gap: 12 },
+  expressIcon: { fontSize: 24 },
+  expressTitle: { color: C.midnight, fontSize: 15, fontWeight: '900' },
+  expressSub: { color: C.muted, fontSize: 11, fontWeight: '600', marginTop: 2 },
+  expressArrow: { color: '#CFC7D8', fontSize: 24, fontWeight: '600' },
 });

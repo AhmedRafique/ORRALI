@@ -1,4 +1,4 @@
-@startuml ORRALI_Architecture_v5_7
+@startuml ORRALI_Architecture_v5_8
 !theme plain
 skinparam backgroundColor #F8F6F1
 skinparam defaultFontName Arial
@@ -6,7 +6,7 @@ skinparam packageBackgroundColor #FFFFFF
 skinparam packageBorderColor #1B1536
 skinparam componentStyle uml2
 
-title ORRALI Architecture (Version 5.7.0 — Radio Lab Dictation Edition)
+title ORRALI Architecture (Version 5.8.0 — 3-Minute Express Review Edition)
 
 package "Presentation & UI Layer (React Native / Expo)" {
   [App.tsx
@@ -24,6 +24,8 @@ Sentence Anatomy, Turtle Audio & Speech Lab] as LessonScreen
   }
 
   package "Interactive Modals" {
+    [ExpressReviewModal
+3-Minute Fast-Track SM-2 Deck] as ExpressModal
     [RadioLabModal
 Audio Dictation & Liaisons] as RadioModal
     [CommuterAudioModal
@@ -44,6 +46,8 @@ Conversational Simulation] as RoleplayModal
 }
 
 package "Sentence Anatomy & Commuter Engines" {
+  [expressReview.ts
+SM-2 Urgent Extraction] as ExpressEngine
   [radioLab.ts
 Dictation Cloze & Connected Speech] as RadioEngine
   [commuterAudio.ts
