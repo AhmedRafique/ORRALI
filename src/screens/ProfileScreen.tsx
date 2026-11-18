@@ -3,6 +3,7 @@ import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { getBadgesWithProgress } from '../badges';
 import { createCloudBackupSnapshot } from '../cloudSync';
 import { triggerHaptic } from '../sensory';
+import PlacementTestModal from './PlacementTestModal';
 import { Course, LangCode, Progress } from '../types';
 
 const C = {
@@ -25,6 +26,7 @@ type Props = {
   onPickCourse: (code: LangCode) => void;
   onSetDailyGoal: (goal: number) => void;
   onToggleTheme?: () => void;
+  onApplyPlacement?: (updatedProgress: Progress) => void;
 };
 
 export default function ProfileScreen({
@@ -35,11 +37,15 @@ export default function ProfileScreen({
   onPickCourse,
   onSetDailyGoal,
   onToggleTheme,
+  onApplyPlacement,
 }: Props) {
   const badges = getBadgesWithProgress(progress, courses);
   const unlockedCount = badges.filter((b) => b.unlocked).length;
   const shields = progress.streakShields ?? 1;
   const [backupStatus, setBackupStatus] = useState<string | null>(null);
+  const [isPlacementOpen, setIsPlacementOpen] = useState(false);
+
+  const activeCourse = courses.find((c) => c.code === code) ?? courses[0];
 
   return (
     <ScrollView style={s.root} contentContainerStyle={s.content} showsVerticalScrollIndicator={false}>
@@ -183,6 +189,29 @@ export default function ProfileScreen({
 
       <View style={s.panel}>
         <View style={s.cloudHeader}>
+          <Text style={s.label}>ADAPTIVE CEFR PLACEMENT TEST</Text>
+          <View style={s.cloudActivePill}>
+            <Text style={s.cloudActiveText}>⚡ FAST-TRACK</Text>
+          </View>
+        </View>
+
+        <Text style={s.cloudDesc}>
+          Already know the basics? Take the adaptive CEFR test to skip foundational units, fast-track directly to A2, B1, or B2, and earn retroactive Gold Diplomas!
+        </Text>
+
+        <Pressable
+          style={s.backupBtn}
+          onPress={() => {
+            void triggerHaptic('selection');
+            setIsPlacementOpen(true);
+          }}
+        >
+          <Text style={s.backupBtnText}>🧭 Take CEFR Placement Test</Text>
+        </Pressable>
+      </View>
+
+      <View style={s.panel}>
+        <View style={s.cloudHeader}>
           <Text style={s.label}>LOCAL BACKUP & ANDROID RESTORE</Text>
           <View style={s.cloudActivePill}>
             <Text style={s.cloudActiveText}>● BACKUP READY</Text>
@@ -235,7 +264,19 @@ export default function ProfileScreen({
         <Text style={s.aboutBrand}>ORRALI</Text>
         <Text style={s.tagline}>Beyond the familiar.</Text>
         <Text style={s.aboutText}>A new world of possibilities. Discover · Connect · Grow.</Text>
-        <Text style={s.version}>ORRALI CAFÉ LIBRARY EDITION · 6.1.0</Text></View>
+        <Text style={s.version}>ORRALI PLACEMENT EDITION · 6.2.0</Text></View>
+
+      {/* Adaptive CEFR Placement Test Modal */}
+      <PlacementTestModal
+        visible={isPlacementOpen}
+        course={activeCourse}
+        progress={progress}
+        onApply={(updatedProgress) => {
+          setIsPlacementOpen(false);
+          onApplyPlacement?.(updatedProgress);
+        }}
+        onClose={() => setIsPlacementOpen(false)}
+      />
     </ScrollView>
   );
 }

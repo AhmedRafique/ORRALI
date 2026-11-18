@@ -1,4 +1,4 @@
-# Build status — ORRALI 6.1.0 (Café Library Reading Edition)
+# Build status — ORRALI 6.2.0 (Adaptive Placement Test Edition)
 
 | Check | Result |
 |---|---|
@@ -6,8 +6,9 @@
 | TypeScript syntax transpilation | PASS — zero syntax diagnostics |
 | JSON configuration parsing | PASS — `app.json`, `package.json`, `eas.json` valid |
 | Full TypeScript typecheck | PASS — `tsc --noEmit` 0 errors |
-| Automated Unit & Logic Tests | PASS — 196 passing tests across all engines including cultural reading comprehension and word tokenization |
+| Automated Unit & Logic Tests | PASS — 203 passing tests across all engines including adaptive placement testing and curriculum state mutation |
 | Expo configuration validation | PASS — SDK 58.0.0 public config validated with plugins |
+| Adaptive CEFR Placement Test | **PASS — Dynamically fast-tracks intermediate learners to A2, B1, or B2 with mature SM-2 intervals and Gold Diplomas** |
 | Café Library Reading Lounge | **PASS — Tap-to-read continuous cultural stories, inline chromatic gender popovers, and audiobook read-aloud** |
 | Shadowing Studio Mimicry Engine | **PASS — Side-by-side native listening, microphone recording, acoustic cadence matching, and instant feedback** |
 | The Verb Gym Engine | **PASS — Slot-machine conjugation drills across Present and Past tenses for French, German, and Spanish** |
@@ -65,20 +66,20 @@
 | Android Hardware Back Press | **PASS — Intercepted via `BackHandler` with exit confirmation** |
 | Android Keyboard Usability | **PASS — Wrapped in `KeyboardAvoidingView` and `ScrollView`** |
 | GitHub Actions CI/CD Pipeline | PASS — Automated build & release workflow in `.github/workflows/build-android.yml` |
-| Android Deliverables Generation | **SUCCESS (6.1.0 Standalone APK + Google Play AAB Bundle)** |
+| Android Deliverables Generation | **SUCCESS (6.2.0 Standalone APK + Google Play AAB Bundle)** |
 
 ---
 
 ## Direct Deliverable Download Links
 
-- **GitHub Release (v6.1.0):** [ORRALI v6.1.0 — Café Library Reading Edition](https://github.com/AhmedRafique/ORRALI/releases/tag/v6.1.0)
-- **Direct APK Download:** [ORRALI-6.1.0.apk](https://github.com/AhmedRafique/ORRALI/releases/download/v6.1.0/ORRALI-6.1.0.apk)
-- **Google Play App Bundle (.aab):** [ORRALI-6.1.0.aab](https://github.com/AhmedRafique/ORRALI/releases/download/v6.1.0/ORRALI-6.1.0.aab)
+- **GitHub Release (v6.2.0):** [ORRALI v6.2.0 — Adaptive CEFR Placement Test Edition](https://github.com/AhmedRafique/ORRALI/releases/tag/v6.2.0)
+- **Direct APK Download:** [ORRALI-6.2.0.apk](https://github.com/AhmedRafique/ORRALI/releases/download/v6.2.0/ORRALI-6.2.0.apk)
+- **Google Play App Bundle (.aab):** [ORRALI-6.2.0.aab](https://github.com/AhmedRafique/ORRALI/releases/download/v6.2.0/ORRALI-6.2.0.aab)
 - **CI Build Workflow:** [GitHub Actions Build Android Deliverables](https://github.com/AhmedRafique/ORRALI/actions/workflows/build-android.yml)
 
 ---
 
 ## Device Installation (Redmi Note 14 Pro+ / Android)
-1. Download `ORRALI-6.1.0.apk` directly to your phone via browser or transfer via USB.
+1. Download `ORRALI-6.2.0.apk` directly to your phone via browser or transfer via USB.
 2. Tap the downloaded APK to install (uninstall any previous version if prompted).
-3. Launch **ORRALI** — tap **📚 Café Library · Reading Lounge** on the Home screen to immerse yourself in tap-to-read cultural stories!
+3. Launch **ORRALI** — take the **🧭 CEFR Placement Test** from the Profile or Home screen to fast-track directly to your real proficiency level!

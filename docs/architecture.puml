@@ -1,4 +1,4 @@
-@startuml ORRALI_Architecture_v6_1
+@startuml ORRALI_Architecture_v6_2
 !theme plain
 skinparam backgroundColor #F8F6F1
 skinparam defaultFontName Arial
@@ -6,7 +6,7 @@ skinparam packageBackgroundColor #FFFFFF
 skinparam packageBorderColor #1B1536
 skinparam componentStyle uml2
 
-title ORRALI Architecture (Version 6.1.0 — Café Library Reading Edition)
+title ORRALI Architecture (Version 6.2.0 — Adaptive Placement Test Edition)
 
 package "Presentation & UI Layer (React Native / Expo)" {
   [App.tsx
@@ -24,6 +24,8 @@ Sentence Anatomy, Turtle Audio & Speech Lab] as LessonScreen
   }
 
   package "Interactive Modals" {
+    [PlacementTestModal
+Adaptive CEFR Placement & Fast-Track] as PlacementModal
     [CafeLibraryModal
 Tap-to-Read Stories & Audiobooks] as CafeModal
     [ShadowStudioModal
@@ -52,6 +54,8 @@ Conversational Simulation] as RoleplayModal
 }
 
 package "Sentence Anatomy & Commuter Engines" {
+  [placement.ts
+Adaptive CEFR & State Mutation] as PlacementEngine
   [cafeLibrary.ts
 Cultural Stories & Tap Tokenizer] as CafeEngine
   [shadowStudio.ts

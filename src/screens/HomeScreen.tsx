@@ -21,6 +21,7 @@ import ExpressReviewModal from './ExpressReviewModal';
 import VerbGymModal from './VerbGymModal';
 import ShadowStudioModal from './ShadowStudioModal';
 import CafeLibraryModal from './CafeLibraryModal';
+import PlacementTestModal from './PlacementTestModal';
 import { CEFRLevel } from '../milestones';
 
 const C = {
@@ -58,6 +59,7 @@ interface Props {
   onCompleteVerbGym?: (earnedXp: number) => void;
   onCompleteShadowStudio?: (earnedXp: number) => void;
   onCompleteCafeLibrary?: (earnedXp: number) => void;
+  onApplyPlacement?: (updatedProgress: Progress) => void;
 }
 
 export default function HomeScreen({
@@ -80,6 +82,7 @@ export default function HomeScreen({
   onCompleteVerbGym,
   onCompleteShadowStudio,
   onCompleteCafeLibrary,
+  onApplyPlacement,
 }: Props) {
   const [activeCapsule, setActiveCapsule] = useState<GrammarCapsule | null>(null);
   const [activeStory, setActiveStory] = useState<StoryScenario | null>(null);
@@ -95,6 +98,7 @@ export default function HomeScreen({
   const [isVerbGymOpen, setIsVerbGymOpen] = useState(false);
   const [isShadowStudioOpen, setIsShadowStudioOpen] = useState(false);
   const [isCafeLibraryOpen, setIsCafeLibraryOpen] = useState(false);
+  const [isPlacementOpen, setIsPlacementOpen] = useState(false);
   const [roleplayIdx, setRoleplayIdx] = useState(0);
   const [isSparkFlipped, setIsSparkFlipped] = useState(false);
   const [storyAnswer, setStoryAnswer] = useState<number | null>(null);
@@ -329,6 +333,21 @@ export default function HomeScreen({
           <View style={{ flex: 1 }}>
             <Text style={s.companionTitle}>Café Library · Reading Lounge</Text>
             <Text style={s.companionSub}>Tap-to-read stories & cultural audiobooks</Text>
+          </View>
+          <Text style={s.companionArrow}>›</Text>
+        </Pressable>
+
+        <Pressable
+          style={s.companionBtn}
+          onPress={() => {
+            void triggerHaptic('selection');
+            setIsPlacementOpen(true);
+          }}
+        >
+          <Text style={s.companionIcon}>🧭</Text>
+          <View style={{ flex: 1 }}>
+            <Text style={s.companionTitle}>CEFR Placement Test</Text>
+            <Text style={s.companionSub}>Test out of basics & fast-track to A2/B1/B2</Text>
           </View>
           <Text style={s.companionArrow}>›</Text>
         </Pressable>
@@ -834,6 +853,18 @@ export default function HomeScreen({
           onCompleteCafeLibrary?.(earnedXp);
         }}
         onClose={() => setIsCafeLibraryOpen(false)}
+      />
+
+      {/* Adaptive CEFR Placement Test Modal */}
+      <PlacementTestModal
+        visible={isPlacementOpen}
+        course={course}
+        progress={progress}
+        onApply={(updatedProgress) => {
+          setIsPlacementOpen(false);
+          onApplyPlacement?.(updatedProgress);
+        }}
+        onClose={() => setIsPlacementOpen(false)}
       />
     </ScrollView>
   );

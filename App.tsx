@@ -429,6 +429,14 @@ export default function App() {
     [course.code, progress, updateProgress],
   );
 
+  const applyPlacement = useCallback(
+    (updatedProgress: Progress) => {
+      const { updatedProgress: finalProgress } = evaluateBadges(updatedProgress, courses);
+      updateProgress(finalProgress);
+    },
+    [courses, updateProgress],
+  );
+
   const claimDailySpark = useCallback(
     (sparkWord: DailySparkWord) => {
       const current = progress ?? emptyProgress();
@@ -517,6 +525,7 @@ export default function App() {
                 onCompleteVerbGym={completeVerbGym}
                 onCompleteShadowStudio={completeShadowStudio}
                 onCompleteCafeLibrary={completeCafeLibrary}
+                onApplyPlacement={applyPlacement}
                 onPassMilestoneExam={passMilestoneExam}
                 onClaimDailySpark={claimDailySpark}
                 onStartReview={() => {
@@ -538,6 +547,7 @@ export default function App() {
                 onPickCourse={pickCourse}
                 onSetDailyGoal={(goal) => updateProgress({ ...progress, dailyGoal: goal })}
                 onToggleTheme={toggleActiveTheme}
+                onApplyPlacement={applyPlacement}
               />
             )}
           </View>
