@@ -20,6 +20,7 @@ import RadioLabModal from './RadioLabModal';
 import ExpressReviewModal from './ExpressReviewModal';
 import VerbGymModal from './VerbGymModal';
 import ShadowStudioModal from './ShadowStudioModal';
+import CafeLibraryModal from './CafeLibraryModal';
 import { CEFRLevel } from '../milestones';
 
 const C = {
@@ -56,6 +57,7 @@ interface Props {
   onCompleteExpressReview?: (result: { correctIds: string[]; wrongIds: string[]; earnedXp: number }) => void;
   onCompleteVerbGym?: (earnedXp: number) => void;
   onCompleteShadowStudio?: (earnedXp: number) => void;
+  onCompleteCafeLibrary?: (earnedXp: number) => void;
 }
 
 export default function HomeScreen({
@@ -77,6 +79,7 @@ export default function HomeScreen({
   onCompleteExpressReview,
   onCompleteVerbGym,
   onCompleteShadowStudio,
+  onCompleteCafeLibrary,
 }: Props) {
   const [activeCapsule, setActiveCapsule] = useState<GrammarCapsule | null>(null);
   const [activeStory, setActiveStory] = useState<StoryScenario | null>(null);
@@ -91,6 +94,7 @@ export default function HomeScreen({
   const [isExpressReviewOpen, setIsExpressReviewOpen] = useState(false);
   const [isVerbGymOpen, setIsVerbGymOpen] = useState(false);
   const [isShadowStudioOpen, setIsShadowStudioOpen] = useState(false);
+  const [isCafeLibraryOpen, setIsCafeLibraryOpen] = useState(false);
   const [roleplayIdx, setRoleplayIdx] = useState(0);
   const [isSparkFlipped, setIsSparkFlipped] = useState(false);
   const [storyAnswer, setStoryAnswer] = useState<number | null>(null);
@@ -310,6 +314,21 @@ export default function HomeScreen({
           <View style={{ flex: 1 }}>
             <Text style={s.companionTitle}>Shadowing Studio</Text>
             <Text style={s.companionSub}>Listen, mimic, and compare accents</Text>
+          </View>
+          <Text style={s.companionArrow}>›</Text>
+        </Pressable>
+
+        <Pressable
+          style={s.companionBtn}
+          onPress={() => {
+            void triggerHaptic('selection');
+            setIsCafeLibraryOpen(true);
+          }}
+        >
+          <Text style={s.companionIcon}>📚</Text>
+          <View style={{ flex: 1 }}>
+            <Text style={s.companionTitle}>Café Library · Reading Lounge</Text>
+            <Text style={s.companionSub}>Tap-to-read stories & cultural audiobooks</Text>
           </View>
           <Text style={s.companionArrow}>›</Text>
         </Pressable>
@@ -804,6 +823,17 @@ export default function HomeScreen({
           onCompleteShadowStudio?.(earnedXp);
         }}
         onClose={() => setIsShadowStudioOpen(false)}
+      />
+
+      {/* Café Library Reading Lounge Modal */}
+      <CafeLibraryModal
+        visible={isCafeLibraryOpen}
+        course={course}
+        onFinish={(earnedXp) => {
+          setIsCafeLibraryOpen(false);
+          onCompleteCafeLibrary?.(earnedXp);
+        }}
+        onClose={() => setIsCafeLibraryOpen(false)}
       />
     </ScrollView>
   );

@@ -1,6 +1,6 @@
 # ORRALI — Development Roadmap
 
-**Current Release:** 5.9.0 (The Verb Gym Edition)  
+**Current Release:** 6.1.0 (Café Library Reading Edition)  
 **Status Date:** November 17, 2026  
 
 ---
@@ -37,3 +37,5 @@
 | **5.7.0** | Radio Lab Audio Dictation | Connected speech dictation engine, cloze gap assembly, and acoustic liaison analysis | **COMPLETED** |
 | **5.8.0** | 3-Minute Express Review | 90-second swipe-based fast-track review to quickly clear 5 urgently due cards and save daily streak | **COMPLETED** |
 | **5.9.0** | The Verb Gym | Slot-machine rapid conjugation drills across present and past tenses for French, German, and Spanish | **COMPLETED** |
+| **6.0.0** | Shadowing Studio | Side-by-side native listening, microphone recording, acoustic cadence matching, and instant feedback | **COMPLETED** |
+| **6.1.0** | Café Library Reading Lounge | Tap-to-read continuous cultural stories, inline chromatic gender popovers, and audiobook read-aloud | **COMPLETED** |

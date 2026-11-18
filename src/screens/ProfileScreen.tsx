@@ -235,7 +235,7 @@ export default function ProfileScreen({
         <Text style={s.aboutBrand}>ORRALI</Text>
         <Text style={s.tagline}>Beyond the familiar.</Text>
         <Text style={s.aboutText}>A new world of possibilities. Discover · Connect · Grow.</Text>
-        <Text style={s.version}>ORRALI VERB GYM EDITION · 5.9.0</Text></View>
+        <Text style={s.version}>ORRALI CAFÉ LIBRARY EDITION · 6.1.0</Text></View>
     </ScrollView>
   );
 }

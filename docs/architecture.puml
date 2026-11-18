@@ -1,4 +1,4 @@
-@startuml ORRALI_Architecture_v5_9
+@startuml ORRALI_Architecture_v6_1
 !theme plain
 skinparam backgroundColor #F8F6F1
 skinparam defaultFontName Arial
@@ -6,7 +6,7 @@ skinparam packageBackgroundColor #FFFFFF
 skinparam packageBorderColor #1B1536
 skinparam componentStyle uml2
 
-title ORRALI Architecture (Version 5.9.0 — The Verb Gym Edition)
+title ORRALI Architecture (Version 6.1.0 — Café Library Reading Edition)
 
 package "Presentation & UI Layer (React Native / Expo)" {
   [App.tsx
@@ -24,6 +24,10 @@ Sentence Anatomy, Turtle Audio & Speech Lab] as LessonScreen
   }
 
   package "Interactive Modals" {
+    [CafeLibraryModal
+Tap-to-Read Stories & Audiobooks] as CafeModal
+    [ShadowStudioModal
+Mimicry Studio & Accent Tuning] as ShadowModal
     [VerbGymModal
 Conjugation Slot-Machine] as VerbGymModal
     [ExpressReviewModal
@@ -48,6 +52,10 @@ Conversational Simulation] as RoleplayModal
 }
 
 package "Sentence Anatomy & Commuter Engines" {
+  [cafeLibrary.ts
+Cultural Stories & Tap Tokenizer] as CafeEngine
+  [shadowStudio.ts
+Mimicry Deck & Phonetic Evaluation] as ShadowEngine
   [verbs.ts
 Conjugation Tables & Evaluation] as VerbEngine
   [expressReview.ts
