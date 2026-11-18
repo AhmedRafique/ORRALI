@@ -413,3 +413,28 @@ export interface GrammarRadarData {
   suggestedFocus: string[];
 }
 
+
+export interface CharacterPersona {
+  id: string;
+  name: string;
+  avatar: string;
+  description: string;
+  languageId: LangCode;
+  relationshipLevel: number;
+}
+
+export interface LocationHub {
+  id: string;
+  name: string;
+  description: string;
+  languageId: LangCode;
+  unlocked: boolean;
+  characters: string[]; // character IDs
+}
+
+export interface NarrativeState {
+  completedEvents: string[];
+  activeStoryline: string | null;
+  characterRelationships: Record<string, number>;
+}
+
