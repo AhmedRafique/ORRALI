@@ -1,6 +1,6 @@
 # ORRALI — Development Roadmap
 
-**Current Release:** 6.3.0 (Core Reliability Edition)  
+**Current Release:** 7.0.0 (Ecosystem Release)  
 **Status Date:** November 18, 2026  
 
 ---
@@ -47,7 +47,7 @@
 | **6.7.0** | Personal AI Coach & Smart Phrasebook | Contextual conversational memory, multi-mode tutor, personal phrase saving across all activities, Grammar Radar | **COMPLETED** |
 | **6.8.0** | Learning World & Living Characters | Illustrated 2D world exploration, recurring character personas and narrative continuity across missions | **COMPLETED** |
 | **6.9.0** | Supporting Ecosystem & Offline Packs | Daily Briefing, Smart Review Queue, Survival Mode, False Friends Trainer, downloadable offline packs | **COMPLETED** |
-| **7.0.0** | Beyond the Familiar (Ecosystem Release) | Full architectural maturity, relational repository layer, cloud sync conflict resolution, verified release artifacts | **IN PROGRESS** |
+| **7.0.0** | Beyond the Familiar (Ecosystem Release) | Full architectural maturity, relational repository layer, cloud sync conflict resolution, verified release artifacts | **COMPLETED** |
 
 ---
 

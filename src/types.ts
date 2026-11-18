@@ -462,3 +462,12 @@ export interface OfflinePackState {
   status: 'available' | 'downloading' | 'installed' | 'error';
 }
 
+
+export interface RepositoryRecord<T> {
+  id: string;
+  data: T;
+  createdAt: number;
+  updatedAt: number;
+  version: number;
+}
+
