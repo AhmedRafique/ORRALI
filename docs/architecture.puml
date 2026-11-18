@@ -6,7 +6,7 @@ skinparam packageBackgroundColor #FFFFFF
 skinparam packageBorderColor #1B1536
 skinparam componentStyle uml2
 
-title ORRALI Architecture (Version 6.3.0 — Core Reliability Edition)
+title ORRALI Architecture (Version 6.4.0 — Learning Intelligence Foundation)
 
 package "Presentation & UI Layer (React Native / Expo)" {
   [App.tsx
@@ -135,8 +135,32 @@ Acoustic Chimes & Victory Fanfare] as EarconEngine
 
 package "Offline Persistence Layer" {
   database "SQLite (expo-sqlite)
-progress_store & attempts" as SQLiteDB
+progress_store, attempts & learning_events" as SQLiteDB
   database "AsyncStorage (Backup)" as AsyncBackup
+}
+
+package "Learning Intelligence & Telemetry Engine (Phase 1)" {
+  [events.ts
+Standardized Learning Events & Error Taxonomy] as LearningEvents
+  [learnerModel.ts
+Multi-Domain Knowledge Profiles & Decoupled Mastery] as LearnerModel
+  [recommendations.ts
+Explainable Recommender & Session Generator] as Recommender
+}
+
+package "Real-World Communication Engine (Phase 2 & 3)" {
+  [missions/engine.ts
+Branching Missions & Multi-Metric Scoring] as MissionsEngine
+  [missions/catalog.ts
+Travel, Everyday & Professional Catalog] as MissionsCatalog
+  [MissionModal.tsx
+5-Stage Interactive Mission Modal] as MissionModalView
+  [writing/engine.ts
+Writing Correction Engine & 8-Point Feedback] as WritingEngine
+  [writing/catalog.ts
+Multi-Format Writing Catalog] as WritingCatalog
+  [WritingLabModal.tsx
+Interactive Writing Desk Modal] as WritingLabModalView
 }
 
 ' Navigation & Screen Wiring
@@ -153,6 +177,8 @@ HomeScreen --> TutorModal
 HomeScreen --> ClinicModal
 HomeScreen --> RoleplayModal
 HomeScreen --> WordOfDayEngine
+HomeScreen --> MissionModalView
+HomeScreen --> WritingLabModalView
 
 ' Modals to Engines
 MilestoneModal --> MilestoneEngine
@@ -164,6 +190,12 @@ LexiconModal --> AudioEngine
 ClinicModal --> ClinicEngine
 TutorModal --> TutorEngine
 RoleplayModal --> RoleplayEngine
+MissionModalView --> MissionsEngine
+MissionsEngine --> MissionsCatalog
+MissionsEngine --> LearningEvents
+WritingLabModalView --> WritingEngine
+WritingEngine --> WritingCatalog
+WritingEngine --> LearningEvents
 
 ' Screen to Domain
 LessonScreen --> Exercises
@@ -184,5 +216,11 @@ Exercises --> Content
 AudioEngine --> AudioMap
 AudioEngine --> AudioSpeed
 SRS --> Store
+App --> LearningEvents
+LearningEvents --> LearnerModel
+LearningEvents --> SQLiteDB
+LearnerModel --> SQLiteDB
+LearnerModel --> Recommender
+Recommender --> HomeScreen
 
 @enduml

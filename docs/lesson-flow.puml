@@ -58,11 +58,13 @@ opt Learner presses "×" or Android Back button
   Lesson -> App : onExit() -> Return to Home
 end
 
-== Lesson Finish & Checkpoint Clearance ==
+== Lesson Finish, Telemetry Event Stream & Checkpoint Clearance ==
 Learner -> Lesson : Complete final exercise & tap "Finish lesson"
 Lesson -> App : onFinish({ correctIds, wrongIds })
 App -> Storage : Clear checkpoint for lessonId
 App -> Storage : Update XP, courseXp, streak, completed chapters & SM-2 cards
+App -> "events.ts" as Events : recordLearningEvent(createLearningEvent(...))
+Events -> Storage : Persist event to SQLite learning_events table
 App -> Home : Return to Home with completed status
 
 @enduml

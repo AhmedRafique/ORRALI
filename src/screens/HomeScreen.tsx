@@ -22,6 +22,13 @@ import VerbGymModal from './VerbGymModal';
 import ShadowStudioModal from './ShadowStudioModal';
 import CafeLibraryModal from './CafeLibraryModal';
 import PlacementTestModal from './PlacementTestModal';
+import MissionModal from './MissionModal';
+import WritingLabModal from './WritingLabModal';
+import { createMissionCompletionEvents } from '../missions/engine';
+import { recordLearningEventsBatch } from '../events';
+import { getMissionById } from '../missions/catalog';
+import { MissionScoreBreakdown } from '../missions/types';
+import { WritingCorrectionResult } from '../writing/types';
 import { CEFRLevel } from '../milestones';
 
 const C = {
@@ -60,6 +67,8 @@ interface Props {
   onCompleteShadowStudio?: (earnedXp: number) => void;
   onCompleteCafeLibrary?: (earnedXp: number) => void;
   onApplyPlacement?: (updatedProgress: Progress) => void;
+  onCompleteMission?: (result: { missionId: string; score: MissionScoreBreakdown }) => void;
+  onCompleteWritingLab?: (result: { challengeId: string; correction: WritingCorrectionResult }) => void;
 }
 
 export default function HomeScreen({
@@ -83,6 +92,8 @@ export default function HomeScreen({
   onCompleteShadowStudio,
   onCompleteCafeLibrary,
   onApplyPlacement,
+  onCompleteMission,
+  onCompleteWritingLab,
 }: Props) {
   const [activeCapsule, setActiveCapsule] = useState<GrammarCapsule | null>(null);
   const [activeStory, setActiveStory] = useState<StoryScenario | null>(null);
@@ -99,6 +110,8 @@ export default function HomeScreen({
   const [isShadowStudioOpen, setIsShadowStudioOpen] = useState(false);
   const [isCafeLibraryOpen, setIsCafeLibraryOpen] = useState(false);
   const [isPlacementOpen, setIsPlacementOpen] = useState(false);
+  const [isMissionsOpen, setIsMissionsOpen] = useState(false);
+  const [isWritingLabOpen, setIsWritingLabOpen] = useState(false);
   const [roleplayIdx, setRoleplayIdx] = useState(0);
   const [isSparkFlipped, setIsSparkFlipped] = useState(false);
   const [storyAnswer, setStoryAnswer] = useState<number | null>(null);
@@ -348,6 +361,41 @@ export default function HomeScreen({
           <View style={{ flex: 1 }}>
             <Text style={s.companionTitle}>CEFR Placement Test</Text>
             <Text style={s.companionSub}>Test out of basics & fast-track to A2/B1/B2</Text>
+          </View>
+          <Text style={s.companionArrow}>›</Text>
+        </Pressable>
+
+        <Pressable
+          style={[s.companionBtn, { borderColor: C.gold, borderWidth: 1 }]}
+          onPress={() => {
+            void triggerHaptic('selection');
+            setIsMissionsOpen(true);
+          }}
+        >
+          <Text style={s.companionIcon}>🎯</Text>
+          <View style={{ flex: 1 }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+              <Text style={[s.companionTitle, { color: C.gold }]}>Real-Life Missions</Text>
+              <View style={s.signatureBadge}>
+                <Text style={s.signatureBadgeText}>SIGNATURE</Text>
+              </View>
+            </View>
+            <Text style={s.companionSub}>Branching real-world missions with unexpected curveballs</Text>
+          </View>
+          <Text style={s.companionArrow}>›</Text>
+        </Pressable>
+
+        <Pressable
+          style={s.companionBtn}
+          onPress={() => {
+            void triggerHaptic('selection');
+            setIsWritingLabOpen(true);
+          }}
+        >
+          <Text style={s.companionIcon}>✍️</Text>
+          <View style={{ flex: 1 }}>
+            <Text style={s.companionTitle}>Writing Lab</Text>
+            <Text style={s.companionSub}>Interactive sentence correction & 8-point feedback</Text>
           </View>
           <Text style={s.companionArrow}>›</Text>
         </Pressable>
@@ -866,6 +914,28 @@ export default function HomeScreen({
         }}
         onClose={() => setIsPlacementOpen(false)}
       />
+
+      {/* Real-Life Missions Modal */}
+      <MissionModal
+        visible={isMissionsOpen}
+        course={course}
+        onFinish={(result) => {
+          setIsMissionsOpen(false);
+          onCompleteMission?.(result);
+        }}
+        onClose={() => setIsMissionsOpen(false)}
+      />
+
+      {/* Writing Lab Modal */}
+      <WritingLabModal
+        visible={isWritingLabOpen}
+        course={course}
+        onFinish={(result) => {
+          setIsWritingLabOpen(false);
+          onCompleteWritingLab?.(result);
+        }}
+        onClose={() => setIsWritingLabOpen(false)}
+      />
     </ScrollView>
   );
 }
@@ -1118,6 +1188,18 @@ const s = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 5,
     borderRadius: 8,
+  },
+  signatureBadge: {
+    backgroundColor: C.gold,
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 4,
+  },
+  signatureBadgeText: {
+    color: C.midnight,
+    fontSize: 9,
+    fontWeight: '800',
+    letterSpacing: 0.5,
   },
   capsuleModalBadgeText: {
     color: '#8A692E',

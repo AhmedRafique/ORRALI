@@ -41,3 +41,45 @@
 | **6.1.0** | Café Library Reading Lounge | Tap-to-read continuous cultural stories, inline chromatic gender popovers, and audiobook read-aloud | **COMPLETED** |
 | **6.2.0** | Adaptive CEFR Placement Test | Dynamic multi-tier placement test with auto-unlocking of prerequisite chapters, mature SM-2 intervals, and retroactive Gold Diplomas | **COMPLETED** |
 | **6.3.0** | Core Reliability Release | Authentic CEFR placement mapping from metadata, complete roleplay intent validation, dual-storage timestamp reconciliation, SQLite attempt tracking for Mistake Clinic, and speech recognition race fix | **COMPLETED** |
+| **6.4.0** | Learning Intelligence Foundation | Standardized Learning Events system, Learner Knowledge Model (mastery vs. confidence), explainable Recommendation Engine, dynamic session generator | **COMPLETED** |
+| **6.5.0** | Real-Life Missions & Writing Lab | 30-scenario branching missions (Travel, Everyday, Work), interactive writing exercises, targeted 8-point correction engine | **COMPLETED** |
+| **6.6.0** | Speak Naturally & Listening World | Visual pronunciation skill map (FR/DE/ES), acoustic cadence & intonation metrics, progressive audio library | **IN PROGRESS** |
+| **6.7.0** | Personal AI Coach & Smart Phrasebook | Contextual conversational memory, multi-mode tutor, personal phrase saving across all activities, Grammar Radar | **PLANNED** |
+| **6.8.0** | Learning World & Living Characters | Illustrated 2D world exploration, recurring character personas and narrative continuity across missions | **PLANNED** |
+| **6.9.0** | Supporting Ecosystem & Offline Packs | Daily Briefing, Smart Review Queue, Survival Mode, False Friends Trainer, downloadable offline packs | **PLANNED** |
+| **7.0.0** | Beyond the Familiar (Ecosystem Release) | Full architectural maturity, relational repository layer, cloud sync conflict resolution, verified release artifacts | **PLANNED** |
+
+---
+
+## ORRALI 7.0 Master Development Architecture
+
+```
+                                  ┌───────────────────────────┐
+                                  │   ORRALI Personal Coach   │
+                                  │   (Adaptive Intelligence) │
+                                  └─────────────┬─────────────┘
+                                                │
+                 ┌──────────────────────────────┼──────────────────────────────┐
+                 ▼                              ▼                              ▼
+  ┌─────────────────────────────┐┌─────────────────────────────┐┌─────────────────────────────┐
+  │        Learning World       ││        Real-World           ││       Learning Engine       │
+  │   (Immersion & Characters)  ││       Communication         ││    (Structured Education)   │
+  │  • 2D Illustrated Hubs      ││  • Real-Life Missions       ││  • Multi-Tier CEFR (A1-B2)  │
+  │  • Living Characters        ││  • Writing Lab & Radar      ││  • Spaced Repetition (SM-2) │
+  │  • Cultural Stories         ││  • Natural Speech & Listen  ││  • Grammar Capsules         │
+  └──────────────┬──────────────┘└──────────────┬──────────────┘└──────────────┬──────────────┘
+                 │                              │                              │
+                 └──────────────────────────────┼──────────────────────────────┘
+                                                ▼
+                                  ┌───────────────────────────┐
+                                  │ Standardized Event Stream │
+                                  │   & Knowledge Profile     │
+                                  │ (Decoupled Mastery/Conf)  │
+                                  └─────────────┬─────────────┘
+                                                ▼
+                                  ┌───────────────────────────┐
+                                  │ Relational SQLite Core    │
+                                  │ (Offline-First Storage)   │
+                                  └───────────────────────────┘
+```
+

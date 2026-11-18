@@ -15,7 +15,25 @@ import LessonScreen from './src/screens/LessonScreen';
 import ProgressScreen from './src/screens/ProgressScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
 import { review, isDue, newCard } from './src/srs';
-import { recordAttemptToDb } from './src/db';
+import {
+  recordAttemptToDb,
+  recordLearningEventToDb,
+  recordLearningEventsBatchToDb,
+  queryLearningEventsFromDb,
+} from './src/db';
+import {
+  setEventPersistenceHandler,
+  createLearningEvent,
+  recordLearningEvent,
+  recordLearningEventsBatch,
+  deriveObjectiveIds,
+} from './src/events';
+import { createMissionCompletionEvents } from './src/missions/engine';
+import { getMissionById } from './src/missions/catalog';
+import { MissionScoreBreakdown } from './src/missions/types';
+import { createWritingCompletionEvents } from './src/writing/engine';
+import { getWritingChallengeById } from './src/writing/catalog';
+import { WritingCorrectionResult } from './src/writing/types';
 import { evaluateBadges } from './src/badges';
 import { getThemeColors, toggleTheme, ThemeMode } from './src/theme';
 import { DailySparkWord } from './src/wordOfDay';
@@ -31,6 +49,13 @@ import {
   touchStreak,
 } from './src/store';
 import { Exercise, Item, LangCode, LessonCheckpoint, Progress } from './src/types';
+
+// Wire SQLite persistence to the standardized Learning Events telemetry engine
+setEventPersistenceHandler({
+  recordEvent: recordLearningEventToDb,
+  recordBatch: recordLearningEventsBatchToDb,
+  queryEvents: queryLearningEventsFromDb,
+});
 
 type Session = {
   title: string;
@@ -129,6 +154,23 @@ export default function App() {
         const isCorrect = !wrong.has(id);
         cards[id] = review(cards[id], isCorrect);
         void recordAttemptToDb(id, course.code, 'lesson', isCorrect);
+
+        const event = createLearningEvent({
+          languageId: course.code,
+          activityId: 'lesson',
+          objectiveIds: deriveObjectiveIds({
+            itemId: id,
+            activityId: 'lesson',
+          }),
+          result: isCorrect ? 'correct' : 'incorrect',
+          difficulty: 'A1',
+          durationMs: 0,
+          hintsUsed: 0,
+          attemptsCount: 1,
+          confidence: 1.0,
+          payload: { itemId: id, lessonTitle: session?.title },
+        });
+        void recordLearningEvent(event);
       }
 
       // Ensure any skipped items in the completed lesson are initialized in spaced repetition
@@ -312,6 +354,23 @@ export default function App() {
         const isCorrect = !wrong.has(id);
         cards[id] = review(cards[id] ?? newCard(), isCorrect);
         void recordAttemptToDb(id, course.code, 'express', isCorrect);
+
+        const event = createLearningEvent({
+          languageId: course.code,
+          activityId: 'express_review',
+          objectiveIds: deriveObjectiveIds({
+            itemId: id,
+            activityId: 'express_review',
+          }),
+          result: isCorrect ? 'correct' : 'incorrect',
+          difficulty: 'A1',
+          durationMs: 0,
+          hintsUsed: 0,
+          attemptsCount: 1,
+          confidence: 1.0,
+          payload: { itemId: id },
+        });
+        void recordLearningEvent(event);
       }
 
       const today = dayKey(new Date());
@@ -462,6 +521,70 @@ export default function App() {
     [course.code, progress, updateProgress],
   );
 
+  const completeMission = useCallback(
+    (result: { missionId: string; score: MissionScoreBreakdown }) => {
+      const mission = getMissionById(result.missionId);
+      if (mission) {
+        const events = createMissionCompletionEvents(mission, result.score);
+        void recordLearningEventsBatch(events);
+      }
+
+      if (result.score.earnedXp > 0) {
+        const current = progress ?? emptyProgress();
+        let p = touchStreak(current);
+        const today = dayKey(new Date());
+        const currentCourseXp = p.courseXp?.[course.code] ?? 0;
+        p = {
+          ...p,
+          xp: p.xp + result.score.earnedXp,
+          courseXp: {
+            ...(p.courseXp ?? {}),
+            [course.code]: currentCourseXp + result.score.earnedXp,
+          },
+          dailyXp: (p.dailyXpDay === today ? p.dailyXp : 0) + result.score.earnedXp,
+          dailyXpDay: today,
+          completedMissions: {
+            ...(p.completedMissions ?? {}),
+            [result.missionId]: Date.now(),
+          },
+        };
+        const { updatedProgress } = evaluateBadges(p, courses);
+        updateProgress(updatedProgress);
+      }
+    },
+    [course.code, courses, progress, updateProgress],
+  );
+
+  const completeWritingLab = useCallback(
+    (result: { challengeId: string; correction: WritingCorrectionResult }) => {
+      const challenge = getWritingChallengeById(result.challengeId);
+      if (challenge) {
+        const events = createWritingCompletionEvents(challenge, result.correction);
+        void recordLearningEventsBatch(events);
+      }
+
+      if (result.correction.earnedXp > 0) {
+        const current = progress ?? emptyProgress();
+        let p = touchStreak(current);
+        const today = dayKey(new Date());
+        const currentCourseXp = p.courseXp?.[course.code] ?? 0;
+        p = {
+          ...p,
+          xp: p.xp + result.correction.earnedXp,
+          courseXp: {
+            ...(p.courseXp ?? {}),
+            [course.code]: currentCourseXp + result.correction.earnedXp,
+          },
+          dailyXp: (p.dailyXpDay === today ? p.dailyXp : 0) + result.correction.earnedXp,
+          dailyXpDay: today,
+        };
+        const { updatedProgress } = evaluateBadges(p, courses);
+        updateProgress(updatedProgress);
+      }
+    },
+    [course.code, courses, progress, updateProgress],
+  );
+
   if (!progress) {
     return (
       <SafeAreaView style={s.loading}>
@@ -528,6 +651,8 @@ export default function App() {
                 onApplyPlacement={applyPlacement}
                 onPassMilestoneExam={passMilestoneExam}
                 onClaimDailySpark={claimDailySpark}
+                onCompleteMission={completeMission}
+                onCompleteWritingLab={completeWritingLab}
                 onStartReview={() => {
                   const due = course.lessons
                     .flatMap((lesson) => lesson.items)
