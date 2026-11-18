@@ -1,4 +1,4 @@
-@startuml ORRALI_Architecture_v5_6
+@startuml ORRALI_Architecture_v5_7
 !theme plain
 skinparam backgroundColor #F8F6F1
 skinparam defaultFontName Arial
@@ -6,7 +6,7 @@ skinparam packageBackgroundColor #FFFFFF
 skinparam packageBorderColor #1B1536
 skinparam componentStyle uml2
 
-title ORRALI Architecture (Version 5.6.0 — Visual Chromatic Immersion Edition)
+title ORRALI Architecture (Version 5.7.0 — Radio Lab Dictation Edition)
 
 package "Presentation & UI Layer (React Native / Expo)" {
   [App.tsx
@@ -24,6 +24,8 @@ Sentence Anatomy, Turtle Audio & Speech Lab] as LessonScreen
   }
 
   package "Interactive Modals" {
+    [RadioLabModal
+Audio Dictation & Liaisons] as RadioModal
     [CommuterAudioModal
 Hands-Free Pimsleur Audio Loop] as CommuterModal
     [MilestoneExamModal
@@ -42,6 +44,8 @@ Conversational Simulation] as RoleplayModal
 }
 
 package "Sentence Anatomy & Commuter Engines" {
+  [radioLab.ts
+Dictation Cloze & Connected Speech] as RadioEngine
   [commuterAudio.ts
 Hands-Free Sequencing & Queue] as CommuterEngine
   [gender.ts

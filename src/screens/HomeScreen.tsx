@@ -16,6 +16,7 @@ import LexiconModal from './LexiconModal';
 import SpeedRecallModal from './SpeedRecallModal';
 import MilestoneExamModal from './MilestoneExamModal';
 import CommuterAudioModal from './CommuterAudioModal';
+import RadioLabModal from './RadioLabModal';
 import { CEFRLevel } from '../milestones';
 
 const C = {
@@ -48,6 +49,7 @@ interface Props {
   onPassMilestoneExam?: (earnedXp: number, diplomaKey: string) => void;
   onClaimDailySpark?: (sparkWord: DailySparkWord) => void;
   onCompleteCommuterSession?: (earnedXp: number) => void;
+  onCompleteRadioLab?: (earnedXp: number) => void;
 }
 
 export default function HomeScreen({
@@ -65,6 +67,7 @@ export default function HomeScreen({
   onPassMilestoneExam,
   onClaimDailySpark,
   onCompleteCommuterSession,
+  onCompleteRadioLab,
 }: Props) {
   const [activeCapsule, setActiveCapsule] = useState<GrammarCapsule | null>(null);
   const [activeStory, setActiveStory] = useState<StoryScenario | null>(null);
@@ -75,6 +78,7 @@ export default function HomeScreen({
   const [activeExamLevel, setActiveExamLevel] = useState<CEFRLevel | null>(null);
   const [activeRoleplay, setActiveRoleplay] = useState<RoleplayScenario | null>(null);
   const [isCommuterOpen, setIsCommuterOpen] = useState(false);
+  const [isRadioLabOpen, setIsRadioLabOpen] = useState(false);
   const [roleplayIdx, setRoleplayIdx] = useState(0);
   const [isSparkFlipped, setIsSparkFlipped] = useState(false);
   const [storyAnswer, setStoryAnswer] = useState<number | null>(null);
@@ -296,6 +300,21 @@ export default function HomeScreen({
           <View style={{ flex: 1 }}>
             <Text style={s.companionTitle}>Commuter & Walking Mode</Text>
             <Text style={s.companionSub}>Hands-free Pimsleur-style audio loop</Text>
+          </View>
+          <Text style={s.companionArrow}>›</Text>
+        </Pressable>
+
+        <Pressable
+          style={s.companionBtn}
+          onPress={() => {
+            void triggerHaptic('selection');
+            setIsRadioLabOpen(true);
+          }}
+        >
+          <Text style={s.companionIcon}>📻</Text>
+          <View style={{ flex: 1 }}>
+            <Text style={s.companionTitle}>Radio Lab · Dictation</Text>
+            <Text style={s.companionSub}>Liaisons & connected speech tuning</Text>
           </View>
           <Text style={s.companionArrow}>›</Text>
         </Pressable>
@@ -678,6 +697,17 @@ export default function HomeScreen({
           onCompleteCommuterSession?.(earnedXp);
         }}
         onClose={() => setIsCommuterOpen(false)}
+      />
+
+      {/* Radio Lab Audio Dictation Modal */}
+      <RadioLabModal
+        visible={isRadioLabOpen}
+        course={course}
+        onFinish={(earnedXp) => {
+          setIsRadioLabOpen(false);
+          onCompleteRadioLab?.(earnedXp);
+        }}
+        onClose={() => setIsRadioLabOpen(false)}
       />
     </ScrollView>
   );
