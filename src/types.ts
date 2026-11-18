@@ -388,3 +388,28 @@ export interface ProgressiveAudioItem {
   focus: 'vocabulary' | 'grammar' | 'cadence' | 'intonation';
 }
 
+
+export interface SavedPhrase {
+  id: string;
+  target: string;
+  en: string;
+  languageId: LangCode;
+  savedAt: number;
+  sourceActivity: LearningActivityKind;
+  tags: string[];
+}
+
+export interface ConversationMemoryContext {
+  topic: string;
+  userPreferences: Record<string, string>;
+  knownMistakes: string[];
+  lastInteractionAt: number;
+}
+
+export interface GrammarRadarData {
+  radarId: string;
+  targetLanguage: LangCode;
+  detectedPatterns: string[];
+  suggestedFocus: string[];
+}
+
