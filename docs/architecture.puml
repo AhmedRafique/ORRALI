@@ -1,4 +1,4 @@
-@startuml ORRALI_Architecture_v5_8
+@startuml ORRALI_Architecture_v5_9
 !theme plain
 skinparam backgroundColor #F8F6F1
 skinparam defaultFontName Arial
@@ -6,7 +6,7 @@ skinparam packageBackgroundColor #FFFFFF
 skinparam packageBorderColor #1B1536
 skinparam componentStyle uml2
 
-title ORRALI Architecture (Version 5.8.0 — 3-Minute Express Review Edition)
+title ORRALI Architecture (Version 5.9.0 — The Verb Gym Edition)
 
 package "Presentation & UI Layer (React Native / Expo)" {
   [App.tsx
@@ -24,6 +24,8 @@ Sentence Anatomy, Turtle Audio & Speech Lab] as LessonScreen
   }
 
   package "Interactive Modals" {
+    [VerbGymModal
+Conjugation Slot-Machine] as VerbGymModal
     [ExpressReviewModal
 3-Minute Fast-Track SM-2 Deck] as ExpressModal
     [RadioLabModal
@@ -46,6 +48,8 @@ Conversational Simulation] as RoleplayModal
 }
 
 package "Sentence Anatomy & Commuter Engines" {
+  [verbs.ts
+Conjugation Tables & Evaluation] as VerbEngine
   [expressReview.ts
 SM-2 Urgent Extraction] as ExpressEngine
   [radioLab.ts

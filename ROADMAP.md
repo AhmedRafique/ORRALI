@@ -1,6 +1,6 @@
 # ORRALI — Development Roadmap
 
-**Current Release:** 5.8.0 (3-Minute Express Review Edition)  
+**Current Release:** 5.9.0 (The Verb Gym Edition)  
 **Status Date:** November 17, 2026  
 
 ---
@@ -36,3 +36,4 @@
 | **5.6.0** | Visual Chromatic Gender Immersion | Cobalt Blue ♂ (Masc), Rose Crimson ♀ (Fem), Sage Emerald ⚲ (Neut) across Word Tiles, Anatomy Pills, and Lexicon | **COMPLETED** |
 | **5.7.0** | Radio Lab Audio Dictation | Connected speech dictation engine, cloze gap assembly, and acoustic liaison analysis | **COMPLETED** |
 | **5.8.0** | 3-Minute Express Review | 90-second swipe-based fast-track review to quickly clear 5 urgently due cards and save daily streak | **COMPLETED** |
+| **5.9.0** | The Verb Gym | Slot-machine rapid conjugation drills across present and past tenses for French, German, and Spanish | **COMPLETED** |
