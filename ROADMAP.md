@@ -1,6 +1,6 @@
 # ORRALI — Development Roadmap
 
-**Current Release:** 6.2.0 (Adaptive Placement Test Edition)  
+**Current Release:** 6.2.0 (Adaptive Placement Edition)  
 **Status Date:** November 17, 2026  
 
 ---
@@ -39,4 +39,4 @@
 | **5.9.0** | The Verb Gym | Slot-machine rapid conjugation drills across present and past tenses for French, German, and Spanish | **COMPLETED** |
 | **6.0.0** | Shadowing Studio | Side-by-side native listening, microphone recording, acoustic cadence matching, and instant feedback | **COMPLETED** |
 | **6.1.0** | Café Library Reading Lounge | Tap-to-read continuous cultural stories, inline chromatic gender popovers, and audiobook read-aloud | **COMPLETED** |
-| **6.2.0** | Adaptive CEFR Placement Test | Adaptive testing out of basics, fast-track to A2/B1/B2 with mature SM-2 intervals & Gold Diplomas | **COMPLETED** |
+| **6.2.0** | Adaptive CEFR Placement Test | Dynamic multi-tier placement test with auto-unlocking of prerequisite chapters, mature SM-2 intervals, and retroactive Gold Diplomas | **COMPLETED** |
