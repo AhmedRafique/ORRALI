@@ -151,6 +151,49 @@ export const TUTOR_KNOWLEDGE_BASE: TutorKnowledgeEntry[] = [
     goldenRule: '"Wie spät ist es?" literally means "How late is it?".',
   },
   {
+    courseCode: 'de',
+    keywords: ['color', 'farbe', 'gender', 'geschlecht', 'chromatic', 'blau', 'rot', 'grün'],
+    topic: 'Visual Chromatic Gender: Cobalt Blue, Rose Crimson & Sage Emerald',
+    childFriendlySummary:
+      'ORRALI uses smart colors so you never have to memorize der/die/das lists: Blue is Masculine, Rose is Feminine, and Green is Neuter!',
+    detailedExplanation:
+      'Whenever you see word tiles, anatomy pills, or lexicon cards: Cobalt Blue = Der (Masculine), Rose Crimson = Die (Feminine), and Sage Emerald = Das (Neuter). Your visual memory anchors the gender effortlessly!',
+    examples: [
+      { target: 'der Kaffee', en: 'The coffee (Cobalt Blue -> Masculine)' },
+      { target: 'die Fahrkarte', en: 'The ticket (Rose Crimson -> Feminine)' },
+      { target: 'das Museum', en: 'The museum (Sage Emerald -> Neuter)' },
+    ],
+    goldenRule: 'Blue for der, Rose for die, Sage Green for das.',
+  },
+  {
+    courseCode: 'fr',
+    keywords: ['color', 'couleur', 'gender', 'genre', 'chromatic', 'bleu', 'rose', 'masculin', 'féminin'],
+    topic: 'Visual Chromatic Gender: Cobalt Blue & Rose Crimson',
+    childFriendlySummary:
+      'ORRALI color-codes nouns and articles: Cobalt Blue for masculine (le/un) and Rose Crimson for feminine (la/une)!',
+    detailedExplanation:
+      'Look at the subtle colored dots on word tiles and lexicon cards: Cobalt Blue words are Masculine, and Rose Crimson words are Feminine. Your eyes learn agreements naturally!',
+    examples: [
+      { target: 'le café / un croissant', en: 'The coffee / a croissant (Cobalt Blue -> Masculine)' },
+      { target: 'la gare / une chambre', en: 'The station / a room (Rose Crimson -> Feminine)' },
+    ],
+    goldenRule: 'Cobalt Blue is Le/Un (Masc); Rose Crimson is La/Une (Fem).',
+  },
+  {
+    courseCode: 'es',
+    keywords: ['color', 'genero', 'género', 'chromatic', 'azul', 'rosa', 'masculino', 'femenino'],
+    topic: 'Visual Chromatic Gender: Cobalt Blue & Rose Crimson',
+    childFriendlySummary:
+      'ORRALI color-codes Spanish nouns: Cobalt Blue for masculine (el/un) and Rose Crimson for feminine (la/una)!',
+    detailedExplanation:
+      'In Spanish word tiles, anatomy pills, and flashcards: Cobalt Blue words are Masculine, and Rose Crimson words are Feminine. You will instinctively match "el" or "la" without second-guessing!',
+    examples: [
+      { target: 'el museo / un café', en: 'The museum / a coffee (Cobalt Blue -> Masculine)' },
+      { target: 'la tortilla / una cuenta', en: 'The tortilla / a bill (Rose Crimson -> Feminine)' },
+    ],
+    goldenRule: 'Cobalt Blue is El/Un (Masc); Rose Crimson is La/Una (Fem).',
+  },
+  {
     courseCode: 'es',
     keywords: ['ser', 'estar', 'diferencia', 'cuando', 'estoy', 'soy'],
     topic: 'Ser vs. Estar: Permanent Traits vs. Location & States',

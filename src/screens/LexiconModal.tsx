@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import { Modal, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { playPhraseAudio, stopAllAudio } from '../audio';
 import { buildFlashcardDeck, filterLexicon, getLexiconEntries, MasteryStatus } from '../lexicon';
+import { detectWordGender, getGenderPalette } from '../gender';
 import { Course, Item, Progress } from '../types';
 
 const C = {
@@ -120,6 +121,38 @@ export default function LexiconModal({ visible, course, progress, onClose }: Pro
                       {!isFlipped ? (
                         <View style={s.flashcardContent}>
                           <Text style={s.flashcardTarget}>{currentFlashcard.item.target}</Text>
+                          {(() => {
+                            const words = currentFlashcard.item.target.split(/\s+/);
+                            const gender = words
+                              .map((w) => detectWordGender(w, course.code))
+                              .find(Boolean);
+                            if (!gender) return null;
+                            const pal = getGenderPalette(gender);
+                            return (
+                              <View
+                                style={{
+                                  backgroundColor: pal.badgeBg,
+                                  borderColor: pal.border,
+                                  borderWidth: 1,
+                                  paddingHorizontal: 8,
+                                  paddingVertical: 2,
+                                  borderRadius: 8,
+                                  marginTop: 6,
+                                  alignSelf: 'center',
+                                }}
+                              >
+                                <Text
+                                  style={{
+                                    color: pal.badge,
+                                    fontSize: 11,
+                                    fontWeight: '800',
+                                  }}
+                                >
+                                  {pal.symbol} {pal.label}
+                                </Text>
+                              </View>
+                            );
+                          })()}
                           {currentFlashcard.item.phonetic && (
                             <Text style={s.flashcardPhonetic}>/{currentFlashcard.item.phonetic}/</Text>
                           )}
@@ -254,7 +287,39 @@ export default function LexiconModal({ visible, course, progress, onClose }: Pro
                       <View key={entry.item.id} style={s.entryCard}>
                         <View style={s.entryTop}>
                           <View style={{ flex: 1 }}>
-                            <Text style={s.entryTarget}>{entry.item.target}</Text>
+                            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
+                              <Text style={s.entryTarget}>{entry.item.target}</Text>
+                              {(() => {
+                                const words = entry.item.target.split(/\s+/);
+                                const gender = words
+                                  .map((w) => detectWordGender(w, course.code))
+                                  .find(Boolean);
+                                if (!gender) return null;
+                                const pal = getGenderPalette(gender);
+                                return (
+                                  <View
+                                    style={{
+                                      backgroundColor: pal.badgeBg,
+                                      borderColor: pal.border,
+                                      borderWidth: 1,
+                                      paddingHorizontal: 6,
+                                      paddingVertical: 1,
+                                      borderRadius: 6,
+                                    }}
+                                  >
+                                    <Text
+                                      style={{
+                                        color: pal.badge,
+                                        fontSize: 9,
+                                        fontWeight: '800',
+                                      }}
+                                    >
+                                      {pal.symbol} {pal.label.toUpperCase()}
+                                    </Text>
+                                  </View>
+                                );
+                              })()}
+                            </View>
                             {entry.item.phonetic && (
                               <Text style={s.entryPhonetic}>/{entry.item.phonetic}/</Text>
                             )}

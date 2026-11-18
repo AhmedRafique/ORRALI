@@ -24,6 +24,7 @@ import {
 import { findBestVoiceForLanguage, playPhraseAudio, stopAllAudio } from '../audio';
 import { buildExercises, evaluateAnswer, evaluateScramble } from '../exercises';
 import { breakdownSentence, WordAnatomy } from '../anatomy';
+import { detectWordGender, getGenderPalette } from '../gender';
 import { playEarcon } from '../earcons';
 import { evaluatePronunciation } from '../scoring';
 import { triggerHaptic } from '../sensory';
@@ -462,34 +463,80 @@ export default function LessonScreen({
             {ex.item.phonetic && <Text style={s.introPhonetic}>/{ex.item.phonetic}/</Text>}
             <Text style={s.introMeaning}>{ex.item.en}</Text>
 
-            {/* Tap-to-Inspect Sentence Anatomy */}
+            {/* Tap-to-Inspect Sentence Anatomy with Chromatic Gender Immersion */}
             <View style={s.anatomyRow}>
-              {anatomyTokens.map((t, idx) => (
-                <Pressable
-                  key={`${t.word}-${idx}`}
-                  style={[s.wordPillInteractive, inspectedWord?.word === t.word && s.wordPillInspected]}
-                  onPress={() => {
-                    void triggerHaptic('light');
-                    setInspectedWord(inspectedWord?.word === t.word ? null : t);
-                  }}
-                >
-                  <Text
+              {anatomyTokens.map((t, idx) => {
+                const palette = t.gender ? getGenderPalette(t.gender) : null;
+                const isSelected = inspectedWord?.word === t.word;
+                return (
+                  <Pressable
+                    key={`${t.word}-${idx}`}
                     style={[
-                      s.wordPillInteractiveText,
-                      inspectedWord?.word === t.word && s.wordPillInspectedText,
+                      s.wordPillInteractive,
+                      palette && {
+                        backgroundColor: palette.badgeBg,
+                        borderColor: palette.border,
+                      },
+                      isSelected && s.wordPillInspected,
                     ]}
+                    onPress={() => {
+                      void triggerHaptic('light');
+                      setInspectedWord(isSelected ? null : t);
+                    }}
                   >
-                    {t.word}
-                  </Text>
-                </Pressable>
-              ))}
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                      {palette && (
+                        <View
+                          style={{
+                            width: 6,
+                            height: 6,
+                            borderRadius: 3,
+                            backgroundColor: palette.badge,
+                            marginRight: 4,
+                          }}
+                        />
+                      )}
+                      <Text
+                        style={[
+                          s.wordPillInteractiveText,
+                          palette && { color: palette.badge },
+                          isSelected && s.wordPillInspectedText,
+                        ]}
+                      >
+                        {t.word}
+                      </Text>
+                    </View>
+                  </Pressable>
+                );
+              })}
             </View>
 
             {inspectedWord && (
               <View style={s.anatomyPopover}>
                 <View style={s.popoverTop}>
                   <Text style={s.popoverWord}>{inspectedWord.cleanWord}</Text>
-                  <Text style={s.popoverRole}>{inspectedWord.role}</Text>
+                  <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+                    {inspectedWord.gender && (() => {
+                      const pal = getGenderPalette(inspectedWord.gender);
+                      return (
+                        <View
+                          style={{
+                            backgroundColor: pal.badgeBg,
+                            borderColor: pal.border,
+                            borderWidth: 1,
+                            paddingHorizontal: 6,
+                            paddingVertical: 2,
+                            borderRadius: 6,
+                          }}
+                        >
+                          <Text style={{ color: pal.badge, fontSize: 10, fontWeight: '800' }}>
+                            {pal.symbol} {pal.label}
+                          </Text>
+                        </View>
+                      );
+                    })()}
+                    <Text style={s.popoverRole}>{inspectedWord.role}</Text>
+                  </View>
                 </View>
                 <Text style={s.popoverMeaning}>Meaning: {inspectedWord.meaningEn}</Text>
               </View>
@@ -653,19 +700,42 @@ export default function LessonScreen({
                 <Text style={s.slotPlaceholder}>Tap word tiles below to assemble the sentence…</Text>
               ) : (
                 <View style={s.slotRow}>
-                  {selectedIndices.map((tokenIdx, slotPos) => (
-                    <Pressable
-                      key={`slot-${slotPos}`}
-                      style={s.selectedTile}
-                      onPress={() => {
-                        if (feedback) return;
-                        void triggerHaptic('selection');
-                        setSelectedIndices((prev) => prev.filter((_, i) => i !== slotPos));
-                      }}
-                    >
-                      <Text style={s.selectedTileText}>{ex.tokens![tokenIdx]}</Text>
-                    </Pressable>
-                  ))}
+                  {selectedIndices.map((tokenIdx, slotPos) => {
+                    const tokenText = ex.tokens![tokenIdx];
+                    const tokenGender = detectWordGender(tokenText, course.code);
+                    const pal = tokenGender ? getGenderPalette(tokenGender) : null;
+                    return (
+                      <Pressable
+                        key={`slot-${slotPos}`}
+                        style={[
+                          s.selectedTile,
+                          pal && { borderColor: pal.border, backgroundColor: pal.badgeBg },
+                        ]}
+                        onPress={() => {
+                          if (feedback) return;
+                          void triggerHaptic('selection');
+                          setSelectedIndices((prev) => prev.filter((_, i) => i !== slotPos));
+                        }}
+                      >
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                          {pal && (
+                            <View
+                              style={{
+                                width: 5,
+                                height: 5,
+                                borderRadius: 2.5,
+                                backgroundColor: pal.badge,
+                                marginRight: 4,
+                              }}
+                            />
+                          )}
+                          <Text style={[s.selectedTileText, pal && { color: pal.badge }]}>
+                            {tokenText}
+                          </Text>
+                        </View>
+                      </Pressable>
+                    );
+                  })}
                 </View>
               )}
             </View>
@@ -674,17 +744,44 @@ export default function LessonScreen({
             <View style={s.tileBank}>
               {ex.tokens?.map((token: string, tokenIdx: number) => {
                 const isUsed = selectedIndices.includes(tokenIdx);
+                const tokenGender = detectWordGender(token, course.code);
+                const pal = tokenGender ? getGenderPalette(tokenGender) : null;
                 return (
                   <Pressable
                     key={`bank-${tokenIdx}`}
                     disabled={isUsed || !!feedback}
-                    style={[s.bankTile, isUsed && s.bankTileUsed]}
+                    style={[
+                      s.bankTile,
+                      pal && !isUsed && { borderColor: pal.border, backgroundColor: pal.badgeBg },
+                      isUsed && s.bankTileUsed,
+                    ]}
                     onPress={() => {
                       void triggerHaptic('selection');
                       setSelectedIndices((prev) => [...prev, tokenIdx]);
                     }}
                   >
-                    <Text style={[s.bankTileText, isUsed && s.bankTileTextUsed]}>{token}</Text>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                      {pal && !isUsed && (
+                        <View
+                          style={{
+                            width: 5,
+                            height: 5,
+                            borderRadius: 2.5,
+                            backgroundColor: pal.badge,
+                            marginRight: 4,
+                          }}
+                        />
+                      )}
+                      <Text
+                        style={[
+                          s.bankTileText,
+                          pal && !isUsed && { color: pal.badge },
+                          isUsed && s.bankTileTextUsed,
+                        ]}
+                      >
+                        {token}
+                      </Text>
+                    </View>
                   </Pressable>
                 );
               })}

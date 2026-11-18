@@ -1,6 +1,6 @@
 # ORRALI — Development Roadmap
 
-**Current Release:** 5.5.0 (Hands-Free Commuter Audio Edition)  
+**Current Release:** 5.6.0 (Visual Chromatic Immersion Edition)  
 **Status Date:** November 17, 2026  
 
 ---
@@ -33,3 +33,4 @@
 | **5.3.0** | All-Stars Master Edition | Dual-speed audio (Normal 🔊 & Turtle 🐢), CEFR Milestone Exams & Diplomas, Sentence Anatomy, Daily Word of the Day | **COMPLETED** |
 | **5.4.0** | Production Hardened Edition | Code audit remediation: roleplay intent validation, sequence-aware pronunciation alignment, Mistake Clinic workout preservation, Spanish tutor knowledge base, theme persistence, and audio player cleanup | **COMPLETED** |
 | **5.5.0** | Hands-Free Commuter Audio | Pimsleur-style English prompt -> thinking pause -> normal speed (1.0x) -> slow phonetic repeat (0.72x) audio loop | **COMPLETED** |
+| **5.6.0** | Visual Chromatic Gender Immersion | Cobalt Blue ♂ (Masc), Rose Crimson ♀ (Fem), Sage Emerald ⚲ (Neut) across Word Tiles, Anatomy Pills, and Lexicon | **COMPLETED** |

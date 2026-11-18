@@ -1,3 +1,4 @@
+import { detectWordGender, GrammaticalGender } from './gender';
 import { LangCode } from './types';
 
 export interface WordAnatomy {
@@ -5,6 +6,7 @@ export interface WordAnatomy {
   cleanWord: string;
   meaningEn: string;
   role?: string;
+  gender?: GrammaticalGender | null;
 }
 
 const LEXICON_BY_LANG: Record<LangCode, Record<string, { meaningEn: string; role?: string }>> = {
@@ -79,12 +81,14 @@ export function breakdownSentence(
     const meaningEn = entry?.meaningEn ?? cleanWord;
     const role =
       entry?.role ?? (cleanWord.length <= 3 ? 'Grammatical Particle' : 'Vocabulary Word');
+    const gender = detectWordGender(cleanWord, courseCode);
 
     return {
       word: cleanWord || raw,
       cleanWord,
       meaningEn,
       role,
+      gender,
     };
   });
 }

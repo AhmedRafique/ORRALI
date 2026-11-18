@@ -44,4 +44,18 @@ describe('Tap-to-Inspect Sentence Anatomy Engine (TDD)', () => {
     assert.equal(single.length, 1);
     assert.equal(single[0].word, 'Bonjour');
   });
+
+  it('identifies grammatical gender for articles and nouns with chromatic metadata', () => {
+    const frTokens = breakdownSentence('le café', 'fr');
+    assert.equal(frTokens[0].gender, 'masculine');
+    assert.equal(frTokens[1].gender, 'masculine');
+
+    const deTokens = breakdownSentence('das Museum', 'de');
+    assert.equal(deTokens[0].gender, 'neuter');
+    assert.equal(deTokens[1].gender, 'neuter');
+
+    const esTokens = breakdownSentence('la tortilla', 'es');
+    assert.equal(esTokens[0].gender, 'feminine');
+    assert.equal(esTokens[1].gender, 'feminine');
+  });
 });

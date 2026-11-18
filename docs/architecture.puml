@@ -1,4 +1,4 @@
-@startuml ORRALI_Architecture_v5_5
+@startuml ORRALI_Architecture_v5_6
 !theme plain
 skinparam backgroundColor #F8F6F1
 skinparam defaultFontName Arial
@@ -6,7 +6,7 @@ skinparam packageBackgroundColor #FFFFFF
 skinparam packageBorderColor #1B1536
 skinparam componentStyle uml2
 
-title ORRALI Architecture (Version 5.5.0 — Commuter Audio Edition)
+title ORRALI Architecture (Version 5.6.0 — Visual Chromatic Immersion Edition)
 
 package "Presentation & UI Layer (React Native / Expo)" {
   [App.tsx
@@ -44,6 +44,8 @@ Conversational Simulation] as RoleplayModal
 package "Sentence Anatomy & Commuter Engines" {
   [commuterAudio.ts
 Hands-Free Sequencing & Queue] as CommuterEngine
+  [gender.ts
+Chromatic Gender Immersion] as GenderEngine
   [anatomy.ts
 Sentence Anatomy & Word Breakdown] as AnatomyEngine
   [wordOfDay.ts

@@ -35,21 +35,21 @@ export default function TutorModal({ visible, courseCode, initialTopic, onClose 
       ? [
           'When do I use Tu vs. Vous?',
           'Difference between Un and Une?',
+          'How does ORRALI color-code noun gender?',
           'Why say Je voudrais instead of Je veux?',
-          'How do I say where it hurts?',
         ]
       : courseCode === 'es'
       ? [
           'When do I use Ser vs. Estar?',
           'How does Me Gusta work?',
+          'How does ORRALI color-code noun gender?',
           'What is the difference between Por and Para?',
-          'How do I talk about the past with Pretérito?',
         ]
       : [
           'Difference between Du and Sie?',
           'Why Der, Die, and Das?',
+          'How does ORRALI color-code noun gender?',
           'Why is it Einen Kaffee in cafés?',
-          'How do I tell the time in German?',
         ];
 
   const handleAsk = (q: string) => {
