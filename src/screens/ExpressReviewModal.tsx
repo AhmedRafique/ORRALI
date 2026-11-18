@@ -47,8 +47,13 @@ export default function ExpressReviewModal({ visible, course, progress, onFinish
   const totalCards = deck.length;
 
   useEffect(() => {
-    if (visible && deck.length === 0) {
-      setIsFinished(true);
+    if (visible) {
+      setIndex(0);
+      setIsFlipped(false);
+      setCorrectIds([]);
+      setWrongIds([]);
+      setTotalXp(0);
+      setIsFinished(deck.length === 0);
     }
   }, [visible, deck.length]);
 

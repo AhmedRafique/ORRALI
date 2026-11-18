@@ -53,15 +53,24 @@ export default function CommuterAudioModal({
   const currentItem = queue[index];
   const totalItems = queue.length;
 
-  // Clear timers on unmount
+  // Clear timers on unmount or visibility change
   useEffect(() => {
     isMountedRef.current = true;
+    if (visible) {
+      setIndex(0);
+      setStep('prompt_en');
+      setIsPlaying(true);
+      setIsCompleted(false);
+    } else {
+      if (stepTimerRef.current) clearTimeout(stepTimerRef.current);
+      void stopAllAudio();
+    }
     return () => {
       isMountedRef.current = false;
       if (stepTimerRef.current) clearTimeout(stepTimerRef.current);
       void stopAllAudio();
     };
-  }, []);
+  }, [visible]);
 
   // Main commuter hands-free state machine
   useEffect(() => {
@@ -76,11 +85,11 @@ export default function CommuterAudioModal({
         language: 'en',
         rate: 0.95,
         onDone: () => {
-          if (!isMountedRef.current) return;
+          if (!isMountedRef.current || !visible) return;
           setStep('thinking_pause');
         },
         onError: () => {
-          if (!isMountedRef.current) return;
+          if (!isMountedRef.current || !visible) return;
           setStep('thinking_pause');
         },
       });

@@ -38,6 +38,8 @@ export default function VerbGymModal({ visible, course, onFinish, onClose }: Pro
 
   useEffect(() => {
     if (visible) {
+      setCorrectCount(0);
+      setRoundPlayed(0);
       spinNewChallenge();
     }
   }, [visible]);

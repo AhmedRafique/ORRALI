@@ -43,6 +43,16 @@ export default function RadioLabModal({ visible, course, onFinish, onClose }: Pr
   const challenge = round[index];
   const totalChallenges = round.length;
 
+  useEffect(() => {
+    if (visible) {
+      setIndex(0);
+      setSelectedWords([]);
+      setFeedback(null);
+      setIsRoundFinished(false);
+      setCorrectCount(0);
+    }
+  }, [visible]);
+
   // Auto-play phrase when challenge opens
   useEffect(() => {
     if (visible && challenge) {

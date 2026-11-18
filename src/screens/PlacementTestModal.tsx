@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Modal, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { playPhraseAudio, stopAllAudio } from '../audio';
 import { playEarcon } from '../earcons';
@@ -59,6 +59,15 @@ export default function PlacementTestModal({
     B2: 0,
   });
   const [isFinished, setIsFinished] = useState(false);
+
+  useEffect(() => {
+    if (visible) {
+      setQuestionIdx(0);
+      setSelectedOpt(null);
+      setScoreByLevel({ A1: 0, A2: 0, B1: 0, B2: 0 });
+      setIsFinished(false);
+    }
+  }, [visible]);
 
   const currentQ: PlacementQuestion | undefined = allQuestions[questionIdx];
   const totalQuestions = allQuestions.length;

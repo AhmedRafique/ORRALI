@@ -46,6 +46,13 @@ describe('Grammatical Gender & Visual Chromatic Immersion Engine (TDD)', () => {
       assert.equal(detectWordGender('chambre', 'fr'), 'feminine');
       assert.equal(detectWordGender('addition', 'fr'), 'feminine');
     });
+
+    it('detects gender for elided French nouns (l\'addition, l\'eau, l\'hôtel)', () => {
+      assert.equal(detectWordGender("l'addition", 'fr'), 'feminine');
+      assert.equal(detectWordGender("l'eau", 'fr'), 'feminine');
+      assert.equal(detectWordGender("l'hôtel", 'fr'), 'masculine');
+      assert.equal(detectWordGender("l'aéroport", 'fr'), 'masculine');
+    });
   });
 
   describe('3. Spanish Chromatic Gender Detection (el / la)', () => {

@@ -43,6 +43,17 @@ export default function ShadowStudioModal({ visible, course, onFinish, onClose }
   const totalRounds = deck.length;
 
   useEffect(() => {
+    if (visible) {
+      setIndex(0);
+      setRoundsPlayed(0);
+      setIsRecording(false);
+      setResult(null);
+      setTranscript('');
+      setCorrectCount(0);
+    }
+  }, [visible]);
+
+  useEffect(() => {
     return () => {
       void stopAllAudio();
       try {

@@ -1,5 +1,6 @@
 import { selectPlausibleDistractors, shuffle } from './exercises';
 import { CEFRLevel } from './milestones';
+import { dayKey } from './streak';
 import { Course, Item, Progress } from './types';
 
 export interface PlacementQuestion {
@@ -115,6 +116,8 @@ export function applyPlacementResult(
   }
 
   const xpBounty = placedLevel === 'A2' ? 75 : placedLevel === 'B1' ? 150 : 250;
+  const today = dayKey(new Date());
+  const dailyXp = (progress.dailyXpDay === today ? progress.dailyXp : 0) + xpBounty;
 
   return {
     ...progress,
@@ -126,5 +129,7 @@ export function applyPlacementResult(
       ...(progress.courseXp ?? {}),
       [course.code]: (progress.courseXp?.[course.code] ?? 0) + xpBounty,
     },
+    dailyXp,
+    dailyXpDay: today,
   };
 }

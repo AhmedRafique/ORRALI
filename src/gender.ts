@@ -145,6 +145,8 @@ const GENDER_DICTIONARY: Record<
       'sac',
       'fromage',
       'verre',
+      'hôtel',
+      'aéroport',
     ]),
     feminine: new Set([
       'la',
@@ -244,6 +246,13 @@ export function detectWordGender(
   if (langDict.masculine.has(clean)) return 'masculine';
   if (langDict.feminine.has(clean)) return 'feminine';
   if (langDict.neuter && langDict.neuter.has(clean)) return 'neuter';
+
+  // Support elided article prefixes in French (e.g. l'addition, l'eau, d'eau, l'hôtel)
+  if (lang === 'fr' && /^[ldcqjsn][’']/.test(clean)) {
+    const stripped = clean.replace(/^[ldcqjsn][’']/, '');
+    if (langDict.masculine.has(stripped)) return 'masculine';
+    if (langDict.feminine.has(stripped)) return 'feminine';
+  }
 
   return null;
 }
