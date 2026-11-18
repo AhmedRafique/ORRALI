@@ -19,6 +19,7 @@ import CommuterAudioModal from './CommuterAudioModal';
 import RadioLabModal from './RadioLabModal';
 import ExpressReviewModal from './ExpressReviewModal';
 import VerbGymModal from './VerbGymModal';
+import ShadowStudioModal from './ShadowStudioModal';
 import { CEFRLevel } from '../milestones';
 
 const C = {
@@ -54,6 +55,7 @@ interface Props {
   onCompleteRadioLab?: (earnedXp: number) => void;
   onCompleteExpressReview?: (result: { correctIds: string[]; wrongIds: string[]; earnedXp: number }) => void;
   onCompleteVerbGym?: (earnedXp: number) => void;
+  onCompleteShadowStudio?: (earnedXp: number) => void;
 }
 
 export default function HomeScreen({
@@ -74,6 +76,7 @@ export default function HomeScreen({
   onCompleteRadioLab,
   onCompleteExpressReview,
   onCompleteVerbGym,
+  onCompleteShadowStudio,
 }: Props) {
   const [activeCapsule, setActiveCapsule] = useState<GrammarCapsule | null>(null);
   const [activeStory, setActiveStory] = useState<StoryScenario | null>(null);
@@ -87,6 +90,7 @@ export default function HomeScreen({
   const [isRadioLabOpen, setIsRadioLabOpen] = useState(false);
   const [isExpressReviewOpen, setIsExpressReviewOpen] = useState(false);
   const [isVerbGymOpen, setIsVerbGymOpen] = useState(false);
+  const [isShadowStudioOpen, setIsShadowStudioOpen] = useState(false);
   const [roleplayIdx, setRoleplayIdx] = useState(0);
   const [isSparkFlipped, setIsSparkFlipped] = useState(false);
   const [storyAnswer, setStoryAnswer] = useState<number | null>(null);
@@ -291,6 +295,21 @@ export default function HomeScreen({
           <View style={{ flex: 1 }}>
             <Text style={s.companionTitle}>The Verb Gym</Text>
             <Text style={s.companionSub}>Conjugation slot-machine mastery</Text>
+          </View>
+          <Text style={s.companionArrow}>›</Text>
+        </Pressable>
+
+        <Pressable
+          style={s.companionBtn}
+          onPress={() => {
+            void triggerHaptic('selection');
+            setIsShadowStudioOpen(true);
+          }}
+        >
+          <Text style={s.companionIcon}>🎙️</Text>
+          <View style={{ flex: 1 }}>
+            <Text style={s.companionTitle}>Shadowing Studio</Text>
+            <Text style={s.companionSub}>Listen, mimic, and compare accents</Text>
           </View>
           <Text style={s.companionArrow}>›</Text>
         </Pressable>
@@ -774,6 +793,17 @@ export default function HomeScreen({
           onCompleteVerbGym?.(earnedXp);
         }}
         onClose={() => setIsVerbGymOpen(false)}
+      />
+
+      {/* Shadowing Studio Modal */}
+      <ShadowStudioModal
+        visible={isShadowStudioOpen}
+        course={course}
+        onFinish={(earnedXp) => {
+          setIsShadowStudioOpen(false);
+          onCompleteShadowStudio?.(earnedXp);
+        }}
+        onClose={() => setIsShadowStudioOpen(false)}
       />
     </ScrollView>
   );

@@ -356,6 +356,28 @@ export default function App() {
     [course.code, progress, updateProgress],
   );
 
+  const completeShadowStudio = useCallback(
+    (earnedXp: number) => {
+      const current = progress ?? emptyProgress();
+      let p = touchStreak(current);
+      const today = dayKey(new Date());
+      const currentCourseXp = p.courseXp?.[course.code] ?? 0;
+      p = {
+        ...p,
+        xp: p.xp + earnedXp,
+        courseXp: {
+          ...(p.courseXp ?? {}),
+          [course.code]: currentCourseXp + earnedXp,
+        },
+        dailyXp: (p.dailyXpDay === today ? p.dailyXp : 0) + earnedXp,
+        dailyXpDay: today,
+      };
+      const { updatedProgress } = evaluateBadges(p, courses);
+      updateProgress(updatedProgress);
+    },
+    [course.code, progress, updateProgress],
+  );
+
   const passMilestoneExam = useCallback(
     (earnedXp: number, diplomaKey: string) => {
       const current = progress ?? emptyProgress();
@@ -471,6 +493,7 @@ export default function App() {
                 onCompleteRadioLab={completeRadioLab}
                 onCompleteExpressReview={completeExpressReview}
                 onCompleteVerbGym={completeVerbGym}
+                onCompleteShadowStudio={completeShadowStudio}
                 onPassMilestoneExam={passMilestoneExam}
                 onClaimDailySpark={claimDailySpark}
                 onStartReview={() => {
