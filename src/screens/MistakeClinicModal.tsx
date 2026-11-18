@@ -1,5 +1,7 @@
+import { useEffect, useState } from 'react';
 import { Modal, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { buildRemedialWorkout, diagnoseMistakes } from '../companion/clinic';
+import { getItemAttemptStatsFromDb, ItemAttemptStats } from '../db';
 import { Course, Exercise, MistakeRecord, Progress } from '../types';
 
 const C = {
@@ -31,23 +33,37 @@ export default function MistakeClinicModal({
   onClose,
 }: Props) {
   const allItems = course.lessons.flatMap((l) => l.items);
+  const [dbStats, setDbStats] = useState<Record<string, ItemAttemptStats>>({});
 
-  // Generate mistake records from cards that have recorded lapses
+  useEffect(() => {
+    if (visible) {
+      void getItemAttemptStatsFromDb(course.code).then((stats) => {
+        setDbStats(stats);
+      });
+    }
+  }, [visible, course.code]);
+
+  // Generate mistake records preferring real SQLite historical attempts when available
   const records: MistakeRecord[] = allItems
     .map((item) => {
       const card = progress.cards[item.id];
-      const failCount = card?.lapses ?? 0;
-      // Do not wipe passCount to 0 solely because reps reset on lapse
-      const passCount = Math.max(
-        card?.reps ?? 0,
-        card && card.interval >= 21 ? 5 : card && card.interval >= 6 ? 3 : card && card.interval >= 1 ? 1 : 0
-      );
+      const stats = dbStats[item.id];
+
+      const failCount = stats ? stats.failCount : (card?.lapses ?? 0);
+      const passCount = stats
+        ? stats.passCount
+        : Math.max(
+            card?.reps ?? 0,
+            card && card.interval >= 21 ? 5 : card && card.interval >= 6 ? 3 : card && card.interval >= 1 ? 1 : 0
+          );
+      const lastFailedAt = stats?.lastFailedAt || (card?.lastReviewed ?? 0);
+
       return {
         itemId: item.id,
         courseCode: course.code,
         failCount,
         passCount,
-        lastFailedAt: card?.lastReviewed ?? 0,
+        lastFailedAt,
       };
     })
     .filter((r) => r.failCount > 0);

@@ -143,16 +143,47 @@ describe('AI Companion & Roleplay Engine (TDD)', () => {
     });
 
     it('rejects off-topic or meaningless gibberish in roleplay without advancing or awarding XP', () => {
-      const scenario = ROLEPLAY_SCENARIOS.find((s) => s.id === 'roleplay-fr-cafe')!;
+      const frCafe = ROLEPLAY_SCENARIOS.find((s) => s.id === 'roleplay-fr-cafe')!;
+      const deStation = ROLEPLAY_SCENARIOS.find((s) => s.id === 'roleplay-de-station')!;
+      const frHotel = ROLEPLAY_SCENARIOS.find((s) => s.id === 'roleplay-fr-hotel')!;
+      const deBakery = ROLEPLAY_SCENARIOS.find((s) => s.id === 'roleplay-de-bakery')!;
+      const esTapas = ROLEPLAY_SCENARIOS.find((s) => s.id === 'roleplay-es-tapas')!;
 
-      // Off-topic or random gibberish
-      const offTopic = evaluateRoleplayTurn(scenario.id, 0, 'asdf random blabla 123');
-      assert.equal(offTopic.isCompleted, false);
-      assert.equal(offTopic.earnedXp ?? 0, 0);
-      assert.ok(
-        offTopic.reply.feedback?.toLowerCase().includes('try') ||
-          offTopic.reply.target.toLowerCase().includes('pardon')
-      );
+      // French Café Turn 0
+      const offCafe = evaluateRoleplayTurn(frCafe.id, 0, 'asdf random blabla 123');
+      assert.equal(offCafe.isCompleted, false);
+      assert.equal(offCafe.intentMet, false);
+      assert.equal(offCafe.earnedXp ?? 0, 0);
+
+      // German Station Turn 1 (Payment)
+      const offStation = evaluateRoleplayTurn(deStation.id, 1, 'nonsense 123');
+      assert.equal(offStation.isCompleted, false);
+      assert.equal(offStation.intentMet, false);
+      assert.equal(offStation.earnedXp ?? 0, 0);
+
+      // French Hotel Turn 0 (Check-in) & Turn 1 (Wifi/Breakfast)
+      const offHotel0 = evaluateRoleplayTurn(frHotel.id, 0, 'gibberish blabla');
+      assert.equal(offHotel0.isCompleted, false);
+      assert.equal(offHotel0.intentMet, false);
+
+      const offHotel1 = evaluateRoleplayTurn(frHotel.id, 1, 'asdf qwer');
+      assert.equal(offHotel1.isCompleted, false);
+      assert.equal(offHotel1.intentMet, false);
+
+      // German Bakery Turn 0 & Turn 1
+      const offBakery0 = evaluateRoleplayTurn(deBakery.id, 0, 'asdf xyz');
+      assert.equal(offBakery0.isCompleted, false);
+      assert.equal(offBakery0.intentMet, false);
+
+      const offBakery1 = evaluateRoleplayTurn(deBakery.id, 1, 'bla blub');
+      assert.equal(offBakery1.isCompleted, false);
+      assert.equal(offBakery1.intentMet, false);
+
+      // Spanish Tapas Turn 1 (Payment)
+      const offTapas1 = evaluateRoleplayTurn(esTapas.id, 1, 'asdf 1234');
+      assert.equal(offTapas1.isCompleted, false);
+      assert.equal(offTapas1.intentMet, false);
+      assert.equal(offTapas1.earnedXp ?? 0, 0);
     });
   });
 });

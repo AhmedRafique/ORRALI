@@ -12,64 +12,80 @@ const LANGUAGE_KEY = 'orrali.lang.v1';
 const THEME_KEY = 'orrali.theme.v1';
 
 export async function loadProgress(): Promise<Progress> {
-  let raw: string | null = null;
+  let sqliteRaw: string | null = null;
+  let asyncRaw: string | null = null;
+
   try {
-    // 1. Try primary SQLite database
-    raw = await loadProgressFromDb();
+    sqliteRaw = await loadProgressFromDb();
   } catch {
-    raw = null;
+    sqliteRaw = null;
   }
-
-  // 2. Fall back to AsyncStorage if SQLite had no record
-  if (!raw) {
-    try {
-      raw = (await AsyncStorage.getItem(KEY)) ?? (await AsyncStorage.getItem(LEGACY_KEY));
-      // Auto-migrate from AsyncStorage into SQLite
-      if (raw) {
-        void saveProgressToDb(raw);
-      }
-    } catch {
-      raw = null;
-    }
-  }
-
-  if (!raw) return emptyProgress();
 
   try {
-    const parsed = JSON.parse(raw) as Partial<Progress>;
-    return {
-      ...emptyProgress(),
-      ...parsed,
-      courseXp: parsed.courseXp ?? {},
-      checkpoints: parsed.checkpoints ?? {},
-      dailyGoal: parsed.dailyGoal ?? 20,
-      dailyXp: parsed.dailyXp ?? 0,
-      dailyXpDay: parsed.dailyXpDay ?? '',
-    };
-  } catch (err) {
-    console.warn('[ORRALI Store] Primary data parse error, attempting backup recovery:', err);
-    // Emergency recovery from secondary AsyncStorage backup
-    try {
-      const backupRaw = await AsyncStorage.getItem(KEY);
-      if (backupRaw && backupRaw !== raw) {
-        const parsedBackup = JSON.parse(backupRaw) as Partial<Progress>;
-        return {
-          ...emptyProgress(),
-          ...parsedBackup,
-        };
-      }
-    } catch {
-      /* fallback to empty */
-    }
-    return emptyProgress();
+    asyncRaw = (await AsyncStorage.getItem(KEY)) ?? (await AsyncStorage.getItem(LEGACY_KEY));
+  } catch {
+    asyncRaw = null;
   }
+
+  // Parse both sources to pick whichever has the newer _savedAt timestamp
+  let sqliteData: (Progress & { _savedAt?: number }) | null = null;
+  let asyncData: (Progress & { _savedAt?: number }) | null = null;
+
+  if (sqliteRaw) {
+    try {
+      sqliteData = JSON.parse(sqliteRaw);
+    } catch {
+      sqliteData = null;
+    }
+  }
+
+  if (asyncRaw) {
+    try {
+      asyncData = JSON.parse(asyncRaw);
+    } catch {
+      asyncData = null;
+    }
+  }
+
+  // Reconcile: Pick whichever source has the newer timestamp
+  let chosen = sqliteData;
+  if (!chosen || (asyncData && (asyncData._savedAt ?? 0) > (chosen._savedAt ?? 0))) {
+    chosen = asyncData;
+  }
+
+  if (!chosen) return emptyProgress();
+
+  // If AsyncStorage was newer than SQLite, heal and re-synchronize SQLite
+  if (
+    asyncData &&
+    chosen === asyncData &&
+    (!sqliteData || (asyncData._savedAt ?? 0) > (sqliteData._savedAt ?? 0))
+  ) {
+    void saveProgressToDb(JSON.stringify(chosen));
+  }
+
+  return {
+    ...emptyProgress(),
+    ...chosen,
+    courseXp: chosen.courseXp ?? {},
+    checkpoints: chosen.checkpoints ?? {},
+    dailyGoal: chosen.dailyGoal ?? 20,
+    dailyXp: chosen.dailyXp ?? 0,
+    dailyXpDay: chosen.dailyXpDay ?? '',
+  };
 }
 
 export async function saveProgress(p: Progress): Promise<void> {
-  const json = JSON.stringify(p);
+  const payload = {
+    ...p,
+    _savedAt: Date.now(),
+  };
+  const json = JSON.stringify(payload);
+
   // Dual-layer persistence: SQLite primary + AsyncStorage backup
+  let sqliteSuccess = false;
   try {
-    await saveProgressToDb(json);
+    sqliteSuccess = await saveProgressToDb(json);
   } catch (err) {
     console.warn('[ORRALI Store] saveProgress SQLite error:', err);
   }

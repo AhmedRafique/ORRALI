@@ -325,6 +325,39 @@ export function evaluateRoleplayTurn(
         ],
       };
     } else {
+      const isPaymentIntent = containsAny(normUser, [
+        'karte',
+        'bar',
+        'gleis',
+        'vielen dank',
+        'danke',
+        'zahlung',
+        'euro',
+        'bitte',
+      ]);
+
+      if (!isPaymentIntent) {
+        return {
+          reply: {
+            id: `ai-${Date.now()}`,
+            sender: 'ai',
+            speakerName: 'Hans',
+            avatar: '🚆',
+            target: 'Möchten Sie bar oder mit Karte zahlen?',
+            en: 'Would you like to pay cash or with card?',
+            feedback: "Specify payment in German: 'Mit Karte, bitte.' or 'Kann ich mit Karte zahlen?'",
+            timestamp: Date.now(),
+          },
+          isCompleted: false,
+          earnedXp: 0,
+          intentMet: false,
+          suggestedNextReplies: [
+            'Kann ich mit Karte zahlen? Vielen Dank!',
+            'Mit Karte bitte. Wo ist Gleis vier?',
+          ],
+        };
+      }
+
       return {
         reply: {
           id: `ai-${Date.now()}`,
@@ -340,6 +373,7 @@ export function evaluateRoleplayTurn(
         },
         isCompleted: true,
         earnedXp: 20,
+        intentMet: true,
         suggestedNextReplies: [],
       };
     }
@@ -348,6 +382,38 @@ export function evaluateRoleplayTurn(
   // 3. French Hotel Reception Roleplay
   if (scenarioId === 'roleplay-fr-hotel') {
     if (turnIndex === 0) {
+      const isCheckInIntent = containsAny(normUser, [
+        'reservation',
+        'réservation',
+        'chambre',
+        'bonjour',
+        'nom',
+        'arrive',
+        'arrivée',
+        'cle',
+        'clé',
+        'soir',
+      ]);
+
+      if (!isCheckInIntent) {
+        return {
+          reply: {
+            id: `ai-${Date.now()}`,
+            sender: 'ai',
+            speakerName: 'Claire',
+            avatar: '🛎️',
+            target: 'Bonjour ! Avez-vous une réservation à votre nom ?',
+            en: 'Hello! Do you have a reservation under your name?',
+            feedback: "Announce your check-in: 'Bonjour, j’ai une réservation au nom de...'",
+            timestamp: Date.now(),
+          },
+          isCompleted: false,
+          earnedXp: 0,
+          intentMet: false,
+          suggestedNextReplies: ['Bonjour, j’ai une réservation pour une chambre.'],
+        };
+      }
+
       return {
         reply: {
           id: `ai-${Date.now()}`,
@@ -362,12 +428,46 @@ export function evaluateRoleplayTurn(
           timestamp: Date.now(),
         },
         isCompleted: false,
+        intentMet: true,
         suggestedNextReplies: [
           'Quel est le mot de passe du Wi-Fi ?',
           'À quelle heure est le petit-déjeuner ? Merci beaucoup !',
         ],
       };
     } else {
+      const isQuestionIntent = containsAny(normUser, [
+        'wifi',
+        'wi-fi',
+        'dejeuner',
+        'déjeuner',
+        'heure',
+        'merci',
+        'code',
+        'mot de passe',
+        'ascenseur',
+        'plaît',
+        'plait',
+      ]);
+
+      if (!isQuestionIntent) {
+        return {
+          reply: {
+            id: `ai-${Date.now()}`,
+            sender: 'ai',
+            speakerName: 'Claire',
+            avatar: '🛎️',
+            target: 'Avez-vous besoin du mot de passe Wi-Fi ou de l’heure du petit-déjeuner ?',
+            en: 'Do you need the Wi-Fi password or breakfast hours?',
+            feedback: "Ask about amenities: 'Quel est le mot de passe du Wi-Fi ?'",
+            timestamp: Date.now(),
+          },
+          isCompleted: false,
+          earnedXp: 0,
+          intentMet: false,
+          suggestedNextReplies: ['Quel est le mot de passe du Wi-Fi ?'],
+        };
+      }
+
       return {
         reply: {
           id: `ai-${Date.now()}`,
@@ -383,6 +483,7 @@ export function evaluateRoleplayTurn(
         },
         isCompleted: true,
         earnedXp: 20,
+        intentMet: true,
         suggestedNextReplies: [],
       };
     }
@@ -391,6 +492,42 @@ export function evaluateRoleplayTurn(
   // 4. German Bakery Roleplay (roleplay-de-bakery)
   if (scenarioId === 'roleplay-de-bakery') {
     if (turnIndex === 0) {
+      const isBakeryIntent = containsAny(normUser, [
+        'brot',
+        'brötchen',
+        'brotchen',
+        'croissant',
+        'kuchen',
+        'bitte',
+        'nehmen',
+        'zwei',
+        'eins',
+        'mochte',
+        'möchte',
+        'guten morgen',
+        'guten tag',
+        'hallo',
+      ]);
+
+      if (!isBakeryIntent) {
+        return {
+          reply: {
+            id: `ai-${Date.now()}`,
+            sender: 'ai',
+            speakerName: 'Frau Schmidt',
+            avatar: '🥨',
+            target: 'Guten Tag! Was darf es für Sie sein? Frische Brötchen oder Brot?',
+            en: 'Good day! What can I get for you? Fresh rolls or bread?',
+            feedback: "Order in German: 'Ich möchte zwei Brötchen, bitte.'",
+            timestamp: Date.now(),
+          },
+          isCompleted: false,
+          earnedXp: 0,
+          intentMet: false,
+          suggestedNextReplies: ['Guten Tag! Ich möchte zwei Brötchen bitte.'],
+        };
+      }
+
       return {
         reply: {
           id: `ai-${Date.now()}`,
@@ -405,12 +542,44 @@ export function evaluateRoleplayTurn(
           timestamp: Date.now(),
         },
         isCompleted: false,
+        intentMet: true,
         suggestedNextReplies: [
           'Nein danke, das ist alles. Wie viel kostet das?',
           'Ja gerne! Was kostet das zusammen?',
         ],
       };
     } else {
+      const isPayIntent = containsAny(normUser, [
+        'kostet',
+        'preis',
+        'zahlen',
+        'danke',
+        'auf wiedersehen',
+        'schönen tag',
+        'tschüss',
+        'euro',
+        'alles',
+      ]);
+
+      if (!isPayIntent) {
+        return {
+          reply: {
+            id: `ai-${Date.now()}`,
+            sender: 'ai',
+            speakerName: 'Frau Schmidt',
+            avatar: '🥨',
+            target: 'Möchten Sie wissen, wie viel das kostet?',
+            en: 'Would you like to know how much that costs?',
+            feedback: "Ask for the total: 'Wie viel kostet das zusammen?'",
+            timestamp: Date.now(),
+          },
+          isCompleted: false,
+          earnedXp: 0,
+          intentMet: false,
+          suggestedNextReplies: ['Wie viel kostet das zusammen?'],
+        };
+      }
+
       return {
         reply: {
           id: `ai-${Date.now()}`,
@@ -426,6 +595,7 @@ export function evaluateRoleplayTurn(
         },
         isCompleted: true,
         earnedXp: 20,
+        intentMet: true,
         suggestedNextReplies: [],
       };
     }
@@ -483,12 +653,43 @@ export function evaluateRoleplayTurn(
         timestamp: Date.now(),
       },
       isCompleted: false,
+      intentMet: true,
       suggestedNextReplies: [
         'La cuenta, por favor.',
         'Estupendo, muchas gracias. ¿Me trae la cuenta, por favor?',
       ],
     };
   } else {
+    const isPayIntent = containsAny(normUser, [
+      'cuenta',
+      'pagar',
+      'tarjeta',
+      'efectivo',
+      'cuanto',
+      'cuánto',
+      'gracias',
+      'por favor',
+    ]);
+
+    if (!isPayIntent) {
+      return {
+        reply: {
+          id: `ai-${Date.now()}`,
+          sender: 'ai',
+          speakerName: 'Mateo',
+          avatar: '🥘',
+          target: '¿Desean pedir la cuenta o algo más?',
+          en: 'Would you like to ask for the bill or anything else?',
+          feedback: "Ask for the check in Spanish: 'La cuenta, por favor.'",
+          timestamp: Date.now(),
+        },
+        isCompleted: false,
+        earnedXp: 0,
+        intentMet: false,
+        suggestedNextReplies: ['La cuenta, por favor.'],
+      };
+    }
+
     return {
       reply: {
         id: `ai-${Date.now()}`,
@@ -504,6 +705,7 @@ export function evaluateRoleplayTurn(
       },
       isCompleted: true,
       earnedXp: 20,
+      intentMet: true,
       suggestedNextReplies: [],
     };
   }

@@ -1,28 +1,83 @@
-# ORRALI 5.3.0 — The All-Stars Master Edition (Dual-Speed Audio, CEFR Diplomas, Anatomy & Word of the Day)
+# ORRALI 6.3.0 — Core Reliability Edition (Full System Audit & Correctness Certified)
 
 ## Summary
-Milestone 5.3.0 is ORRALI's ultimate flagship release, tested and validated under strict Test-Driven Development (TDD). It introduces pitch-preserved Dual-Speed Audio (Normal 🔊 1.0x and Slow Turtle 🐢 0.72x) across all lessons and the lexicon, launches comprehensive CEFR Milestone Exams awarding official Gold Diplomas in the Trophy Shelf, adds interactive Tap-to-Inspect Sentence Anatomy word pills, and features a Daily Word of the Day Micro-Spark card on the Home Screen.
+Milestone 6.3.0 is ORRALI's landmark reliability release, resolving all architectural and pedagogical findings from independent static audits and adversarial stress tests. It rebuilds the CEFR placement engine around authentic curriculum metadata, implements full intent validation across all conversational roleplay scenarios and turns, resolves dual-storage race conditions with timestamp reconciliation, and integrates real historical attempt data from SQLite into the Mistake Clinic.
 
-## What's New in 5.3.0
-- **Dual-Speed Audio Engine (Normal 🔊 1.0x & Slow Turtle 🐢 0.72x) (`src/audio.ts` & `src/audioSpeed.ts`):**
-  - Added dedicated Turtle slow-audio buttons to Intro presentation cards, Listening comprehension drills, and the Smart Lexicon.
-  - Features pitch-preserved slow playback (0.72x on `expo-audio`, 0.60x on neural TTS fallback) so learners can isolate tricky phonemes, liaisons, and silent vowels.
-- **CEFR Level Milestone Exams & Gold Diplomas (`src/milestones.ts` & `MilestoneExamModal.tsx`):**
-  - 12-question comprehensive synthesis exams at the completion of A1, A2, B1, and B2.
-  - Scoring ≥ 80% awards the official **Gold Diploma / Certificate** and +50 XP.
-  - Earned diplomas are displayed in a distinguished showcase shelf in **ProfileScreen.tsx**.
-- **Tap-to-Inspect Sentence Anatomy (`src/anatomy.ts` & `LessonScreen.tsx`):**
-  - Every word in target phrases is now an interactive, tappable pill.
-  - Tapping a word opens a clean popover displaying its isolated English meaning and grammatical role (e.g. *"Past Participle"*, *"Definite Article"*).
-- **Daily "Word of the Day" Micro-Spark (`src/wordOfDay.ts` & `HomeScreen.tsx`):**
-  - Prominent featured daily idiom card on the Home screen rotating deterministically every calendar day.
-  - Dual-speed audio pronunciation, flip card for cultural context and origins, and a **"Claim +5 XP Spark"** button to ignite your daily learning streak.
+## What's New in 6.3.0
+- **Authentic CEFR Placement Mapping (`src/placement.ts` & `src/screens/PlacementTestModal.tsx`):**
+  - Rebuilt question pools and lesson unlocks around authentic `lesson.level` metadata rather than fixed index offsets.
+  - Dynamically unlocks 10 units for A2 and 12 units for B1 in French and German, and 8 units for A2 and 12 units for B1 in Spanish.
+  - Requires explicit passing evidence across all prerequisite tiers and B2 questions before awarding B2 certification.
+- **Complete Roleplay Intent Validation (`src/companion/roleplay.ts` & `src/screens/RoleplayModal.tsx`):**
+  - Implemented strict semantic keyword and communicative objective validation for every turn across all 5 scenarios (Paris Café, Paris Hotel, Munich Station, Munich Bakery, Madrid Tapas).
+  - Fixed Spanish completion message bug that previously identified all non-French conversations as German.
+- **Dual-Storage Timestamp Reconciliation (`src/store.ts`):**
+  - Added internal `_savedAt` timestamps to serialized progress payloads.
+  - `loadProgress()` reads both SQLite and AsyncStorage, compares timestamps, loads the newer record, and heals the lagging store automatically.
+- **SQLite Historical Attempt Tracking for Mistake Clinic (`src/db.ts` & `src/screens/MistakeClinicModal.tsx`):**
+  - Added `getItemAttemptStatsFromDb()` querying real lifetime pass/fail counts from the relational `exercise_attempts` table.
+- **Speech Recognition Settlement Window (`src/screens/ShadowStudioModal.tsx`):**
+  - Added a 350ms settlement window and `latestTranscriptRef` to eliminate timing race conditions on recognition stop.
+- **Honest Local Checkpoint Labeling (`src/screens/ProfileScreen.tsx`):**
+  - Clarified UI to accurately represent local SQLite WAL checkpoints with AsyncStorage mirroring.
 - **TDD Quality Score:**
-  - **147 automated unit tests passing** (`npm test`) across all 55 test suites with **0 TypeScript errors** (`tsc --noEmit`).
+  - **208 automated unit tests passing** (`npm test`) across all 88 test suites with **0 TypeScript errors** (`tsc --noEmit`).
 
 ---
 
-# ORRALI 5.2.0 — 60-Second Speed Recall Arcade, Earcons & Play Store Ready
+# ORRALI 6.2.0 — Adaptive CEFR Placement Test Edition
+- Dynamic multi-tier placement test allowing experienced learners to test out of elementary units.
+- Auto-completes prerequisite chapters, sets mature SM-2 intervals (21 days), and awards retroactive Gold Diplomas and XP bounties.
 
-## Summary
-Milestone 5.2.0 delivered the high-energy 60-Second Speed Recall Arcade Mode with combo multiplier streaks, live countdown timer, and ranked XP rewards (Bronze to Diamond).
+---
+
+# ORRALI 6.1.0 — Café Library Reading Lounge Edition
+- Continuous multi-paragraph cultural stories in Paris, Munich, and Madrid.
+- Tap-to-inspect anatomy popovers with chromatic gender badges and neural audiobook read-aloud.
+- Cultural comprehension certification quiz awarding +20 XP.
+
+---
+
+# ORRALI 6.0.0 — Shadowing Studio Mimicry Engine Edition
+- Side-by-side native listening, microphone recording, acoustic cadence matching, and instant feedback pills.
+- Clean native microphone and speech recognition lifecycle management.
+
+---
+
+# ORRALI 5.9.0 — The Verb Gym Edition
+- Slot-machine rapid conjugation drills across present and past tenses for French, German, and Spanish.
+- Form input evaluation ignoring case, whitespace, and punctuation.
+
+---
+
+# ORRALI 5.8.0 — 3-Minute Express Review Edition
+- 90-second swipe-based fast-track review to quickly clear 5 urgently due cards and save daily streaks.
+- Contextual Home screen widget appearing dynamically when reviews are due.
+
+---
+
+# ORRALI 5.7.0 — Radio Lab Audio Dictation Edition
+- Native connected speech dictation, cloze target blank generation, and distractor bank assembly.
+- Acoustic liaison (/z/, /t/), German contraction, and Spanish sinalefa analysis.
+
+---
+
+# ORRALI 5.6.0 — Visual Chromatic Gender Immersion Edition
+- Subconscious color-coding: Cobalt Blue ♂ (Masc), Rose Crimson ♀ (Fem), Sage Emerald ⚲ (Neut) across Word Tiles, Anatomy Pills, and Lexicon.
+- Elided French noun gender resolution (l'addition, l'eau, l'hôtel).
+
+---
+
+# ORRALI 5.5.0 — Hands-Free Commuter Audio Edition
+- Pimsleur-style English prompt -> thinking pause -> normal speed (1.0x) -> slow phonetic repeat (0.72x) audio loop.
+- One-handed walking player UI with large touch controls.
+
+---
+
+# ORRALI 5.4.0 — Production Hardened Edition
+- Fixed cloud sync checksums, roleplay intent checking, sequence-aware pronunciation alignment, clinic workout preservation, Spanish tutor knowledge, theme persistence, and audio resource cleanup.
+
+---
+
+# ORRALI 5.3.0 — The All-Stars Master Edition
+- Dual-speed audio (Normal 🔊 & Turtle 🐢), CEFR Milestone Exams & Diplomas, Sentence Anatomy, Daily Word of the Day.

@@ -106,7 +106,7 @@ export default function PlacementTestModal({
   const handleApply = () => {
     void triggerHaptic('success');
     void stopAllAudio();
-    const updated = applyPlacementResult(progress, course, assessedLevel);
+    const updated = applyPlacementResult(progress, course, assessedLevel, scoreByLevel);
     onApply(updated);
     onClose();
   };

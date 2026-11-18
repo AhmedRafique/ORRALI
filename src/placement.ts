@@ -13,14 +13,15 @@ export interface PlacementQuestion {
 export type PlacementQuestionPool = Record<CEFRLevel, PlacementQuestion[]>;
 
 /**
- * Builds representative question pools for A1, A2, B1, and B2 from course curriculum.
+ * Builds representative question pools for A1, A2, B1, and B2 from course curriculum
+ * using authentic lesson.level metadata rather than fixed index offsets.
  */
 export function buildPlacementQuestionPool(course: Course): PlacementQuestionPool {
   const poolByLevel: Record<CEFRLevel, Item[]> = {
-    A1: course.lessons.slice(0, 5).flatMap((l) => l.items),
-    A2: course.lessons.slice(5, 10).flatMap((l) => l.items),
-    B1: course.lessons.slice(10, 15).flatMap((l) => l.items),
-    B2: course.lessons.slice(15, 20).flatMap((l) => l.items),
+    A1: course.lessons.filter((l) => !!l.level?.startsWith('A1')).flatMap((l) => l.items),
+    A2: course.lessons.filter((l) => !!l.level?.startsWith('A2')).flatMap((l) => l.items),
+    B1: course.lessons.filter((l) => !!l.level?.startsWith('B1')).flatMap((l) => l.items),
+    B2: course.lessons.filter((l) => !!l.level?.startsWith('B2')).flatMap((l) => l.items),
   };
 
   const allItems = course.lessons.flatMap((l) => l.items);
@@ -50,7 +51,12 @@ export function buildPlacementQuestionPool(course: Course): PlacementQuestionPoo
 }
 
 /**
- * Evaluates the learner's assessed CEFR placement level based on accuracy per tier.
+ * Evaluates the learner's starting placement level based on accuracy per tier.
+ * Passing tier N tests out of tier N and fast-tracks the learner to tier N+1:
+ * - Passed A1 (>= 2/3) -> tests out of A1 -> places at A2
+ * - Passed A1 & A2 (>= 2/3) -> tests out of A1 & A2 -> places at B1
+ * - Passed A1, A2, & B1 (>= 2/3) -> tests out of A1, A2, B1 -> places at B2
+ * - Failed A1 -> places at A1 (starts at the beginning)
  */
 export function evaluatePlacementLevel(
   scoreByLevel: Record<CEFRLevel, number>
@@ -67,22 +73,34 @@ export function evaluatePlacementLevel(
 
 /**
  * Applies placement test result to progress:
- * - Unlocks prerequisite chapters
- * - Populates SM-2 cards with mature intervals
+ * - Unlocks prerequisite chapters based on authentic lesson.level metadata
+ * - Populates SM-2 cards with mature intervals (21 days)
  * - Awards retroactive official Gold Diplomas
- * - Grants scaled XP placement bounty
+ * - If B2 questions were also mastered (>= 2/3), awards B2 Gold Diploma
+ * - Grants scaled XP placement bounty and syncs dailyXp
  */
 export function applyPlacementResult(
   progress: Progress,
   course: Course,
-  placedLevel: CEFRLevel
+  placedLevel: CEFRLevel,
+  scoreByLevel?: Record<CEFRLevel, number>
 ): Progress {
   if (placedLevel === 'A1') {
     return progress;
   }
 
-  const maxLessonIdx = placedLevel === 'A2' ? 5 : placedLevel === 'B1' ? 10 : 15;
-  const unlockedLessons = course.lessons.slice(0, maxLessonIdx);
+  // Derive unlocked lessons dynamically from lesson.level metadata
+  const unlockedLessons = course.lessons.filter((l) => {
+    if (placedLevel === 'A2') return !!l.level?.startsWith('A1');
+    if (placedLevel === 'B1') return !!l.level?.startsWith('A1') || !!l.level?.startsWith('A2');
+    if (placedLevel === 'B2')
+      return (
+        !!l.level?.startsWith('A1') ||
+        !!l.level?.startsWith('A2') ||
+        !!l.level?.startsWith('B1')
+      );
+    return false;
+  });
 
   const completed = { ...(progress.completed ?? {}) };
   const cards = { ...(progress.cards ?? {}) };
@@ -113,6 +131,10 @@ export function applyPlacementResult(
   }
   if (placedLevel === 'B2') {
     diplomas[`${course.code}-B1`] = diplomas[`${course.code}-B1`] ?? Date.now();
+  }
+  // If B2 questions were also mastered (>= 2/3), award B2 Gold Diploma!
+  if (scoreByLevel && (scoreByLevel.B2 ?? 0) >= 2) {
+    diplomas[`${course.code}-B2`] = diplomas[`${course.code}-B2`] ?? Date.now();
   }
 
   const xpBounty = placedLevel === 'A2' ? 75 : placedLevel === 'B1' ? 150 : 250;

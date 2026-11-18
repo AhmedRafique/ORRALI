@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Modal, Pressable, StyleSheet, Text, View } from 'react-native';
 import { requestRecordingPermissionsAsync, useAudioRecorder, RecordingPresets } from 'expo-audio';
 import { useSpeechRecognitionEvent, ExpoSpeechRecognitionModule } from 'expo-speech-recognition';
@@ -37,6 +37,7 @@ export default function ShadowStudioModal({ visible, course, onFinish, onClose }
   const [result, setResult] = useState<PronunciationResult | null>(null);
   const [transcript, setTranscript] = useState('');
   const [correctCount, setCorrectCount] = useState(0);
+  const latestTranscriptRef = useRef('');
 
   const recorder = useAudioRecorder(RecordingPresets.HIGH_QUALITY);
   const currentChallenge = deck[index];
@@ -49,6 +50,7 @@ export default function ShadowStudioModal({ visible, course, onFinish, onClose }
       setIsRecording(false);
       setResult(null);
       setTranscript('');
+      latestTranscriptRef.current = '';
       setCorrectCount(0);
     }
   }, [visible]);
@@ -65,7 +67,9 @@ export default function ShadowStudioModal({ visible, course, onFinish, onClose }
 
   useSpeechRecognitionEvent('result', (event) => {
     if (event.results && event.results.length > 0) {
-      setTranscript(event.results[0].transcript);
+      const text = event.results[0].transcript;
+      latestTranscriptRef.current = text;
+      setTranscript(text);
     }
   });
 
@@ -82,6 +86,7 @@ export default function ShadowStudioModal({ visible, course, onFinish, onClose }
       void stopAllAudio();
       setResult(null);
       setTranscript('');
+      latestTranscriptRef.current = '';
       
       await ExpoSpeechRecognitionModule.start({
         lang: course.speechLang,
@@ -105,16 +110,19 @@ export default function ShadowStudioModal({ visible, course, onFinish, onClose }
     setIsRecording(false);
     void triggerHaptic('selection');
 
-    // Evaluate transcript
-    const res = evaluateShadowingAttempt(currentChallenge.item, transcript);
-    setResult(res);
+    // Give speech engine a brief 350ms settlement window to flush final packets
+    setTimeout(() => {
+      const textToScore = latestTranscriptRef.current || transcript;
+      const res = evaluateShadowingAttempt(currentChallenge.item, textToScore);
+      setResult(res);
 
-    if (res.passed) {
-      void playEarcon('success');
-      setCorrectCount((c) => c + 1);
-    } else {
-      void playEarcon('error');
-    }
+      if (res.passed) {
+        void playEarcon('success');
+        setCorrectCount((c) => c + 1);
+      } else {
+        void playEarcon('error');
+      }
+    }, 350);
   };
 
   const handleNext = () => {

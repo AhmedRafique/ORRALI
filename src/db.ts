@@ -107,3 +107,53 @@ export async function getAttemptsCountFromDb(): Promise<{ total: number; correct
     return { total: 0, correct: 0 };
   }
 }
+
+export interface ItemAttemptStats {
+  itemId: string;
+  totalAttempts: number;
+  passCount: number;
+  failCount: number;
+  lastFailedAt: number;
+}
+
+export async function getItemAttemptStatsFromDb(
+  courseCode: string
+): Promise<Record<string, ItemAttemptStats>> {
+  try {
+    const db = await getDb();
+    if (!db) return {};
+    const rows = await db.getAllAsync<{
+      item_id: string;
+      total: number;
+      correct: number;
+      fails: number;
+      last_fail: number;
+    }>(
+      `SELECT 
+        item_id, 
+        COUNT(*) as total, 
+        SUM(is_correct) as correct,
+        SUM(CASE WHEN is_correct = 0 THEN 1 ELSE 0 END) as fails,
+        MAX(CASE WHEN is_correct = 0 THEN timestamp ELSE 0 END) as last_fail
+      FROM exercise_attempts
+      WHERE course_code = ?
+      GROUP BY item_id;`,
+      courseCode
+    );
+
+    const stats: Record<string, ItemAttemptStats> = {};
+    for (const r of rows) {
+      stats[r.item_id] = {
+        itemId: r.item_id,
+        totalAttempts: r.total,
+        passCount: r.correct,
+        failCount: r.fails,
+        lastFailedAt: r.last_fail,
+      };
+    }
+    return stats;
+  } catch (err) {
+    console.warn('[ORRALI SQLite] getItemAttemptStatsFromDb error:', err);
+    return {};
+  }
+}

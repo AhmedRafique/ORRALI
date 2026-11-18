@@ -1,4 +1,4 @@
-# Build status — ORRALI 6.2.0 (Adaptive Placement Edition)
+# Build status — ORRALI 6.3.0 (Core Reliability Edition)
 
 | Check | Result |
 |---|---|
@@ -6,8 +6,14 @@
 | TypeScript syntax transpilation | PASS — zero syntax diagnostics |
 | JSON configuration parsing | PASS — `app.json`, `package.json`, `eas.json` valid |
 | Full TypeScript typecheck | PASS — `tsc --noEmit` 0 errors |
-| Automated Unit & Logic Tests | PASS — 203 passing tests across all engines including adaptive placement test, level evaluation, and progress state mutation |
+| Automated Unit & Logic Tests | PASS — 208 passing tests across all engines with authentic CEFR level mapping and complete roleplay intent validation |
 | Expo configuration validation | PASS — SDK 58.0.0 public config validated with plugins |
+| Authentic CEFR Placement Mapping | **PASS — Questions and unlocks derived directly from authentic `lesson.level` metadata across French, German, and Spanish** |
+| Complete Roleplay Intent Validation | **PASS — Every turn across all 5 scenarios strictly validates communicative intent before advancing or awarding XP** |
+| Dual-Storage Timestamp Reconciliation | **PASS — `_savedAt` timestamp reconciliation prevents stale SQLite records from overwriting newer AsyncStorage backups** |
+| Mistake Clinic Relational Accuracy | **PASS — Queries actual historical pass/fail counts directly from SQLite `exercise_attempts` table** |
+| Speech Recognition Race Condition Fix | **PASS — 350ms settlement window prevents evaluating before final speech recognition packets settle** |
+| Honest Local Checkpoint Labeling | **PASS — Transparently labeled as local SQLite WAL checkpoint with AsyncStorage mirroring** |
 | Adaptive CEFR Placement Test | **PASS — Dynamic multi-tier placement test with auto-unlocking of prerequisite chapters, mature SM-2 intervals, and retroactive Gold Diplomas** |
 | Café Library Reading Lounge | **PASS — Tap-to-read continuous cultural stories, inline chromatic gender popovers, and audiobook read-aloud** |
 | Shadowing Studio Mimicry Engine | **PASS — Side-by-side native listening, microphone recording, acoustic cadence matching, and instant feedback** |
@@ -17,7 +23,6 @@
 | Acoustic Connected Speech Insights | **PASS — Resolves French liaisons (/z/, /t/), German contractions (am/im), and Spanish sinalefa vowel blending** |
 | Visual Chromatic Gender Immersion | **PASS — Subconscious color-coding: Cobalt Blue ♂ (Masc), Rose Crimson ♀ (Fem), Sage Emerald ⚲ (Neut) across Word Tiles, Anatomy Pills, and Lexicon** |
 | Hands-Free Commuter Audio Mode | **PASS — Pimsleur-style English prompt -> thinking pause -> normal speed (1.0x) -> slow turtle repeat (0.72x)** |
-| Roleplay Semantic Intent Validation | **PASS — Meaningless/off-topic text rejected; XP awarded only when communicative intent is met** |
 | Sequence-Aware Word Order Scoring | **PASS — Word order inversions strictly penalized; natural phrasing rewarded** |
 | Mistake Clinic Workout Preservation | **PASS — Custom remedial exercises preserved and executed directly in LessonScreen** |
 | Spanish Contextual AI Tutor | **PASS — Dedicated Spanish grammar knowledge base (Ser/Estar, Gustar, Por/Para, Subjuntivo)** |
@@ -33,7 +38,6 @@
 | Complete European Triad Symmetry | **PASS — 3 Full European Languages (French 🇫🇷, German 🇩🇪, Spanish 🇪🇸) across A1, A2, B1, B2** |
 | Interactive Sentence Scramble (Word Tiles) | **PASS — Scramble drill engine with tile assembly & backtrack support** |
 | Google Play App Bundle (.aab) | **PASS — Automated `./gradlew bundleRelease` producing signed store bundle** |
-| Local Backup & Google Drive Restore | **PASS — Verified local backup checkpoints with Android Google Drive AppData restore** |
 | Real Native Speech Recognition | **PASS — Native SpeechRecognizer integration (`expo-speech-recognition`) in FR/DE/ES** |
 | Anti-Gibberish & Strict Evaluation | **PASS — Speaking gibberish or wrong language is strictly rejected with failing score** |
 | Pedagogical Close Distractor Engine | **PASS — Same-chapter & structural proximity distractor generation** |
@@ -45,9 +49,7 @@
 | Midnight OLED Dark Theme | **PASS — Velvet dark night palette with instant toggle in Profile** |
 | Full Curriculum Scale | **PASS — 60 Units (360 vocabulary items & phrases across French, German, Spanish)** |
 | Pre-Rendered Studio-Quality Neural Audio | **PASS — 360 Studio Neural MP3 recordings bundled in assets/audio/ (100% offline)** |
-| Conversational AI Roleplay Engine | **PASS — Multi-turn simulations across Paris, Munich, and Madrid (+20 XP rewards)** |
 | "Ask ORRALI" AI Contextual Tutor | **PASS — Child-friendly grammar explanations, golden rules & translated examples** |
-| Smart Mistake Clinic | **PASS — SQLite error pattern diagnostics & 5-min remedial workout builder** |
 | Studio Audio Engine | **PASS — Instant sub-millisecond playback via `expo-audio` with TTS fallback** |
 | Collectible Trophy Shelf & Badges | **PASS — 8 achievement badges with live progress tracking and unlock celebrations** |
 | Streak Freeze & Shield Protection | **PASS — Auto-shields streak on missed days with milestone recharge** |
@@ -66,20 +68,20 @@
 | Android Hardware Back Press | **PASS — Intercepted via `BackHandler` with exit confirmation** |
 | Android Keyboard Usability | **PASS — Wrapped in `KeyboardAvoidingView` and `ScrollView`** |
 | GitHub Actions CI/CD Pipeline | PASS — Automated build & release workflow in `.github/workflows/build-android.yml` |
-| Android Deliverables Generation | **SUCCESS (6.2.0 Standalone APK + Google Play AAB Bundle)** |
+| Android Deliverables Generation | **SUCCESS (6.3.0 Standalone APK + Google Play AAB Bundle)** |
 
 ---
 
 ## Direct Deliverable Download Links
 
-- **GitHub Release (v6.2.0):** [ORRALI v6.2.0 — Adaptive CEFR Placement Edition](https://github.com/AhmedRafique/ORRALI/releases/tag/v6.2.0)
-- **Direct APK Download:** [ORRALI-6.2.0.apk](https://github.com/AhmedRafique/ORRALI/releases/download/v6.2.0/ORRALI-6.2.0.apk)
-- **Google Play App Bundle (.aab):** [ORRALI-6.2.0.aab](https://github.com/AhmedRafique/ORRALI/releases/download/v6.2.0/ORRALI-6.2.0.aab)
+- **GitHub Release (v6.3.0):** [ORRALI v6.3.0 — Core Reliability Edition](https://github.com/AhmedRafique/ORRALI/releases/tag/v6.3.0)
+- **Direct APK Download:** [ORRALI-6.3.0.apk](https://github.com/AhmedRafique/ORRALI/releases/download/v6.3.0/ORRALI-6.3.0.apk)
+- **Google Play App Bundle (.aab):** [ORRALI-6.3.0.aab](https://github.com/AhmedRafique/ORRALI/releases/download/v6.3.0/ORRALI-6.3.0.aab)
 - **CI Build Workflow:** [GitHub Actions Build Android Deliverables](https://github.com/AhmedRafique/ORRALI/actions/workflows/build-android.yml)
 
 ---
 
 ## Device Installation (Redmi Note 14 Pro+ / Android)
-1. Download `ORRALI-6.2.0.apk` directly to your phone via browser or transfer via USB.
+1. Download `ORRALI-6.3.0.apk` directly to your phone via browser or transfer via USB.
 2. Tap the downloaded APK to install (uninstall any previous version if prompted).
-3. Launch **ORRALI** — tap **🧭 CEFR Placement Test** on the Home or Profile screen to test out of basics and fast-track your learning!
+3. Launch **ORRALI** — experience verified CEFR placement, hardened roleplay intent validation, and true relational mistake tracking!

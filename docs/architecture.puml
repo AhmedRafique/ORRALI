@@ -1,4 +1,4 @@
-@startuml ORRALI_Architecture_v6_2
+@startuml ORRALI_Architecture_v6_3
 !theme plain
 skinparam backgroundColor #F8F6F1
 skinparam defaultFontName Arial
@@ -6,7 +6,7 @@ skinparam packageBackgroundColor #FFFFFF
 skinparam packageBorderColor #1B1536
 skinparam componentStyle uml2
 
-title ORRALI Architecture (Version 6.2.0 — Adaptive Placement Test Edition)
+title ORRALI Architecture (Version 6.3.0 — Core Reliability Edition)
 
 package "Presentation & UI Layer (React Native / Expo)" {
   [App.tsx

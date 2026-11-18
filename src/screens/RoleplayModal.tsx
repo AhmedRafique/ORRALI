@@ -174,7 +174,7 @@ export default function RoleplayModal({
                 <Text style={s.completeIcon}>🎉</Text>
                 <Text style={s.completeTitle}>Conversation Completed!</Text>
                 <Text style={s.completeDesc}>
-                  You navigated an authentic conversation in {scenario.courseCode === 'fr' ? 'French' : 'German'}.
+                  You navigated an authentic conversation in {scenario.courseCode === 'fr' ? 'French' : scenario.courseCode === 'es' ? 'Spanish' : 'German'}.
                 </Text>
                 <Text style={s.completeXp}>+{earnedXp} XP EARNED</Text>
               </View>

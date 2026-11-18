@@ -212,14 +212,14 @@ export default function ProfileScreen({
 
       <View style={s.panel}>
         <View style={s.cloudHeader}>
-          <Text style={s.label}>LOCAL BACKUP & ANDROID RESTORE</Text>
+          <Text style={s.label}>LOCAL BACKUP CHECKPOINT</Text>
           <View style={s.cloudActivePill}>
-            <Text style={s.cloudActiveText}>● BACKUP READY</Text>
+            <Text style={s.cloudActiveText}>● LOCAL WAL</Text>
           </View>
         </View>
 
         <Text style={s.cloudDesc}>
-          Your XP, streaks, SM-2 memory cards, and diplomas are saved locally in SQLite with Android Google Drive auto-backup enabled. Create an integrity-verified checkpoint anytime.
+          Your learning progress, streaks, SM-2 memory cards, and diplomas are saved locally in SQLite with WAL persistence and AsyncStorage mirroring. Capture an integrity-verified checkpoint anytime.
         </Text>
 
         <Pressable
@@ -228,14 +228,14 @@ export default function ProfileScreen({
             void triggerHaptic('success');
             const snap = createCloudBackupSnapshot(progress);
             setBackupStatus(
-              `Checkpoint verified at ${new Date(snap.timestamp).toLocaleTimeString([], {
+              `Local checkpoint verified at ${new Date(snap.timestamp).toLocaleTimeString([], {
                 hour: '2-digit',
                 minute: '2-digit',
               })} (${snap.checksum})`
             );
           }}
         >
-          <Text style={s.backupBtnText}>✦ Create Verified Backup Checkpoint</Text>
+          <Text style={s.backupBtnText}>✦ Create Local Backup Checkpoint</Text>
         </Pressable>
 
         {backupStatus && (
@@ -264,7 +264,7 @@ export default function ProfileScreen({
         <Text style={s.aboutBrand}>ORRALI</Text>
         <Text style={s.tagline}>Beyond the familiar.</Text>
         <Text style={s.aboutText}>A new world of possibilities. Discover · Connect · Grow.</Text>
-        <Text style={s.version}>ORRALI PLACEMENT EDITION · 6.2.0</Text></View>
+        <Text style={s.version}>ORRALI RELIABILITY EDITION · 6.3.0</Text></View>
 
       {/* Adaptive CEFR Placement Test Modal */}
       <PlacementTestModal
