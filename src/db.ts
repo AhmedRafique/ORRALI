@@ -24,6 +24,7 @@ export async function getDb(): Promise<SQLite.SQLiteDatabase | null> {
             is_correct INTEGER NOT NULL,
             timestamp INTEGER NOT NULL
           );
+          CREATE INDEX IF NOT EXISTS idx_attempts_course_item ON exercise_attempts (course_code, item_id);
         `);
         dbInstance = db;
         return db;

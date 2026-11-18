@@ -42,6 +42,9 @@ yarn-error.*
 # logs
 *.log
 
+# archives
+*.zip
+
 # typescript
 *.tsbuildinfo
 
