@@ -63,6 +63,8 @@ export interface PronunciationResult {
   words: WordScore[];
   feedback: string;
   passed: boolean;
+  cadenceWpm?: number;
+  intonationVariance?: number;
 }
 
 export interface AnswerEvaluation {
@@ -367,4 +369,22 @@ export interface PersonalizedSession {
 }
 
 
+
+
+export interface PronunciationMap {
+  languageId: LangCode;
+  wordScores: Record<string, { occurrences: number; averageScore: number; lastScore: number }>;
+  averageCadenceWpm: number;
+  cadenceHealth: 'too_slow' | 'good' | 'too_fast';
+}
+
+export interface ProgressiveAudioItem {
+  id: string;
+  level: 'A1' | 'A2' | 'B1' | 'B2' | string;
+  target: string;
+  en: string;
+  audioUrl?: string;
+  durationMs: number;
+  focus: 'vocabulary' | 'grammar' | 'cadence' | 'intonation';
+}
 
