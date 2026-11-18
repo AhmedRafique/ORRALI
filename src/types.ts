@@ -438,3 +438,27 @@ export interface NarrativeState {
   characterRelationships: Record<string, number>;
 }
 
+
+export interface DailyBriefing {
+  date: string;
+  recommendedFocus: string;
+  tasks: string[];
+}
+
+export interface FalseFriendItem {
+  id: string;
+  targetWord: string;
+  targetLanguage: LangCode;
+  falseEnglishCognate: string;
+  actualEnglishMeaning: string;
+  exampleSentence: string;
+}
+
+export interface OfflinePackState {
+  packId: string;
+  languageId: LangCode;
+  downloadedAt: number | null;
+  sizeBytes: number;
+  status: 'available' | 'downloading' | 'installed' | 'error';
+}
+
