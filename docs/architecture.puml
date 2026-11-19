@@ -116,8 +116,8 @@ SM-2 with Lapse Tracking] as SRS
 Achievement Evaluation] as Badges
   [streak.ts
 Streak Shields & Freeze] as Streak
-  [content.ts
-60 Units (FR/DE/ES through B2) & Stories] as Content
+  [content/ (Modular Courses)
+Scalable CEFR A1-B2 Units & Stories] as Content
   [store.ts
 Dual-Write Repository] as Store
 }
