@@ -585,6 +585,29 @@ export default function App() {
     [course.code, courses, progress, updateProgress],
   );
 
+  const completeVideoLounge = useCallback(
+    (earnedXp: number) => {
+      if (earnedXp <= 0) return;
+      const current = progress ?? emptyProgress();
+      let p = touchStreak(current);
+      const today = dayKey(new Date());
+      const currentCourseXp = p.courseXp?.[course.code] ?? 0;
+      p = {
+        ...p,
+        xp: p.xp + earnedXp,
+        courseXp: {
+          ...(p.courseXp ?? {}),
+          [course.code]: currentCourseXp + earnedXp,
+        },
+        dailyXp: (p.dailyXpDay === today ? p.dailyXp : 0) + earnedXp,
+        dailyXpDay: today,
+      };
+      const { updatedProgress } = evaluateBadges(p, courses);
+      updateProgress(updatedProgress);
+    },
+    [course.code, courses, progress, updateProgress],
+  );
+
   if (!progress) {
     return (
       <SafeAreaView style={s.loading}>
@@ -653,6 +676,7 @@ export default function App() {
                 onClaimDailySpark={claimDailySpark}
                 onCompleteMission={completeMission}
                 onCompleteWritingLab={completeWritingLab}
+                onCompleteVideoLounge={completeVideoLounge}
                 onStartReview={() => {
                   const due = course.lessons
                     .flatMap((lesson) => lesson.items)

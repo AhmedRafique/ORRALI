@@ -186,6 +186,15 @@ package "Generative Emotional TTS (Phase 7.4)" {
 Emotional Prosody Shaping & Persona Voices] as EmotionalTtsEngine
 }
 
+package "Video Immersion Lounge & Cooperative Goals (Phase 7.5)" {
+  [video/loungeEngine.ts
+Interactive Subtitles & Community Milestones] as VideoLoungeEngine
+  [video/catalog.ts
+Comprehensible Input Clips & Community Goals] as VideoCatalog
+  [VideoLoungeModal.tsx
+Video Viewport & Interactive Subtitles Modal] as VideoLoungeModalView
+}
+
 ' Navigation & Screen Wiring
 App --> HomeScreen
 App --> ProgressScreen
@@ -203,6 +212,7 @@ HomeScreen --> WordOfDayEngine
 HomeScreen --> MissionModalView
 HomeScreen --> WritingLabModalView
 HomeScreen --> WorldMapView
+HomeScreen --> VideoLoungeModalView
 
 ' Modals to Engines
 MilestoneModal --> MilestoneEngine
@@ -227,6 +237,8 @@ WritingEngine --> WritingCatalog
 WritingEngine --> LearningEvents
 WorldMapView --> WorldEnvironmentEngine
 WorldMapView --> CityMapCatalog
+VideoLoungeModalView --> VideoLoungeEngine
+VideoLoungeEngine --> VideoCatalog
 
 ' Screen to Domain
 LessonScreen --> Exercises

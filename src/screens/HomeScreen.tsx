@@ -24,6 +24,7 @@ import CafeLibraryModal from './CafeLibraryModal';
 import PlacementTestModal from './PlacementTestModal';
 import MissionModal from './MissionModal';
 import WritingLabModal from './WritingLabModal';
+import VideoLoungeModal from './VideoLoungeModal';
 import WorldMapView from '../world/WorldMapView';
 import { InteractiveMapBuilding } from '../world/types';
 import { createMissionCompletionEvents } from '../missions/engine';
@@ -71,6 +72,7 @@ interface Props {
   onApplyPlacement?: (updatedProgress: Progress) => void;
   onCompleteMission?: (result: { missionId: string; score: MissionScoreBreakdown }) => void;
   onCompleteWritingLab?: (result: { challengeId: string; correction: WritingCorrectionResult }) => void;
+  onCompleteVideoLounge?: (earnedXp: number) => void;
 }
 
 export default function HomeScreen({
@@ -96,6 +98,7 @@ export default function HomeScreen({
   onApplyPlacement,
   onCompleteMission,
   onCompleteWritingLab,
+  onCompleteVideoLounge,
 }: Props) {
   const [activeCapsule, setActiveCapsule] = useState<GrammarCapsule | null>(null);
   const [activeStory, setActiveStory] = useState<StoryScenario | null>(null);
@@ -114,6 +117,7 @@ export default function HomeScreen({
   const [isPlacementOpen, setIsPlacementOpen] = useState(false);
   const [isMissionsOpen, setIsMissionsOpen] = useState(false);
   const [isWritingLabOpen, setIsWritingLabOpen] = useState(false);
+  const [isVideoLoungeOpen, setIsVideoLoungeOpen] = useState(false);
   const [activeBuildingMissionId, setActiveBuildingMissionId] = useState<string | undefined>();
   const [viewMode, setViewMode] = useState<'list' | 'map'>('list');
   const [roleplayIdx, setRoleplayIdx] = useState(0);
@@ -208,6 +212,16 @@ export default function HomeScreen({
             onCompleteWritingLab?.(result);
           }}
           onClose={() => setIsWritingLabOpen(false)}
+        />
+        {/* Video Immersion Lounge Modal */}
+        <VideoLoungeModal
+          visible={isVideoLoungeOpen}
+          course={course}
+          onFinishComprehension={(earnedXp) => {
+            setIsVideoLoungeOpen(false);
+            onCompleteVideoLounge?.(earnedXp);
+          }}
+          onClose={() => setIsVideoLoungeOpen(false)}
         />
         {activeRoleplay && (
           <RoleplayModal
@@ -441,6 +455,21 @@ export default function HomeScreen({
           <View style={{ flex: 1 }}>
             <Text style={s.companionTitle}>Café Library · Reading Lounge</Text>
             <Text style={s.companionSub}>Tap-to-read stories & cultural audiobooks</Text>
+          </View>
+          <Text style={s.companionArrow}>›</Text>
+        </Pressable>
+
+        <Pressable
+          style={s.companionBtn}
+          onPress={() => {
+            void triggerHaptic('selection');
+            setIsVideoLoungeOpen(true);
+          }}
+        >
+          <Text style={s.companionIcon}>🎬</Text>
+          <View style={{ flex: 1 }}>
+            <Text style={s.companionTitle}>Video Immersion Lounge</Text>
+            <Text style={s.companionSub}>Native clips, tap-to-translate subtitles & community goals</Text>
           </View>
           <Text style={s.companionArrow}>›</Text>
         </Pressable>
@@ -1030,6 +1059,17 @@ export default function HomeScreen({
           onCompleteWritingLab?.(result);
         }}
         onClose={() => setIsWritingLabOpen(false)}
+      />
+
+      {/* Video Immersion Lounge Modal */}
+      <VideoLoungeModal
+        visible={isVideoLoungeOpen}
+        course={course}
+        onFinishComprehension={(earnedXp) => {
+          setIsVideoLoungeOpen(false);
+          onCompleteVideoLounge?.(earnedXp);
+        }}
+        onClose={() => setIsVideoLoungeOpen(false)}
       />
     </ScrollView>
   );

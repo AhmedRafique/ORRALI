@@ -79,15 +79,16 @@
 * **Status:** **COMPLETED**
 
 ### Phase 7.5.0 — Video Immersion Lounge (Comprehensible Input)
-* **Contextual Video Content:** A new Café Library feature focusing on short-form, real-life native video clips (e.g., street interviews, cultural snippets).
-* **Interactive Bilingual Subtitles:** Tap a word in the subtitle to auto-pause the video, translate the word, and save it to the Phrasebook.
-* **Status:** **IN PROGRESS**
+* **Contextual Video Content:** Native cultural clips for French, German, and Spanish with simulated viewport playback (`VideoLoungeModal.tsx`, `VIDEO_IMMERSION_CLIPS`).
+* **Interactive Bilingual Subtitles:** Real-time subtitle synchronization with tap-to-pause word inspection and instant Phrasebook saving.
+* **Cooperative Community Goals:** Collective community milestones (e.g. 10,000 Parisian coffees ordered) fostering non-toxic social learning.
+* **Status:** **COMPLETED**
 
 ### Phase 8.0.0 — The Living Immersion (C1 Tier & Cooperative Learning)
 * **C1 Advanced Fluency:** Expanding beyond B2 into C1—covering cultural idioms, complex debates, sarcasm, and literature nuances.
 * **Global Community Missions:** Cooperative, non-toxic social learning (e.g., "The community needs to order 10,000 virtual coffees in Paris this week").
 * **Ecosystem Maturity:** The final convergence of visual, emotional, and comprehensive language education.
-* **Status:** **PLANNED**
+* **Status:** **IN PROGRESS**
 
 ---
 
