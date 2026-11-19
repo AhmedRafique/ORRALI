@@ -414,13 +414,32 @@ export interface GrammarRadarData {
 }
 
 
+export type PersonaEmotion =
+  | 'neutral'
+  | 'happy'
+  | 'thinking'
+  | 'encouraging'
+  | 'confused'
+  | 'impressed';
+
+export interface VisualAvatarConfig {
+  primaryColor: string;
+  accentColor: string;
+  moodColor: Record<PersonaEmotion, string>;
+  expressions: Record<PersonaEmotion, string>;
+  accessory?: string;
+}
+
 export interface CharacterPersona {
   id: string;
   name: string;
   avatar: string;
+  role?: string;
   description: string;
   languageId: LangCode;
   relationshipLevel: number;
+  personality?: string;
+  avatarConfig?: VisualAvatarConfig;
 }
 
 export interface LocationHub {

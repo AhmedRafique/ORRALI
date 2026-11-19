@@ -12,7 +12,9 @@ import {
 } from 'react-native';
 import { playPhraseAudio, stopAllAudio } from '../audio';
 import { evaluateRoleplayTurn } from '../companion/roleplay';
-import { RoleplayMessage, RoleplayScenario } from '../types';
+import { RoleplayMessage, RoleplayScenario, PersonaEmotion } from '../types';
+import VisualAvatar from '../personas/VisualAvatar';
+import { getPersonaById } from '../personas/roster';
 
 const C = {
   midnight: '#1B1536',
@@ -59,6 +61,10 @@ export default function RoleplayModal({
   );
   const [isCompleted, setIsCompleted] = useState(false);
   const [earnedXp, setEarnedXp] = useState(0);
+  const [currentEmotion, setCurrentEmotion] = useState<PersonaEmotion>('neutral');
+
+  const personaLookupKey = scenario.personaName.toLowerCase().replace(/\s+/g, '_');
+  const activePersona = getPersonaById(personaLookupKey);
 
   const handleSend = (text: string) => {
     if (!text.trim()) return;
@@ -75,6 +81,7 @@ export default function RoleplayModal({
 
     setMessages((prev) => [...prev, userMsg]);
     setInputText('');
+    setCurrentEmotion('thinking');
 
     // 2. Evaluate turn
     const turnRes = evaluateRoleplayTurn(scenario.id, turnIndex, text);
@@ -83,13 +90,17 @@ export default function RoleplayModal({
       setMessages((prev) => [...prev, turnRes.reply]);
       if (turnRes.intentMet !== false) {
         setTurnIndex((v) => v + 1);
+        if (turnRes.isCompleted) {
+          setCurrentEmotion('impressed');
+          setIsCompleted(true);
+          setEarnedXp(turnRes.earnedXp ?? 20);
+        } else {
+          setCurrentEmotion('happy');
+        }
+      } else {
+        setCurrentEmotion('confused');
       }
       setSuggestedReplies(turnRes.suggestedNextReplies);
-
-      if (turnRes.isCompleted) {
-        setIsCompleted(true);
-        setEarnedXp(turnRes.earnedXp ?? 20);
-      }
     }, 400);
   };
 
@@ -122,13 +133,24 @@ export default function RoleplayModal({
           </View>
 
           <View style={s.personaRow}>
-            <Text style={s.personaAvatar}>{scenario.avatar}</Text>
-            <View style={{ flex: 1 }}>
-              <Text style={s.personaName}>
-                {scenario.personaName} · {scenario.title}
-              </Text>
-              <Text style={s.personaRole}>{scenario.role}</Text>
-            </View>
+            {activePersona ? (
+              <VisualAvatar
+                persona={activePersona}
+                emotion={currentEmotion}
+                size="medium"
+                showReactionPill={true}
+              />
+            ) : (
+              <>
+                <Text style={s.personaAvatar}>{scenario.avatar}</Text>
+                <View style={{ flex: 1 }}>
+                  <Text style={s.personaName}>
+                    {scenario.personaName} · {scenario.title}
+                  </Text>
+                  <Text style={s.personaRole}>{scenario.role}</Text>
+                </View>
+              </>
+            )}
           </View>
 
           <View style={s.objectiveBox}>

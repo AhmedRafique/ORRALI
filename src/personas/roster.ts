@@ -1,0 +1,242 @@
+import { CharacterPersona, LangCode, PersonaEmotion } from '../types';
+
+export const DEFAULT_MOOD_COLORS: Record<PersonaEmotion, string> = {
+  neutral: '#827B8D',
+  happy: '#638B70',
+  thinking: '#D4AF7C',
+  encouraging: '#E5A548',
+  confused: '#B75D61',
+  impressed: '#C28E3A',
+};
+
+export const CHARACTER_ROSTER: Record<string, CharacterPersona> = {
+  // --- FRENCH PERSONAS ---
+  pierre: {
+    id: 'pierre',
+    name: 'Pierre',
+    avatar: '👨‍🍳',
+    role: 'Bistro Host & Barista',
+    description: 'A charming Parisian host who appreciates polite phrasing and culinary curiosity.',
+    languageId: 'fr',
+    relationshipLevel: 0,
+    personality: 'Warm, hospitable, appreciative of French dining etiquette.',
+    avatarConfig: {
+      primaryColor: '#30234D',
+      accentColor: '#D4AF7C',
+      accessory: 'Chef Apron & Espresso Cup',
+      moodColor: DEFAULT_MOOD_COLORS,
+      expressions: {
+        neutral: '👨‍🍳',
+        happy: '😊',
+        thinking: '🧐',
+        encouraging: '🤝',
+        confused: '🤨',
+        impressed: '✨',
+      },
+    },
+  },
+  claire: {
+    id: 'claire',
+    name: 'Claire',
+    avatar: '👩‍✈️',
+    role: 'SNCF Station Master',
+    description: 'An efficient transport conductor in Lyon who values precise directions and schedules.',
+    languageId: 'fr',
+    relationshipLevel: 0,
+    personality: 'Punctual, articulate, helpful with travel logistics.',
+    avatarConfig: {
+      primaryColor: '#1E2C4A',
+      accentColor: '#638B70',
+      accessory: 'Station Master Whistle',
+      moodColor: DEFAULT_MOOD_COLORS,
+      expressions: {
+        neutral: '👩‍✈️',
+        happy: '😄',
+        thinking: '⏱️',
+        encouraging: '👍',
+        confused: '🤔',
+        impressed: '🌟',
+      },
+    },
+  },
+  antoine: {
+    id: 'antoine',
+    name: 'Antoine',
+    avatar: '👨‍💼',
+    role: 'Tech Lead & Project Director',
+    description: 'An executive collaborator in Sophia Antipolis who values structured arguments and deadlines.',
+    languageId: 'fr',
+    relationshipLevel: 0,
+    personality: 'Pragmatic, diplomatic, appreciative of logical connectors.',
+    avatarConfig: {
+      primaryColor: '#211B32',
+      accentColor: '#3A5A98',
+      accessory: 'Executive Tablet',
+      moodColor: DEFAULT_MOOD_COLORS,
+      expressions: {
+        neutral: '👨‍💼',
+        happy: '🎯',
+        thinking: '📊',
+        encouraging: '💡',
+        confused: '❓',
+        impressed: '🚀',
+      },
+    },
+  },
+
+  // --- GERMAN PERSONAS ---
+  julia: {
+    id: 'julia',
+    name: 'Julia',
+    avatar: '👩‍💼',
+    role: 'Munich Cultural Guide',
+    description: 'An enthusiastic Bavarian local who loves introducing newcomers to city history and traditions.',
+    languageId: 'de',
+    relationshipLevel: 0,
+    personality: 'Engaging, thorough, encouraging with noun genders and cases.',
+    avatarConfig: {
+      primaryColor: '#2D3A2F',
+      accentColor: '#D4AF7C',
+      accessory: 'Museum Badge',
+      moodColor: DEFAULT_MOOD_COLORS,
+      expressions: {
+        neutral: '👩‍💼',
+        happy: '🌞',
+        thinking: '🧐',
+        encouraging: '🙌',
+        confused: '🤷',
+        impressed: '🏆',
+      },
+    },
+  },
+  hans: {
+    id: 'hans',
+    name: 'Hans',
+    avatar: '👨‍✈️',
+    role: 'DB Train Conductor',
+    description: 'A dedicated high-speed ICE conductor who knows every platform from Frankfurt to Berlin.',
+    languageId: 'de',
+    relationshipLevel: 0,
+    personality: 'Precise, calm, attentive to ticket categories and connections.',
+    avatarConfig: {
+      primaryColor: '#3B2328',
+      accentColor: '#C28E3A',
+      accessory: 'Ticket Scanner',
+      moodColor: DEFAULT_MOOD_COLORS,
+      expressions: {
+        neutral: '👨‍✈️',
+        happy: '🎫',
+        thinking: '🧭',
+        encouraging: '👌',
+        confused: '🤨',
+        impressed: '⚡',
+      },
+    },
+  },
+  frau_schmidt: {
+    id: 'frau_schmidt',
+    name: 'Frau Schmidt',
+    avatar: '👩‍🏫',
+    role: 'Property & Office Manager',
+    description: 'A distinguished professional manager in Hamburg with an eagle eye for agreements and contracts.',
+    languageId: 'de',
+    relationshipLevel: 0,
+    personality: 'Formal, observant, impressed by precise modal passive phrasing.',
+    avatarConfig: {
+      primaryColor: '#1F2A38',
+      accentColor: '#A7C4B0',
+      accessory: 'Portfolio Folder',
+      moodColor: DEFAULT_MOOD_COLORS,
+      expressions: {
+        neutral: '👩‍🏫',
+        happy: '📋',
+        thinking: '🔍',
+        encouraging: '📑',
+        confused: '📑',
+        impressed: '🏅',
+      },
+    },
+  },
+
+  // --- SPANISH PERSONAS ---
+  mateo: {
+    id: 'mateo',
+    name: 'Mateo',
+    avatar: '👨‍🌾',
+    role: 'Mercado de San Miguel Artisan',
+    description: 'A warm tapas and market merchant in Madrid who loves vibrant food discussions.',
+    languageId: 'es',
+    relationshipLevel: 0,
+    personality: 'Vivacious, hospitable, passionate about regional cuisine.',
+    avatarConfig: {
+      primaryColor: '#3D2024',
+      accentColor: '#E5A548',
+      accessory: 'Artisan Wooden Board',
+      moodColor: DEFAULT_MOOD_COLORS,
+      expressions: {
+        neutral: '👨‍🌾',
+        happy: '🍷',
+        thinking: '🧀',
+        encouraging: '👏',
+        confused: '😅',
+        impressed: '¡Olé!',
+      },
+    },
+  },
+  lucia: {
+    id: 'lucia',
+    name: 'Lucía',
+    avatar: '👩‍💼',
+    role: 'Gran Vía Boutique Concierge',
+    description: 'A welcoming hotel concierge in Madrid dedicated to making every guest feel at home.',
+    languageId: 'es',
+    relationshipLevel: 0,
+    personality: 'Gracious, patient, helpful with room requests and local recommendations.',
+    avatarConfig: {
+      primaryColor: '#211B32',
+      accentColor: '#D4AF7C',
+      accessory: 'Golden Room Key',
+      moodColor: DEFAULT_MOOD_COLORS,
+      expressions: {
+        neutral: '👩‍💼',
+        happy: '🛎️',
+        thinking: '🗝️',
+        encouraging: '🌟',
+        confused: '❓',
+        impressed: '💎',
+      },
+    },
+  },
+  carlos: {
+    id: 'carlos',
+    name: 'Carlos',
+    avatar: '👨‍💻',
+    role: 'Bilingual Tech Advisor',
+    description: 'A tech coordinator in Barcelona helping clients streamline digital communications.',
+    languageId: 'es',
+    relationshipLevel: 0,
+    personality: 'Resourceful, sharp, appreciative of executive conditional requests.',
+    avatarConfig: {
+      primaryColor: '#1A2E35',
+      accentColor: '#638B70',
+      accessory: 'Digital Headset',
+      moodColor: DEFAULT_MOOD_COLORS,
+      expressions: {
+        neutral: '👨‍💻',
+        happy: '💻',
+        thinking: '⚙️',
+        encouraging: '🔥',
+        confused: '⚠️',
+        impressed: '🚀',
+      },
+    },
+  },
+};
+
+export function getPersonaById(characterId: string): CharacterPersona | undefined {
+  return CHARACTER_ROSTER[characterId];
+}
+
+export function getPersonasByLanguage(languageId: LangCode): CharacterPersona[] {
+  return Object.values(CHARACTER_ROSTER).filter((c) => c.languageId === languageId);
+}

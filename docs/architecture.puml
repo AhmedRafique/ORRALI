@@ -163,6 +163,15 @@ Multi-Format Writing Catalog] as WritingCatalog
 Interactive Writing Desk Modal] as WritingLabModalView
 }
 
+package "Visual Personas & Emotion Engine (Phase 7.2)" {
+  [personas/roster.ts
+European Triad Character Personas] as PersonaRoster
+  [personas/emotionEngine.ts
+Performance-Driven Emotion Engine & Tiers] as EmotionEngine
+  [personas/VisualAvatar.tsx
+Visual Portrait & Animated Mood Ring] as VisualAvatarView
+}
+
 ' Navigation & Screen Wiring
 App --> HomeScreen
 App --> ProgressScreen
@@ -190,6 +199,9 @@ LexiconModal --> AudioEngine
 ClinicModal --> ClinicEngine
 TutorModal --> TutorEngine
 RoleplayModal --> RoleplayEngine
+RoleplayModal --> VisualAvatarView
+VisualAvatarView --> EmotionEngine
+EmotionEngine --> PersonaRoster
 MissionModalView --> MissionsEngine
 MissionsEngine --> MissionsCatalog
 MissionsEngine --> LearningEvents

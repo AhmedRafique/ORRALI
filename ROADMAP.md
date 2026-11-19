@@ -61,16 +61,16 @@
 * **Status:** **COMPLETED**
 
 ### Phase 7.2.0 — Visual Personas & Emotion Engine
-* **2D Animated Portraits:** Integrate SVG/Lottie-based character avatars for AI Companions, Tutors, and NPCs.
-* **Performance-Driven Reactions:** Characters visibly react to learner input (smiling on success, polite confusion on gibberish, nodding on communicative intent).
-* **Lowering Affective Filter:** Transforming sterile text boxes into a warm, humanized interface.
-* **Status:** **IN PROGRESS**
+* **2D Animated Portraits:** European Triad character personas with chromatic mood rings and emotion badges (`VisualAvatar.tsx`, `CHARACTER_ROSTER`).
+* **Performance-Driven Reactions:** Characters visibly react to learner input (`derivePersonaReaction`: happy on communicative success, impressed on streaks, encouraging on grammar slips, confused on gibberish).
+* **Lowering Affective Filter:** Transforming sterile text boxes into a warm, humanized conversational interface embedded in AI Roleplay.
+* **Status:** **COMPLETED**
 
 ### Phase 7.3.0 — Interactive 2D World Map
 * **Spatial Memory UI:** Replace the linear lesson scroll with a pan-and-zoom city map (The City Center, The Café, The Station).
 * **Location-Based Learning:** Tap the Bakery to unlock food vocabulary; tap the Train Station for travel missions.
 * **Dynamic Environment:** The map visually reflects the user's real-world time of day (Day/Night cycles).
-* **Status:** **PLANNED**
+* **Status:** **IN PROGRESS**
 
 ### Phase 7.4.0 — Generative Emotional TTS
 * **Premium Voice Synthesis:** Upgrade from standard local device TTS to API-driven generative voice models (e.g., OpenAI / ElevenLabs capabilities).
