@@ -55,16 +55,16 @@
 ## ORRALI 8.0 Master Roadmap: "The Living Immersion"
 
 ### Phase 7.1.0 — CEFR Exhaustive Completeness (The Data Layer Restructure)
-* **Curriculum Restructure:** Break down monolithic content files into a scalable, language-specific directory structure (`src/content/fr/a1.ts`, etc.).
-* **Exhaustive Grammar Mapping:** Ensure every CEFR requirement (e.g., Subjunctive, Conditional, Plus-que-parfait, Accusative/Dative cases) is strictly mapped and taught.
+* **Curriculum Restructure:** Break down monolithic content files into a scalable, language-specific directory structure (`src/content/fr/`, `src/content/de/`, `src/content/es/`, `src/content/stories.ts`).
+* **Exhaustive Grammar Mapping:** Symmetrical B2 units added for French (`fr-21`), German (`de-21`), and Spanish (`es-21`), covering complex concession, modal passive, and indirect speech.
 * **Deep Semantic Distractors:** Upgrade multiple-choice exercises with contextually difficult, pedagogically valuable distractors.
-* **Status:** **IN PROGRESS**
+* **Status:** **COMPLETED**
 
 ### Phase 7.2.0 — Visual Personas & Emotion Engine
 * **2D Animated Portraits:** Integrate SVG/Lottie-based character avatars for AI Companions, Tutors, and NPCs.
 * **Performance-Driven Reactions:** Characters visibly react to learner input (smiling on success, polite confusion on gibberish, nodding on communicative intent).
 * **Lowering Affective Filter:** Transforming sterile text boxes into a warm, humanized interface.
-* **Status:** **PLANNED**
+* **Status:** **IN PROGRESS**
 
 ### Phase 7.3.0 — Interactive 2D World Map
 * **Spatial Memory UI:** Replace the linear lesson scroll with a pan-and-zoom city map (The City Center, The Café, The Station).
