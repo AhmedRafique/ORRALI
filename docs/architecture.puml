@@ -172,6 +172,15 @@ Performance-Driven Emotion Engine & Tiers] as EmotionEngine
 Visual Portrait & Animated Mood Ring] as VisualAvatarView
 }
 
+package "Interactive 2D World Map (Phase 7.3)" {
+  [world/environmentEngine.ts
+Day/Night Cycle & Discovery Progress] as WorldEnvironmentEngine
+  [world/cityCatalog.ts
+European Triad Spatial City Map] as CityMapCatalog
+  [world/WorldMapView.tsx
+Interactive 2D Spatial City Map Canvas] as WorldMapView
+}
+
 ' Navigation & Screen Wiring
 App --> HomeScreen
 App --> ProgressScreen
@@ -188,6 +197,7 @@ HomeScreen --> RoleplayModal
 HomeScreen --> WordOfDayEngine
 HomeScreen --> MissionModalView
 HomeScreen --> WritingLabModalView
+HomeScreen --> WorldMapView
 
 ' Modals to Engines
 MilestoneModal --> MilestoneEngine
@@ -208,6 +218,8 @@ MissionsEngine --> LearningEvents
 WritingLabModalView --> WritingEngine
 WritingEngine --> WritingCatalog
 WritingEngine --> LearningEvents
+WorldMapView --> WorldEnvironmentEngine
+WorldMapView --> CityMapCatalog
 
 ' Screen to Domain
 LessonScreen --> Exercises

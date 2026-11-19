@@ -67,16 +67,16 @@
 * **Status:** **COMPLETED**
 
 ### Phase 7.3.0 — Interactive 2D World Map
-* **Spatial Memory UI:** Replace the linear lesson scroll with a pan-and-zoom city map (The City Center, The Café, The Station).
-* **Location-Based Learning:** Tap the Bakery to unlock food vocabulary; tap the Train Station for travel missions.
-* **Dynamic Environment:** The map visually reflects the user's real-world time of day (Day/Night cycles).
-* **Status:** **IN PROGRESS**
+* **Spatial Memory UI:** Interactive 2D spatial city grid replacing linear lists with exploration hubs (`WorldMapView.tsx`, `CITY_MAP_BUILDINGS`).
+* **Location-Based Learning:** District hubs (Café District, Travel Hub, City Center, Cultural Quarter, University, Business Quarter) directly launching corresponding missions and exercises.
+* **Dynamic Environment:** Real-world 4-phase day & night cycles (Dawn, Day, Twilight, Midnight OLED) with ambient lighting and street lamps.
+* **Status:** **COMPLETED**
 
 ### Phase 7.4.0 — Generative Emotional TTS
 * **Premium Voice Synthesis:** Upgrade from standard local device TTS to API-driven generative voice models (e.g., OpenAI / ElevenLabs capabilities).
 * **Mood-Aware Audio:** NPC voices reflect the scenario's emotion—expressing surprise at a curveball, warmth in greetings, or hesitation.
 * **Offline Fallback Strategy:** Graceful fallback to local device TTS if the network is unavailable.
-* **Status:** **PLANNED**
+* **Status:** **IN PROGRESS**
 
 ### Phase 7.5.0 — Video Immersion Lounge (Comprehensible Input)
 * **Contextual Video Content:** A new Café Library feature focusing on short-form, real-life native video clips (e.g., street interviews, cultural snippets).

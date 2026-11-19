@@ -24,6 +24,8 @@ import CafeLibraryModal from './CafeLibraryModal';
 import PlacementTestModal from './PlacementTestModal';
 import MissionModal from './MissionModal';
 import WritingLabModal from './WritingLabModal';
+import WorldMapView from '../world/WorldMapView';
+import { InteractiveMapBuilding } from '../world/types';
 import { createMissionCompletionEvents } from '../missions/engine';
 import { recordLearningEventsBatch } from '../events';
 import { getMissionById } from '../missions/catalog';
@@ -112,6 +114,8 @@ export default function HomeScreen({
   const [isPlacementOpen, setIsPlacementOpen] = useState(false);
   const [isMissionsOpen, setIsMissionsOpen] = useState(false);
   const [isWritingLabOpen, setIsWritingLabOpen] = useState(false);
+  const [activeBuildingMissionId, setActiveBuildingMissionId] = useState<string | undefined>();
+  const [viewMode, setViewMode] = useState<'list' | 'map'>('list');
   const [roleplayIdx, setRoleplayIdx] = useState(0);
   const [isSparkFlipped, setIsSparkFlipped] = useState(false);
   const [storyAnswer, setStoryAnswer] = useState<number | null>(null);
@@ -147,6 +151,79 @@ export default function HomeScreen({
     setStoryCompleted(false);
   };
 
+  function handleSelectBuilding(building: InteractiveMapBuilding) {
+    if (building.primaryActivity === 'mission') {
+      setActiveBuildingMissionId(building.activeMissionId);
+      setIsMissionsOpen(true);
+    } else if (building.primaryActivity === 'roleplay') {
+      const courseScenarios = ROLEPLAY_SCENARIOS.filter((s) => s.courseCode === course.code);
+      const sc =
+        courseScenarios[roleplayIdx % Math.max(1, courseScenarios.length)] ??
+        ROLEPLAY_SCENARIOS[0];
+      setActiveRoleplay(sc);
+    } else if (building.primaryActivity === 'writing_lab') {
+      setIsWritingLabOpen(true);
+    } else if (building.primaryActivity === 'cafe_library') {
+      setIsCafeLibraryOpen(true);
+    } else if (building.primaryActivity === 'milestone_exam') {
+      setActiveExamLevel('A1');
+    } else {
+      const firstIncomplete = course.lessons.find((l) => !progress.completed[l.id]);
+      if (firstIncomplete) {
+        onStartLesson(firstIncomplete.id);
+      }
+    }
+  }
+
+  if (viewMode === 'map') {
+    return (
+      <View style={{ flex: 1 }}>
+        <WorldMapView
+          course={course}
+          progress={progress}
+          onSelectBuilding={handleSelectBuilding}
+          onToggleViewMode={() => setViewMode('list')}
+        />
+        {/* Real-Life Missions Modal */}
+        <MissionModal
+          visible={isMissionsOpen}
+          course={course}
+          initialMissionId={activeBuildingMissionId}
+          onFinish={(result) => {
+            setIsMissionsOpen(false);
+            setActiveBuildingMissionId(undefined);
+            onCompleteMission?.(result);
+          }}
+          onClose={() => {
+            setIsMissionsOpen(false);
+            setActiveBuildingMissionId(undefined);
+          }}
+        />
+        {/* Writing Lab Modal */}
+        <WritingLabModal
+          visible={isWritingLabOpen}
+          course={course}
+          onFinish={(result) => {
+            setIsWritingLabOpen(false);
+            onCompleteWritingLab?.(result);
+          }}
+          onClose={() => setIsWritingLabOpen(false)}
+        />
+        {activeRoleplay && (
+          <RoleplayModal
+            visible={!!activeRoleplay}
+            scenario={activeRoleplay}
+            onFinishRoleplay={(xp) => {
+              setActiveRoleplay(null);
+              onCompleteRoleplay?.(xp);
+            }}
+            onClose={() => setActiveRoleplay(null)}
+          />
+        )}
+      </View>
+    );
+  }
+
   return (
     <ScrollView style={s.root} contentContainerStyle={s.content} showsVerticalScrollIndicator={false}>
       <View style={s.header}>
@@ -174,6 +251,24 @@ export default function HomeScreen({
           </Text>
         </View>
       </View>
+
+      {/* 2D Spatial City Map Switcher Banner */}
+      <Pressable
+        style={s.mapModeBanner}
+        onPress={() => {
+          void triggerHaptic('selection');
+          setViewMode('map');
+        }}
+      >
+        <View style={s.mapBannerLeft}>
+          <Text style={s.mapBannerIcon}>🗺️</Text>
+          <View style={{ flex: 1 }}>
+            <Text style={s.mapBannerTitle}>Explore 2D Spatial City Map</Text>
+            <Text style={s.mapBannerSub}>Interactive city districts with day & night ambient lighting</Text>
+          </View>
+        </View>
+        <Text style={s.mapBannerArrow}>›</Text>
+      </Pressable>
 
       {/* 3-Minute Express Review Fast-Track Widget */}
       {dueCount > 0 && (
@@ -1024,6 +1119,42 @@ const s = StyleSheet.create({
   },
   sectionTitle: { color: C.ink, fontSize: 18, fontWeight: '800' },
   sectionSub: { color: C.muted, fontSize: 11, marginTop: 4 },
+  mapModeBanner: {
+    backgroundColor: '#2A1F45',
+    borderRadius: 14,
+    padding: 14,
+    marginBottom: 16,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    borderWidth: 1.5,
+    borderColor: C.gold,
+  },
+  mapBannerLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    flex: 1,
+  },
+  mapBannerIcon: {
+    fontSize: 24,
+  },
+  mapBannerTitle: {
+    color: '#F8F6F1',
+    fontSize: 14,
+    fontWeight: '800',
+  },
+  mapBannerSub: {
+    color: '#D4AF7C',
+    fontSize: 11,
+    marginTop: 2,
+  },
+  mapBannerArrow: {
+    color: C.gold,
+    fontSize: 20,
+    fontWeight: '700',
+    marginLeft: 8,
+  },
   companionRow: { gap: 9, marginBottom: 24 },
   companionBtn: {
     flexDirection: 'row',
