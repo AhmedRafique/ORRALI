@@ -1,7 +1,7 @@
 import { selectPlausibleDistractors, shuffle } from './exercises';
 import { Course, Exercise, Item } from './types';
 
-export type CEFRLevel = 'A1' | 'A2' | 'B1' | 'B2';
+export type CEFRLevel = 'A1' | 'A2' | 'B1' | 'B2' | 'C1';
 
 export interface MilestoneDef {
   level: CEFRLevel;
@@ -44,6 +44,14 @@ export const MILESTONE_DEFS: MilestoneDef[] = [
     passingScorePct: 80,
     questionCount: 12,
     xpReward: 50,
+  },
+  {
+    level: 'C1',
+    title: 'CEFR C1 Advanced Fluency Diploma',
+    subtitle: 'Comprehensive synthesis exam of irony, academic discourse & literary nuance',
+    passingScorePct: 80,
+    questionCount: 12,
+    xpReward: 75,
   },
 ];
 

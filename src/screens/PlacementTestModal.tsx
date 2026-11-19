@@ -57,6 +57,7 @@ export default function PlacementTestModal({
     A2: 0,
     B1: 0,
     B2: 0,
+    C1: 0,
   });
   const [isFinished, setIsFinished] = useState(false);
 
@@ -64,7 +65,7 @@ export default function PlacementTestModal({
     if (visible) {
       setQuestionIdx(0);
       setSelectedOpt(null);
-      setScoreByLevel({ A1: 0, A2: 0, B1: 0, B2: 0 });
+      setScoreByLevel({ A1: 0, A2: 0, B1: 0, B2: 0, C1: 0 });
       setIsFinished(false);
     }
   }, [visible]);

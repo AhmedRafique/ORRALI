@@ -22,6 +22,7 @@ export function buildPlacementQuestionPool(course: Course): PlacementQuestionPoo
     A2: course.lessons.filter((l) => !!l.level?.startsWith('A2')).flatMap((l) => l.items),
     B1: course.lessons.filter((l) => !!l.level?.startsWith('B1')).flatMap((l) => l.items),
     B2: course.lessons.filter((l) => !!l.level?.startsWith('B2')).flatMap((l) => l.items),
+    C1: course.lessons.filter((l) => !!l.level?.startsWith('C1')).flatMap((l) => l.items),
   };
 
   const allItems = course.lessons.flatMap((l) => l.items);
@@ -31,9 +32,11 @@ export function buildPlacementQuestionPool(course: Course): PlacementQuestionPoo
     A2: [],
     B1: [],
     B2: [],
+    C1: [],
   };
 
-  for (const level of ['A1', 'A2', 'B1', 'B2'] as const) {
+  for (const level of ['A1', 'A2', 'B1', 'B2', 'C1'] as const) {
+    if (!poolByLevel[level] || poolByLevel[level].length === 0) continue;
     const levelItems = shuffle(poolByLevel[level]).slice(0, 3);
     result[level] = levelItems.map((item) => {
       const distractors = selectPlausibleDistractors(course, allItems, item, 3);
@@ -56,6 +59,7 @@ export function buildPlacementQuestionPool(course: Course): PlacementQuestionPoo
  * - Passed A1 (>= 2/3) -> tests out of A1 -> places at A2
  * - Passed A1 & A2 (>= 2/3) -> tests out of A1 & A2 -> places at B1
  * - Passed A1, A2, & B1 (>= 2/3) -> tests out of A1, A2, B1 -> places at B2
+ * - Passed A1, A2, B1, & B2 (>= 2/3) and C1 -> places at C1
  * - Failed A1 -> places at A1 (starts at the beginning)
  */
 export function evaluatePlacementLevel(
@@ -64,7 +68,9 @@ export function evaluatePlacementLevel(
   const passedA1 = (scoreByLevel.A1 ?? 0) >= 2;
   const passedA2 = (scoreByLevel.A2 ?? 0) >= 2;
   const passedB1 = (scoreByLevel.B1 ?? 0) >= 2;
+  const passedB2 = (scoreByLevel.B2 ?? 0) >= 2;
 
+  if (passedA1 && passedA2 && passedB1 && passedB2 && (scoreByLevel.C1 ?? 0) >= 2) return 'C1';
   if (passedA1 && passedA2 && passedB1) return 'B2';
   if (passedA1 && passedA2) return 'B1';
   if (passedA1) return 'A2';
@@ -98,6 +104,13 @@ export function applyPlacementResult(
         !!l.level?.startsWith('A1') ||
         !!l.level?.startsWith('A2') ||
         !!l.level?.startsWith('B1')
+      );
+    if (placedLevel === 'C1')
+      return (
+        !!l.level?.startsWith('A1') ||
+        !!l.level?.startsWith('A2') ||
+        !!l.level?.startsWith('B1') ||
+        !!l.level?.startsWith('B2')
       );
     return false;
   });

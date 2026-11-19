@@ -46,23 +46,28 @@ describe('Adaptive CEFR Placement Test Engine (TDD)', () => {
 
   describe('2. Adaptive Level Evaluation & Fast-Track Progression', () => {
     it('places beginner at A1 when A1 accuracy is below passing threshold', () => {
-      const placed = evaluatePlacementLevel({ A1: 1, A2: 0, B1: 0, B2: 0 });
+      const placed = evaluatePlacementLevel({ A1: 1, A2: 0, B1: 0, B2: 0, C1: 0 });
       assert.equal(placed, 'A1');
     });
 
     it('advances to A2 when A1 is passed (>= 2/3) but A2 is failed', () => {
-      const placed = evaluatePlacementLevel({ A1: 3, A2: 1, B1: 0, B2: 0 });
+      const placed = evaluatePlacementLevel({ A1: 3, A2: 1, B1: 0, B2: 0, C1: 0 });
       assert.equal(placed, 'A2');
     });
 
     it('advances to B1 when A1 and A2 are passed but B1 is failed', () => {
-      const placed = evaluatePlacementLevel({ A1: 3, A2: 2, B1: 1, B2: 0 });
+      const placed = evaluatePlacementLevel({ A1: 3, A2: 2, B1: 1, B2: 0, C1: 0 });
       assert.equal(placed, 'B1');
     });
 
     it('advances to B2 when A1, A2, and B1 are mastered (>= 2/3 each)', () => {
-      const placed = evaluatePlacementLevel({ A1: 3, A2: 3, B1: 2, B2: 1 });
+      const placed = evaluatePlacementLevel({ A1: 3, A2: 3, B1: 2, B2: 1, C1: 0 });
       assert.equal(placed, 'B2');
+    });
+
+    it('advances to C1 when A1, A2, B1, B2, and C1 are mastered (>= 2/3 each)', () => {
+      const placed = evaluatePlacementLevel({ A1: 3, A2: 3, B1: 3, B2: 3, C1: 2 });
+      assert.equal(placed, 'C1');
     });
   });
 
@@ -114,7 +119,7 @@ describe('Adaptive CEFR Placement Test Engine (TDD)', () => {
 
     it('awards B2 Gold Diploma when B2 questions are also mastered (>= 2/3)', () => {
       const initial: Progress = emptyProgress();
-      const scores = { A1: 3, A2: 3, B1: 3, B2: 3 };
+      const scores = { A1: 3, A2: 3, B1: 3, B2: 3, C1: 0 };
       const updated = applyPlacementResult(initial, frenchCourse, 'B2', scores);
 
       assert.ok(updated.diplomas?.[`${frenchCourse.code}-B2`], 'B2 Diploma must be awarded when B2 is passed');

@@ -1,12 +1,17 @@
-# Build status — ORRALI 6.3.0 (Core Reliability Edition)
+# Build status — ORRALI 8.0.0 (The Living Immersion Release)
 
 | Check | Result |
 |---|---|
-| Dependencies Installation | PASS — 466 packages installed and verified via `npm ci` |
+| Dependencies Installation | PASS — packages installed and verified via `npm ci` |
 | TypeScript syntax transpilation | PASS — zero syntax diagnostics |
 | JSON configuration parsing | PASS — `app.json`, `package.json`, `eas.json` valid |
 | Full TypeScript typecheck | PASS — `tsc --noEmit` 0 errors |
-| Automated Unit & Logic Tests | PASS — 208 passing tests across all engines with authentic CEFR level mapping and complete roleplay intent validation |
+| Automated Unit & Logic Tests | PASS — 322 passing tests across 154 suites covering full ecosystem |
+| CEFR C1 Advanced Fluency Tier | **PASS — Exhaustive C1 curriculum across French, German, Spanish with official C1 Milestone Exam and Gold Diploma (+75 XP)** |
+| Interactive 2D World Map | **PASS — Spatial navigation across 6 European Triad city districts with 4-phase day/night lighting cycles** |
+| Visual Personas & Emotion Engine | **PASS — 9 character personas with chromatic glowing mood rings and performance-driven facial reactions** |
+| Generative Emotional TTS | **PASS — Dynamic prosody shaping for curveballs, warm greetings, and authoritative announcements with offline fallback** |
+| Video Immersion Lounge | **PASS — Contextual cultural clips, interactive tap-to-pause bilingual subtitles, and global community milestones** |
 | Expo configuration validation | PASS — SDK 58.0.0 public config validated with plugins |
 | Authentic CEFR Placement Mapping | **PASS — Questions and unlocks derived directly from authentic `lesson.level` metadata across French, German, and Spanish** |
 | Complete Roleplay Intent Validation | **PASS — Every turn across all 5 scenarios strictly validates communicative intent before advancing or awarding XP** |

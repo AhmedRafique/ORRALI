@@ -14,15 +14,16 @@ describe('CEFR Level Milestone Exams & Gold Diplomas (TDD)', () => {
   const es = courses.find((c) => c.code === 'es')!;
 
   describe('1. Milestone Exam Definitions & Unlock Gate', () => {
-    it('defines official milestone exams for A1, A2, B1, and B2', () => {
+    it('defines official milestone exams for A1, A2, B1, B2, and C1', () => {
       const defs = getMilestoneDefs();
-      assert.equal(defs.length, 4);
+      assert.equal(defs.length, 5);
 
       const ids = defs.map((d) => d.level);
       assert.ok(ids.includes('A1'));
       assert.ok(ids.includes('A2'));
       assert.ok(ids.includes('B1'));
       assert.ok(ids.includes('B2'));
+      assert.ok(ids.includes('C1'));
     });
   });
 

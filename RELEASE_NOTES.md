@@ -1,3 +1,50 @@
+# ORRALI 8.0.0 — The Living Immersion
+
+## Summary
+The landmark 8.0.0 milestone converges visual, emotional, and comprehensive language education into an alive personal ecosystem.
+
+## What's New
+- **CEFR C1 Advanced Fluency Tier:** Sarcasm, cultural irony, philosophical debate, and literary analysis across French, German, and Spanish with the official C1 Milestone Exam and Gold Diploma (+75 XP).
+- **Interactive 2D World Map:** Spatial memory UI replacing linear lesson lists with pan-and-zoom city districts (The Café, Train Station, City Center, Cultural Quarter, Tech Campus, University) with real-world 4-phase day/night lighting cycles.
+- **Visual Personas & Dynamic Emotion Engine:** 9 European Triad characters with glowing chromatic mood rings and performance-driven facial reactions (happy on success, impressed on streaks, encouraging on grammar slips, confused on gibberish).
+- **Generative Emotional TTS:** Mood-aware prosody synthesis modulating speech rate and pitch for surprised curveballs, warm greetings, and authoritative announcements with bulletproof offline device TTS fallback.
+- **Video Immersion Lounge:** Native cultural video clips with interactive tap-to-pause bilingual subtitles, instant tap-to-save phrasebook integration, and global community cooperative goals.
+- **Exhaustive Curriculum Completeness:** Modular data architecture (`src/content/`) with zero grammatical or lexical gaps across A1, A2, B1, B2, and C1.
+
+---
+
+# ORRALI 7.5.0 — Video Immersion Lounge & Cooperative Goals
+- Contextual native video clips across culinary, cultural, and transit themes.
+- Interactive bilingual subtitles with word-by-word inspector and auto-pause.
+- Cooperative global community goals (e.g. collective 10,000 Parisian coffees ordered).
+
+---
+
+# ORRALI 7.4.0 — Generative Emotional TTS
+- Dynamic prosody shaping for European Triad character personas.
+- Mood-aware inflections (`surprised_curveball`, `warm_greeting`, `encouraging_correction`, `authoritative`, `celebratory`).
+- Offline-first device TTS fallback.
+
+---
+
+# ORRALI 7.3.0 — Interactive 2D World Map
+- Spatial memory navigation across 6 European Triad city districts.
+- 4-phase real-world day/night lighting cycles (Dawn, Day, Twilight, Midnight OLED).
+
+---
+
+# ORRALI 7.2.0 — Visual Personas & Dynamic Emotion Engine
+- 2D animated character portraits with glowing chromatic mood rings.
+- European Triad character roster with progressive relationship tiers.
+
+---
+
+# ORRALI 7.1.0 — CEFR Exhaustive Completeness
+- Modular content data layer restructuring into `src/content/`.
+- Symmetrical European Triad Unit 21 expansion across French, German, and Spanish.
+
+---
+
 # ORRALI 7.0.0 — Beyond the Familiar
 
 ## Summary

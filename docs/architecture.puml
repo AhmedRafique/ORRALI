@@ -6,7 +6,7 @@ skinparam packageBackgroundColor #FFFFFF
 skinparam packageBorderColor #1B1536
 skinparam componentStyle uml2
 
-title ORRALI Architecture (Version 6.4.0 — Learning Intelligence Foundation)
+title ORRALI Architecture (Version 8.0.0 — The Living Immersion)
 
 package "Presentation & UI Layer (React Native / Expo)" {
   [App.tsx
@@ -193,6 +193,11 @@ Interactive Subtitles & Community Milestones] as VideoLoungeEngine
 Comprehensible Input Clips & Community Goals] as VideoCatalog
   [VideoLoungeModal.tsx
 Video Viewport & Interactive Subtitles Modal] as VideoLoungeModalView
+}
+
+package "C1 Advanced Fluency & Living Immersion (Phase 8.0)" {
+  [milestones.ts
+C1 Milestone Exam & Gold Diploma] as C1MilestoneEngine
 }
 
 ' Navigation & Screen Wiring

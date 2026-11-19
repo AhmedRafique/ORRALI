@@ -85,14 +85,15 @@
 * **Status:** **COMPLETED**
 
 ### Phase 8.0.0 — The Living Immersion (C1 Tier & Cooperative Learning)
-* **C1 Advanced Fluency:** Expanding beyond B2 into C1—covering cultural idioms, complex debates, sarcasm, and literature nuances.
-* **Global Community Missions:** Cooperative, non-toxic social learning (e.g., "The community needs to order 10,000 virtual coffees in Paris this week").
-* **Ecosystem Maturity:** The final convergence of visual, emotional, and comprehensive language education.
-* **Status:** **IN PROGRESS**
+* **C1 Advanced Fluency:** Expanding beyond B2 into C1—covering cultural idioms, complex debates, sarcasm, and literature nuances across French, German, and Spanish (`c1-curriculum.test.ts`, Units 22 & 23).
+* **Official C1 Gold Diploma:** Added official C1 Milestone Exam synthesis with +75 XP graduation bounty in `src/milestones.ts`.
+* **Global Community Missions:** Cooperative, non-toxic social learning (e.g. collective 10,000 coffees ordered).
+* **Ecosystem Maturity:** The final convergence of visual personas, emotion engine, 2D map, generative TTS, video immersion, and C1 fluency.
+* **Status:** **COMPLETED**
 
 ---
 
-## ORRALI 7.0 & 8.0 Master Development Architecture
+## ORRALI 8.0 Master Development Architecture
 
 ```
                                   ┌───────────────────────────┐
@@ -105,9 +106,10 @@
   ┌─────────────────────────────┐┌─────────────────────────────┐┌─────────────────────────────┐
   │        Learning World       ││        Real-World           ││       Learning Engine       │
   │   (Immersion & Characters)  ││       Communication         ││    (Structured Education)   │
-  │  • 2D Illustrated Hubs      ││  • Real-Life Missions       ││  • Multi-Tier CEFR (A1-B2)  │
-  │  • Living Characters        ││  • Writing Lab & Radar      ││  • Spaced Repetition (SM-2) │
-  │  • Cultural Stories         ││  • Natural Speech & Listen  ││  • Grammar Capsules         │
+  │  • 2D Spatial City Map      ││  • Real-Life Missions       ││  • Multi-Tier CEFR (A1-C1)  │
+  │  • Living Visual Personas   ││  • Writing Lab & Radar      ││  • Spaced Repetition (SM-2) │
+  │  • Video Immersion Lounge   ││  • Emotional Generative TTS ││  • Grammar Capsules         │
+  └──────────────┬──────────────┘└──────────────┬──────────────┘└──────────────┬──────────────┘
   └──────────────┬──────────────┘└──────────────┬──────────────┘└──────────────┬──────────────┘
                  │                              │                              │
                  └──────────────────────────────┼──────────────────────────────┘
