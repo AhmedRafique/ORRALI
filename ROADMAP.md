@@ -73,15 +73,15 @@
 * **Status:** **COMPLETED**
 
 ### Phase 7.4.0 — Generative Emotional TTS
-* **Premium Voice Synthesis:** Upgrade from standard local device TTS to API-driven generative voice models (e.g., OpenAI / ElevenLabs capabilities).
-* **Mood-Aware Audio:** NPC voices reflect the scenario's emotion—expressing surprise at a curveball, warmth in greetings, or hesitation.
-* **Offline Fallback Strategy:** Graceful fallback to local device TTS if the network is unavailable.
-* **Status:** **IN PROGRESS**
+* **Premium Voice Synthesis:** Dynamic prosody shaping for European Triad character personas with rate/pitch modulation (`emotionalTts.ts`, `PERSONA_VOICE_PROFILES`).
+* **Mood-Aware Audio:** Inflections for `warm_greeting`, `surprised_curveball`, `encouraging_correction`, `authoritative`, and `celebratory`.
+* **Offline Fallback Strategy:** Bulletproof offline-first device TTS fallback with zero network crashes.
+* **Status:** **COMPLETED**
 
 ### Phase 7.5.0 — Video Immersion Lounge (Comprehensible Input)
 * **Contextual Video Content:** A new Café Library feature focusing on short-form, real-life native video clips (e.g., street interviews, cultural snippets).
 * **Interactive Bilingual Subtitles:** Tap a word in the subtitle to auto-pause the video, translate the word, and save it to the Phrasebook.
-* **Status:** **PLANNED**
+* **Status:** **IN PROGRESS**
 
 ### Phase 8.0.0 — The Living Immersion (C1 Tier & Cooperative Learning)
 * **C1 Advanced Fluency:** Expanding beyond B2 into C1—covering cultural idioms, complex debates, sarcasm, and literature nuances.

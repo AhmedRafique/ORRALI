@@ -11,6 +11,7 @@ import {
 import * as Speech from 'expo-speech';
 import { playEarcon } from '../earcons';
 import { triggerHaptic } from '../sensory';
+import { playEmotionalSpeech, EmotionalInflection } from '../audio/emotionalTts';
 import { Course } from '../types';
 import {
   Mission,
@@ -146,10 +147,11 @@ export default function MissionModal({
     }
   }
 
-  function speakText(text: string) {
-    try {
-      Speech.speak(text, { language: course.speechLang, rate: 0.95 });
-    } catch {}
+  function speakText(text: string, inflection: EmotionalInflection = 'neutral') {
+    void playEmotionalSpeech(text, {
+      languageId: course.code,
+      inflection,
+    });
   }
 
   // --- Handlers ---
@@ -247,7 +249,7 @@ export default function MissionModal({
       // Advance to unexpected curveball
       setDialogueHistory(updatedHistory);
       setStage('unexpected_event');
-      speakText(selectedMission.unexpectedEvent.npcStatement);
+      speakText(selectedMission.unexpectedEvent.npcStatement, 'surprised_curveball');
     }
   }
 

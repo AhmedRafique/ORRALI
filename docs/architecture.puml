@@ -181,6 +181,11 @@ European Triad Spatial City Map] as CityMapCatalog
 Interactive 2D Spatial City Map Canvas] as WorldMapView
 }
 
+package "Generative Emotional TTS (Phase 7.4)" {
+  [audio/emotionalTts.ts
+Emotional Prosody Shaping & Persona Voices] as EmotionalTtsEngine
+}
+
 ' Navigation & Screen Wiring
 App --> HomeScreen
 App --> ProgressScreen
@@ -213,6 +218,8 @@ RoleplayModal --> VisualAvatarView
 VisualAvatarView --> EmotionEngine
 EmotionEngine --> PersonaRoster
 MissionModalView --> MissionsEngine
+MissionModalView --> EmotionalTtsEngine
+RoleplayModal --> EmotionalTtsEngine
 MissionsEngine --> MissionsCatalog
 MissionsEngine --> LearningEvents
 WritingLabModalView --> WritingEngine
