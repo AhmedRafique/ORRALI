@@ -1,6 +1,6 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { courses, stories } from '../content';
+import { courses, stories } from '../content/index';
 import { evaluateAnswer } from '../exercises';
 
 describe('Spanish Multi-Language World Expansion (TDD)', () => {

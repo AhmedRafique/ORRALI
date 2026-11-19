@@ -1,6 +1,6 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { courses } from '../content';
+import { courses } from '../content/index';
 import { evaluateAnswer } from '../exercises';
 
 describe('CEFR A2 & B1 Curriculum Expansion (TDD)', () => {

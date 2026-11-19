@@ -5,7 +5,7 @@ import { playEarcon } from '../earcons';
 import { triggerHaptic } from '../sensory';
 import { getWordOfTheDay, isDailySparkClaimed, DailySparkWord } from '../wordOfDay';
 import { ROLEPLAY_SCENARIOS } from '../companion/roleplay';
-import { stories } from '../content';
+import { stories } from '../content/index';
 import { isDue } from '../srs';
 import { dayKey, getEffectiveStreak } from '../store';
 import { Course, Exercise, GrammarCapsule, LangCode, Progress, RoleplayScenario, StoryScenario } from '../types';

@@ -1,6 +1,6 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { courses } from '../content';
+import { courses } from '../content/index';
 import { diagnoseMistakes, buildRemedialWorkout } from '../companion/clinic';
 import { askTutor, TUTOR_KNOWLEDGE_BASE } from '../companion/tutor';
 import { ROLEPLAY_SCENARIOS, evaluateRoleplayTurn } from '../companion/roleplay';

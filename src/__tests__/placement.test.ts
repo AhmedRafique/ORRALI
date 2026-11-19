@@ -6,7 +6,7 @@ import {
   evaluatePlacementLevel,
   PlacementQuestion,
 } from '../placement';
-import { courses } from '../content';
+import { courses } from '../content/index';
 import { emptyProgress } from '../streak';
 import { Progress } from '../types';
 

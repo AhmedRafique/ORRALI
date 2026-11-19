@@ -1,6 +1,6 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { courses } from '../content';
+import { courses } from '../content/index';
 import { generateSpeedDeck, calculateSpeedScore } from '../speedRecall';
 
 describe('60-Second Speed Recall Challenge Engine (TDD)', () => {
