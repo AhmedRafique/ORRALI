@@ -13,7 +13,7 @@ describe('Spanish Multi-Language World Expansion (TDD)', () => {
     assert.ok(es.lessons.length >= 10);
   });
 
-  it('all Spanish lessons have 6 items each (120 phrases) with phonetics and grammar capsules', () => {
+  it('all Spanish lessons have 6 items each (126 phrases) with phonetics and grammar capsules', () => {
     const es = courses.find((c) => c.code === 'es')!;
     let totalItems = 0;
 
@@ -33,7 +33,7 @@ describe('Spanish Multi-Language World Expansion (TDD)', () => {
       }
     }
 
-    assert.equal(totalItems, 120);
+    assert.equal(totalItems, 126);
   });
 
   it('includes Spanish real-world conversational story', () => {

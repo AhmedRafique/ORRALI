@@ -247,6 +247,13 @@ export const AUDIO_ASSETS: Record<string, any> = {
   'de-20-4': require('../assets/audio/de/de-20-4.mp3'),
   'de-20-5': require('../assets/audio/de/de-20-5.mp3'),
   'de-20-6': require('../assets/audio/de/de-20-6.mp3'),
+  'de-21-1': require('../assets/audio/de/de-21-1.mp3'),
+  'de-21-2': require('../assets/audio/de/de-21-2.mp3'),
+  'de-21-3': require('../assets/audio/de/de-21-3.mp3'),
+  'de-21-4': require('../assets/audio/de/de-21-4.mp3'),
+  'de-21-5': require('../assets/audio/de/de-21-5.mp3'),
+  'de-21-6': require('../assets/audio/de/de-21-6.mp3'),
+
   'es-1-1': require('../assets/audio/es/es-1-1.mp3'),
   'es-1-2': require('../assets/audio/es/es-1-2.mp3'),
   'es-1-3': require('../assets/audio/es/es-1-3.mp3'),
@@ -367,4 +374,11 @@ export const AUDIO_ASSETS: Record<string, any> = {
   'es-20-4': require('../assets/audio/es/es-20-4.mp3'),
   'es-20-5': require('../assets/audio/es/es-20-5.mp3'),
   'es-20-6': require('../assets/audio/es/es-20-6.mp3'),
+  'es-21-1': require('../assets/audio/es/es-21-1.mp3'),
+  'es-21-2': require('../assets/audio/es/es-21-2.mp3'),
+  'es-21-3': require('../assets/audio/es/es-21-3.mp3'),
+  'es-21-4': require('../assets/audio/es/es-21-4.mp3'),
+  'es-21-5': require('../assets/audio/es/es-21-5.mp3'),
+  'es-21-6': require('../assets/audio/es/es-21-6.mp3'),
+
 };

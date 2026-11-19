@@ -19,14 +19,15 @@ describe('CEFR B2 Upper-Intermediate & Professional Fluency Expansion (TDD)', ()
       assert.ok(b2Lessons.some((l) => l.title.includes('Débats')));
     });
 
-    it('German course includes 20 progressive units (A1, A2, B1, and B2)', () => {
-      assert.equal(de.lessons.length, 20);
+    it('German course includes 21 progressive units (A1, A2, B1, and B2)', () => {
+      assert.equal(de.lessons.length, 21);
 
       const b2Lessons = de.lessons.filter((l) => l.level?.startsWith('B2'));
-      assert.equal(b2Lessons.length, 5);
+      assert.equal(b2Lessons.length, 6);
       assert.ok(b2Lessons.some((l) => l.title.includes('Bewerbungsgespräch')));
       assert.ok(b2Lessons.some((l) => l.title.includes('Verhandlungen')));
       assert.ok(b2Lessons.some((l) => l.title.includes('Redewendungen')));
+      assert.ok(b2Lessons.some((l) => l.title.includes('Fachgespräche')));
     });
 
     it('all units contain exactly 6 items', () => {
@@ -37,7 +38,7 @@ describe('CEFR B2 Upper-Intermediate & Professional Fluency Expansion (TDD)', ()
           total += lesson.items.length;
         }
       }
-      assert.equal(total, 246); // 21 * 6 (FR) + 20 * 6 (DE)
+      assert.equal(total, 252); // 21 * 6 (FR) + 21 * 6 (DE)
     });
   });
 

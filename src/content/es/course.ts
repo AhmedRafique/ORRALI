@@ -1346,5 +1346,73 @@ export const esCourse: Course = {
           },
         ],
       },
+      {
+        id: 'es-21',
+        title: 'Negociación y Discurso Corporativo',
+        subtitle: 'Concessive clauses with subjunctive, compound conditional, and executive discourse',
+        level: 'B2 · Unit 21',
+        grammarCapsule: {
+          id: 'gc-es-21',
+          title: 'Concession & Compound Conditional',
+          tag: 'ADVANCED CONCESSION & CONDITIONAL',
+          summary: 'Mastering "A pesar de que" / "Por mucho que" + subjunctive, and formal evaluation with "Habría sido preferible".',
+          explanation: 'In executive Spanish negotiations, expressing concession with doubt or future projection requires the subjunctive: "A pesar de que sea difícil..." (Even though it may be difficult...). Use "Por mucho que + subjuntivo" for "No matter how much...". Use the compound conditional "Habría sido preferible..." to express diplomatic evaluation of past decisions.',
+          examples: [
+            { target: 'A pesar de que sea arriesgado...', en: 'Even though it may be risky...' },
+            { target: 'Habría sido preferible consensuarlo antes.', en: 'It would have been preferable to agree on it beforehand.' },
+          ],
+        },
+        items: [
+          {
+            id: 'es-21-1',
+            target: 'A pesar de que el plazo sea ajustado, cumpliremos con las entregas',
+            en: 'Even though the deadline is tight, we will meet the delivery schedule',
+            phonetic: 'ah peh-sar deh keh ehl plah-zoh seh-ah ah-hoos-tah-doh, koom-plee-reh-mohs kohn lahs en-treh-gahs',
+            notes: '"A pesar de que" with subjunctive ("sea") denotes a conceded difficulty without certainty.',
+            alternatives: ['A pesar de que el plazo sea ajustado cumpliremos con las entregas'],
+          },
+          {
+            id: 'es-21-2',
+            target: 'Por mucho que insistan, no podemos asumir ese nivel de riesgo',
+            en: 'No matter how much they insist, we cannot take on that level of risk',
+            phonetic: 'pohr moo-choh keh een-sees-tahn, noh poh-deh-mohs ah-soo-meer eh-seh nee-bel deh ryehs-goh',
+            notes: '"Por mucho que + subjuntivo" expresses an insurmountable limit.',
+            alternatives: ['Por mucho que insistan no podemos asumir ese nivel de riesgo'],
+          },
+          {
+            id: 'es-21-3',
+            target: 'Habría sido preferible consensuar la decisión con todo el equipo',
+            en: 'It would have been preferable to build consensus around the decision with the whole team',
+            phonetic: 'ah-bree-ah see-doh preh-feh-ree-bleh kohn-sen-swahr lah deh-see-syon kohn toh-doh ehl eh-kee-poh',
+            notes: 'Compound conditional ("habría sido") expresses constructive retrospective feedback.',
+            alternatives: ['Habria sido preferible consensuar la decision con todo el equipo'],
+          },
+          {
+            id: 'es-21-4',
+            target: 'En vista de las circunstancias actuales, conviene posponer el lanzamiento',
+            en: 'In view of current circumstances, it is advisable to postpone the launch',
+            phonetic: 'en bees-tah deh lahs seer-koon-stahn-syahs ahk-twah-lehs, kohn-byen-eh pohs-poh-nair ehl lahn-zah-myen-toh',
+            notes: '"Conviene + infinitivo" is standard professional advice.',
+            alternatives: ['En vista de las circunstancias actuales conviene posponer el lanzamiento'],
+          },
+          {
+            id: 'es-21-5',
+            target: 'Es imprescindible que mantengamos una postura coherente en la reunión',
+            en: 'It is essential that we maintain a consistent stance during the meeting',
+            phonetic: 'ess eem-preh-seen-dee-bleh keh mahn-ten-gah-mohs oo-nah pohs-too-rah koh-eh-ren-teh en lah reh-oo-nyon',
+            notes: 'Impersonal necessity ("Es imprescindible que...") triggers the subjunctive ("mantengamos").',
+            alternatives: ['Es imprescindible que mantengamos una postura coherente en la reunion'],
+          },
+          {
+            id: 'es-21-6',
+            target: 'En conclusión, los beneficios superan con creces las dificultades iniciales',
+            en: 'In conclusion, the benefits far outweigh the initial difficulties',
+            phonetic: 'en kohn-kloo-syon, lohs beh-neh-fee-syohs soo-peh-rahn kohn kreh-sehs lahs dee-fee-kool-tah-dehs ee-nee-syah-lehs',
+            notes: '"Con creces" is an executive idiom meaning "by far / comfortably".',
+            alternatives: ['En conclusion los beneficios superan con creces las dificultades iniciales'],
+          },
+        ],
+      },
+
     ]
 };
