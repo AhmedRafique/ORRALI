@@ -1,6 +1,7 @@
 import { LangCode, Progress, DailyBriefing, FalseFriendItem, OfflinePackState } from './types';
+import { dayKey } from './streak';
 
-export function generateDailyBriefing(progress: Progress): DailyBriefing {
+export function generateDailyBriefing(progress: Progress, now: Date = new Date()): DailyBriefing {
   const tasks = [];
   
   if (progress.dailyXp < progress.dailyGoal) {
@@ -10,13 +11,13 @@ export function generateDailyBriefing(progress: Progress): DailyBriefing {
   }
 
   // Count due cards
-  const now = Date.now();
-  const dueCount = Object.values(progress.cards).filter(c => c.due <= now).length;
+  const nowMs = now.getTime();
+  const dueCount = Object.values(progress.cards).filter(c => c.due <= nowMs).length;
   
   if (dueCount > 0) {
     tasks.push(`Review ${dueCount} due flashcards in the Smart Review Queue.`);
     return {
-      date: new Date().toISOString().split('T')[0],
+      date: dayKey(now),
       recommendedFocus: 'Review Stumbles',
       tasks
     };
@@ -25,7 +26,7 @@ export function generateDailyBriefing(progress: Progress): DailyBriefing {
   tasks.push('Explore a new story in the Café Library.');
 
   return {
-    date: new Date().toISOString().split('T')[0],
+    date: dayKey(now),
     recommendedFocus: 'New Lesson',
     tasks
   };

@@ -8,6 +8,11 @@ export class BaseRepository<T> {
   private store: Map<string, RepositoryRecord<T>> = new Map();
 
   create(id: string, data: T): RepositoryRecord<T> {
+    // Never silently replace an existing record: that would reset its version to 1
+    // and defeat optimistic concurrency control.
+    if (this.store.has(id)) {
+      throw new Error(`Record "${id}" already exists; use update() or updateWithVersion().`);
+    }
     const now = Date.now();
     const record: RepositoryRecord<T> = {
       id,

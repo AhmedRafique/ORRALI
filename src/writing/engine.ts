@@ -5,6 +5,7 @@ import {
   WritingCorrectionResult,
   WritingMistakeSpan,
 } from './types';
+import { normalizeText as sharedNormalizeText, containsKeyword } from '../textMatch';
 
 /**
  * Counts whitespace-delimited words.
@@ -18,16 +19,7 @@ export function countWords(text: string): number {
 /**
  * Normalizes text for intent and keyword checking.
  */
-export function normalizeText(text: string): string {
-  return text
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/['’]/g, ' ')
-    .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()?"¡!¿]/g, '')
-    .replace(/\s+/g, ' ')
-    .trim();
-}
+export const normalizeText = sharedNormalizeText;
 
 interface KnownErrorPattern {
   regex: RegExp;
@@ -39,7 +31,7 @@ interface KnownErrorPattern {
 const COMMON_ERROR_PATTERNS: KnownErrorPattern[] = [
   // French auxiliary & idiom patterns
   {
-    regex: /\b(ai|a|avons|avez|ont)\s+all[eé]/i,
+    regex: /\b(ai|a|avons|avez|ont)\s+all[eé](?:e|es|s)?(?![\p{L}])/iu,
     category: 'conjugation',
     correctedSnippet: 'suis/est/sommes/êtes/sont allé(e)(s)',
     explanation: 'Movement verbs like "aller" conjugate with "être" in compound past tenses, not "avoir".',
@@ -85,7 +77,7 @@ const COMMON_ERROR_PATTERNS: KnownErrorPattern[] = [
     explanation: 'Expressing cause or gratitude in Spanish uses "por" ("gracias por..."), not "para".',
   },
   {
-    regex: /\bestoy\s+de\s+(madrid|barcelona|mexico|colombia|francia|alemania)\b/i,
+    regex: /\bestoy\s+de\s+(madrid|barcelona|m[eé]xico|colombia|francia|alemania)\b/i,
     category: 'grammar',
     correctedSnippet: 'soy de $1',
     explanation: 'Origin or nationality uses the permanent verb "ser" ("soy de..."), not "estar".',
@@ -109,36 +101,42 @@ export function evaluateWritingSubmission(
   const norm = normalizeText(submissionText);
 
   const mistakes: WritingMistakeSpan[] = [];
-  let correctedText = submissionText;
 
-  // 1. Scan for known grammatical and structural error patterns
+  // 1. Scan for known grammatical and structural error patterns (every occurrence)
+  const found: Array<{ start: number; end: number; replacement: string }> = [];
   for (const pattern of COMMON_ERROR_PATTERNS) {
-    const match = submissionText.match(pattern.regex);
-    if (match && match.index !== undefined) {
-      const originalSnippet = match[0];
+    const flags = pattern.regex.flags.includes('g') ? pattern.regex.flags : pattern.regex.flags + 'g';
+    const globalRegex = new RegExp(pattern.regex.source, flags);
+    for (const match of submissionText.matchAll(globalRegex)) {
+      if (match.index === undefined) continue;
       const start = match.index;
-      const end = start + originalSnippet.length;
+      const end = start + match[0].length;
+      // Skip spans that overlap a span already reported by an earlier pattern.
+      if (found.some((f) => start < f.end && end > f.start)) continue;
 
+      const replacement = pattern.correctedSnippet.replace('$1', match[1] ?? '');
+      found.push({ start, end, replacement });
       mistakes.push({
         id: `err_${start}_${end}`,
         startIndex: start,
         endIndex: end,
-        originalSnippet,
-        correctedSnippet: pattern.correctedSnippet.replace('$1', match[1] ?? ''),
+        originalSnippet: match[0],
+        correctedSnippet: replacement,
         category: pattern.category,
         explanation: pattern.explanation,
       });
-
-      correctedText =
-        correctedText.substring(0, start) +
-        pattern.correctedSnippet.replace('$1', match[1] ?? '') +
-        correctedText.substring(end);
     }
+  }
+
+  // Apply corrections right-to-left so earlier replacements never shift later offsets.
+  let correctedText = submissionText;
+  for (const f of [...found].sort((x, y) => y.start - x.start)) {
+    correctedText = correctedText.substring(0, f.start) + f.replacement + correctedText.substring(f.end);
   }
 
   // 2. Keyword and constraint adherence
   const missingKeywords = challenge.requiredKeywords.filter(
-    (kw) => !norm.includes(normalizeText(kw))
+    (kw) => !containsKeyword(norm, normalizeText(kw))
   );
 
   for (const missing of missingKeywords) {
