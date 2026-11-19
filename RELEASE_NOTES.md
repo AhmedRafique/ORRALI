@@ -1,3 +1,51 @@
+# ORRALI 7.0.0 — Beyond the Familiar
+
+## Summary
+The 7.0.0 ecosystem release establishes a relational repository layer and advances the app's architecture for reliable data access and synchronization.
+
+## What's New
+- **Relational Repository Layer:** Added a repository abstraction over the app's persistence model, with focused tests.
+- **Learning Ecosystem:** Builds on the 6.4.0–6.9.0 learning intelligence, real-life missions, writing, listening, coaching, learning-world, and offline-pack releases.
+
+---
+
+# ORRALI 6.9.0 — Supporting Ecosystem & Offline Packs
+- Daily Briefing, Smart Review Queue, and Survival Mode.
+- False Friends Trainer and downloadable offline pack management.
+
+---
+
+# ORRALI 6.8.0 — Learning World & Living Characters
+- Illustrated 2D world exploration.
+- Recurring character personas and narrative continuity across missions.
+
+---
+
+# ORRALI 6.7.0 — Personal AI Coach & Smart Phrasebook
+- Contextual conversational memory and a multi-mode personal tutor.
+- Saved phrases across activities and Grammar Radar.
+
+---
+
+# ORRALI 6.6.0 — Speak Naturally & Listening World
+- Visual pronunciation skill maps for French, German, and Spanish.
+- Acoustic cadence and intonation metrics with a progressive audio library.
+
+---
+
+# ORRALI 6.5.0 — Writing Lab & Pedagogical Correction Engine
+- Interactive writing challenges with an eight-point correction debrief.
+- Deterministic grammar scanners for French, German, and Spanish.
+
+---
+
+# ORRALI 6.4.0 — Learning Intelligence Foundation
+- Standardized learning events and a learner knowledge model that separates mastery from confidence.
+- Explainable recommendations and dynamically generated Quick, Balanced, and Deep sessions.
+- Real-life mission framework with communicative intent validation and multi-metric scoring.
+
+---
+
 # ORRALI 6.3.0 — Core Reliability Edition (Full System Audit & Correctness Certified)
 
 ## Summary

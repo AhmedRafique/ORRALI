@@ -3,6 +3,7 @@ name: Build Android APK
 on:
   push:
     branches: [ main, master ]
+    tags: [ 'v*' ]
   pull_request:
     branches: [ main, master ]
   workflow_dispatch:
@@ -37,6 +38,16 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+
+      - name: Determine app version
+        id: version
+        run: |
+          if [[ "$GITHUB_REF" == refs/tags/v* ]]; then
+            VERSION="${GITHUB_REF_NAME#v}"
+          else
+            VERSION=$(node -p "require('./package.json').version")
+          fi
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
 
       - name: Run automated unit tests
         run: npm test
@@ -73,7 +84,7 @@ jobs:
           fi
           if [ -f "$APK_PATH" ]; then
             echo "Found Standalone Release APK at: $APK_PATH"
-            cp "$APK_PATH" dist-apk/ORRALI-6.3.0.apk
+            cp "$APK_PATH" "dist-apk/ORRALI-${{ steps.version.outputs.version }}.apk"
           else
             echo "Error: No APK file found!"
             find android/app/build/outputs/ -type f || true
@@ -86,27 +97,27 @@ jobs:
           fi
           if [ -f "$AAB_PATH" ]; then
             echo "Found Google Play Bundle at: $AAB_PATH"
-            cp "$AAB_PATH" dist-apk/ORRALI-6.3.0.aab
+            cp "$AAB_PATH" "dist-apk/ORRALI-${{ steps.version.outputs.version }}.aab"
           fi
           ls -la dist-apk/
 
       - name: Upload APK & AAB as Workflow Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: ORRALI-6.3.0-Android-Deliverables
+          name: ORRALI-${{ steps.version.outputs.version }}-Android-Deliverables
           path: dist-apk/*
           retention-days: 30
 
       - name: Create GitHub Release
-        if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+        if: startsWith(github.ref, 'refs/tags/v')
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: v6.3.0
-          name: ORRALI v6.3.0 — Core Reliability Edition (Full Review Remediated)
-          body_path: RELEASE_NOTES.md
+          tag_name: ${{ github.ref_name }}
+          name: ORRALI v${{ steps.version.outputs.version }}
+          generate_release_notes: true
           files: |
-            dist-apk/ORRALI-6.3.0.apk
-            dist-apk/ORRALI-6.3.0.aab
+            dist-apk/ORRALI-${{ steps.version.outputs.version }}.apk
+            dist-apk/ORRALI-${{ steps.version.outputs.version }}.aab
           draft: false
           prerelease: false
         env:

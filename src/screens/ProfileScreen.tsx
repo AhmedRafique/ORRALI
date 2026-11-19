@@ -264,7 +264,7 @@ export default function ProfileScreen({
         <Text style={s.aboutBrand}>ORRALI</Text>
         <Text style={s.tagline}>Beyond the familiar.</Text>
         <Text style={s.aboutText}>A new world of possibilities. Discover · Connect · Grow.</Text>
-        <Text style={s.version}>ORRALI RELIABILITY EDITION · 6.3.0</Text></View>
+        <Text style={s.version}>ORRALI · 7.0.0</Text></View>
 
       {/* Adaptive CEFR Placement Test Modal */}
       <PlacementTestModal
