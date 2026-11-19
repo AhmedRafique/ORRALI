@@ -54,18 +54,44 @@
 
 ## ORRALI 8.0 Master Roadmap: "The Living Immersion"
 
-| Target | Theme | Engineering Deliverables | Status |
-| :--- | :--- | :--- | :--- |
-| **7.1.0** | **CEFR Exhaustive Completeness** | Massive expansion of curriculum data. Ensuring A1, A2, B1, and B2 leave zero grammatical or lexical gaps. Comprehensive grammar capsules, deep semantic distractors, and exhaustive topic coverage. | **PLANNED** |
-| **7.2.0** | **Visual Personas & Emotion Engine** | Lottie/SVG animated character portraits that react to user performance (smiles on polite language, confused on errors) to lower affective filter. | **PLANNED** |
-| **7.3.0** | **Interactive 2D World Map** | Spatial UI paradigm replacing linear lists with pan-and-zoom city maps (Café, Station, Office) reflecting real-world day/night cycles. | **PLANNED** |
-| **7.4.0** | **Generative Emotional TTS** | Upgrading from standard device TTS to premium, dynamic AI voices capable of expressing surprise, warmth, and hesitation during curveballs. | **PLANNED** |
-| **7.5.0** | **Video Immersion Lounge** | Comprehensible input via short-form native video clips featuring tap-to-translate bilingual subtitles and auto-pause. | **PLANNED** |
-| **8.0.0** | **The Living Immersion (C1 Tier)** | The C1 Advanced tier expansion (nuance, sarcasm, literature, debate) wrapped in a visually complete, emotionally resonant ecosystem. | **PLANNED** |
+### Phase 7.1.0 — CEFR Exhaustive Completeness (The Data Layer Restructure)
+* **Curriculum Restructure:** Break down monolithic content files into a scalable, language-specific directory structure (`src/content/fr/a1.ts`, etc.).
+* **Exhaustive Grammar Mapping:** Ensure every CEFR requirement (e.g., Subjunctive, Conditional, Plus-que-parfait, Accusative/Dative cases) is strictly mapped and taught.
+* **Deep Semantic Distractors:** Upgrade multiple-choice exercises with contextually difficult, pedagogically valuable distractors.
+* **Status:** **IN PROGRESS**
+
+### Phase 7.2.0 — Visual Personas & Emotion Engine
+* **2D Animated Portraits:** Integrate SVG/Lottie-based character avatars for AI Companions, Tutors, and NPCs.
+* **Performance-Driven Reactions:** Characters visibly react to learner input (smiling on success, polite confusion on gibberish, nodding on communicative intent).
+* **Lowering Affective Filter:** Transforming sterile text boxes into a warm, humanized interface.
+* **Status:** **PLANNED**
+
+### Phase 7.3.0 — Interactive 2D World Map
+* **Spatial Memory UI:** Replace the linear lesson scroll with a pan-and-zoom city map (The City Center, The Café, The Station).
+* **Location-Based Learning:** Tap the Bakery to unlock food vocabulary; tap the Train Station for travel missions.
+* **Dynamic Environment:** The map visually reflects the user's real-world time of day (Day/Night cycles).
+* **Status:** **PLANNED**
+
+### Phase 7.4.0 — Generative Emotional TTS
+* **Premium Voice Synthesis:** Upgrade from standard local device TTS to API-driven generative voice models (e.g., OpenAI / ElevenLabs capabilities).
+* **Mood-Aware Audio:** NPC voices reflect the scenario's emotion—expressing surprise at a curveball, warmth in greetings, or hesitation.
+* **Offline Fallback Strategy:** Graceful fallback to local device TTS if the network is unavailable.
+* **Status:** **PLANNED**
+
+### Phase 7.5.0 — Video Immersion Lounge (Comprehensible Input)
+* **Contextual Video Content:** A new Café Library feature focusing on short-form, real-life native video clips (e.g., street interviews, cultural snippets).
+* **Interactive Bilingual Subtitles:** Tap a word in the subtitle to auto-pause the video, translate the word, and save it to the Phrasebook.
+* **Status:** **PLANNED**
+
+### Phase 8.0.0 — The Living Immersion (C1 Tier & Cooperative Learning)
+* **C1 Advanced Fluency:** Expanding beyond B2 into C1—covering cultural idioms, complex debates, sarcasm, and literature nuances.
+* **Global Community Missions:** Cooperative, non-toxic social learning (e.g., "The community needs to order 10,000 virtual coffees in Paris this week").
+* **Ecosystem Maturity:** The final convergence of visual, emotional, and comprehensive language education.
+* **Status:** **PLANNED**
 
 ---
 
-## ORRALI 7.0 Master Development Architecture
+## ORRALI 7.0 & 8.0 Master Development Architecture
 
 ```
                                   ┌───────────────────────────┐
