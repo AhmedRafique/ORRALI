@@ -48,6 +48,20 @@
 | **6.8.0** | Learning World & Living Characters | Illustrated 2D world exploration, recurring character personas and narrative continuity across missions | **COMPLETED** |
 | **6.9.0** | Supporting Ecosystem & Offline Packs | Daily Briefing, Smart Review Queue, Survival Mode, False Friends Trainer, downloadable offline packs | **COMPLETED** |
 | **7.0.0** | Beyond the Familiar (Ecosystem Release) | Full architectural maturity, relational repository layer, cloud sync conflict resolution, verified release artifacts | **COMPLETED** |
+| **7.0.1** | Post-Launch Audit | Bug fixes, version-driven release pipeline, and dependency resolutions | **COMPLETED** |
+
+---
+
+## ORRALI 8.0 Master Roadmap: "The Living Immersion"
+
+| Target | Theme | Engineering Deliverables | Status |
+| :--- | :--- | :--- | :--- |
+| **7.1.0** | **CEFR Exhaustive Completeness** | Massive expansion of curriculum data. Ensuring A1, A2, B1, and B2 leave zero grammatical or lexical gaps. Comprehensive grammar capsules, deep semantic distractors, and exhaustive topic coverage. | **PLANNED** |
+| **7.2.0** | **Visual Personas & Emotion Engine** | Lottie/SVG animated character portraits that react to user performance (smiles on polite language, confused on errors) to lower affective filter. | **PLANNED** |
+| **7.3.0** | **Interactive 2D World Map** | Spatial UI paradigm replacing linear lists with pan-and-zoom city maps (Café, Station, Office) reflecting real-world day/night cycles. | **PLANNED** |
+| **7.4.0** | **Generative Emotional TTS** | Upgrading from standard device TTS to premium, dynamic AI voices capable of expressing surprise, warmth, and hesitation during curveballs. | **PLANNED** |
+| **7.5.0** | **Video Immersion Lounge** | Comprehensible input via short-form native video clips featuring tap-to-translate bilingual subtitles and auto-pause. | **PLANNED** |
+| **8.0.0** | **The Living Immersion (C1 Tier)** | The C1 Advanced tier expansion (nuance, sarcasm, literature, debate) wrapped in a visually complete, emotionally resonant ecosystem. | **PLANNED** |
 
 ---
 
