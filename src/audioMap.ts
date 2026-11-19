@@ -120,6 +120,13 @@ export const AUDIO_ASSETS: Record<string, any> = {
   'fr-20-4': require('../assets/audio/fr/fr-20-4.mp3'),
   'fr-20-5': require('../assets/audio/fr/fr-20-5.mp3'),
   'fr-20-6': require('../assets/audio/fr/fr-20-6.mp3'),
+  'fr-21-1': require('../assets/audio/fr/fr-21-1.mp3'),
+  'fr-21-2': require('../assets/audio/fr/fr-21-2.mp3'),
+  'fr-21-3': require('../assets/audio/fr/fr-21-3.mp3'),
+  'fr-21-4': require('../assets/audio/fr/fr-21-4.mp3'),
+  'fr-21-5': require('../assets/audio/fr/fr-21-5.mp3'),
+  'fr-21-6': require('../assets/audio/fr/fr-21-6.mp3'),
+
   'de-1-1': require('../assets/audio/de/de-1-1.mp3'),
   'de-1-2': require('../assets/audio/de/de-1-2.mp3'),
   'de-1-3': require('../assets/audio/de/de-1-3.mp3'),

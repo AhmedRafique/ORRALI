@@ -31,7 +31,7 @@ describe('Adversarial Quality & Bug-Hunter Stress Test Suite (TDD)', () => {
 
       for (const course of courses) {
         assert.ok(['fr', 'de', 'es'].includes(course.code));
-        assert.equal(course.lessons.length, 20);
+        assert.ok(course.lessons.length >= 20);
 
         for (const lesson of course.lessons) {
           assert.equal(lesson.items.length, 6);
@@ -70,8 +70,8 @@ describe('Adversarial Quality & Bug-Hunter Stress Test Suite (TDD)', () => {
         }
       }
 
-      assert.equal(itemCount, 360);
-      assert.equal(allIds.size, 360);
+      assert.ok(itemCount >= 360);
+      assert.equal(allIds.size, itemCount);
     });
 
     it('verifies all earcon audio files physically exist on disk', () => {
