@@ -1,4 +1,5 @@
 export type LangCode = 'fr' | 'de' | 'es';
+export type { CEFRLevel } from './milestones';
 
 export interface Item {
   id: string;

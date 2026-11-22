@@ -128,3 +128,16 @@ export function analyzeGrammarRadar(
     suggestedFocus
   };
 }
+
+export {
+  generateCoachResponse,
+  buildPedagogicalSystemPrompt,
+  setAiServiceConfig,
+  getAiServiceConfig,
+} from './coach/aiService';
+export type {
+  AiProvider,
+  AiServiceConfig,
+  CoachRequestParams,
+  CoachResponse,
+} from './coach/aiService';

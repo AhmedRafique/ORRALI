@@ -200,6 +200,11 @@ package "C1 Advanced Fluency & Living Immersion (Phase 8.0)" {
 C1 Milestone Exam & Gold Diploma] as C1MilestoneEngine
 }
 
+package "Generative AI Coach & Streaming Voice (Phase 8.3)" {
+  [coach/aiService.ts
+Live LLM Provider Routing & Pedagogical Guardrails] as AiCoachService
+}
+
 ' Navigation & Screen Wiring
 App --> HomeScreen
 App --> ProgressScreen
@@ -228,7 +233,9 @@ LexiconModal --> LexiconEngine
 LexiconModal --> AudioEngine
 ClinicModal --> ClinicEngine
 TutorModal --> TutorEngine
+TutorModal --> AiCoachService
 RoleplayModal --> RoleplayEngine
+RoleplayModal --> AiCoachService
 RoleplayModal --> VisualAvatarView
 VisualAvatarView --> EmotionEngine
 EmotionEngine --> PersonaRoster

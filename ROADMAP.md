@@ -103,6 +103,12 @@
 * **Automated Pipeline Audit:** TDD suite in `build-verification.test.ts` verifying asset integrity, manifest parity, and GitHub release automation.
 * **Status:** **COMPLETED**
 
+### Phase 8.3.0 — Live Generative AI Coach & Streaming Voice Integration
+* **Provider Routing & Guardrails:** Cloud LLM service layer (`src/coach/aiService.ts`) supporting Gemini and OpenAI with strict CEFR calibration (A1..C1) and error-tolerant conversational modeling.
+* **Resilient Offline Fallback:** Automatic, instant fallback to deterministic conversational tutor heuristics when offline or unconfigured (zero unhandled network crashes).
+* **Pedagogical Memory Injection:** Dynamic prompt enrichment with learner's `ConversationMemoryContext`, past stumbles, and cultural preferences.
+* **Status:** **COMPLETED**
+
 ---
 
 ## ORRALI 8.0 Master Development Architecture
