@@ -211,6 +211,13 @@ Dependency Tree Catalog & Syntactic Constituents Engine] as DependencyTreeEngine
 Interactive Tree Inspector & Governance Drill View] as SyntaxRadarModalView
 }
 
+package "Rapid Retort Conversational Duel & Pressure Drills (Phase 8.11)" {
+  [coach/rapidRetort.ts
+10-Second Countdown & Discourse Filler Scoring Engine] as RapidRetortEngine
+  [screens/RapidRetortModal.tsx
+Real-Time Turn-Taking & Comeback Duel View] as RapidRetortModalView
+}
+
 package "Video Immersion Lounge & Cooperative Goals (Phase 7.5)" {
   [video/loungeEngine.ts
 Interactive Subtitles & Community Milestones] as VideoLoungeEngine
@@ -266,6 +273,7 @@ HomeScreen --> CharacterLoungeModalView
 HomeScreen --> EarTrainerModalView
 HomeScreen --> PhonemeClinicModalView
 HomeScreen --> SyntaxRadarModalView
+HomeScreen --> RapidRetortModalView
 
 ' Modals to Engines
 CharacterLoungeModalView --> PersonaBackstories
@@ -277,6 +285,8 @@ PhonemeClinicModalView --> PhonemeClinicEngine
 PhonemeClinicModalView --> EmotionalTtsEngine
 SyntaxRadarModalView --> DependencyTreeEngine
 SyntaxRadarModalView --> EmotionalTtsEngine
+RapidRetortModalView --> RapidRetortEngine
+RapidRetortModalView --> EmotionalTtsEngine
 MilestoneModal --> MilestoneEngine
 SpeedModal --> SpeedEngine
 SpeedModal --> EarconEngine

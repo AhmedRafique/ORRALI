@@ -30,6 +30,7 @@ import CharacterLoungeModal from './CharacterLoungeModal';
 import EarTrainerModal from './EarTrainerModal';
 import PhonemeClinicModal from './PhonemeClinicModal';
 import SyntaxRadarModal from './SyntaxRadarModal';
+import RapidRetortModal from './RapidRetortModal';
 import WorldMapView from '../world/WorldMapView';
 import { InteractiveMapBuilding } from '../world/types';
 import { createMissionCompletionEvents } from '../missions/engine';
@@ -82,6 +83,7 @@ interface Props {
   onCompleteEarTraining?: (earnedXp: number) => void;
   onCompletePhonemeClinic?: (earnedXp: number) => void;
   onCompleteSyntaxRadar?: (earnedXp: number) => void;
+  onCompleteRapidRetort?: (earnedXp: number) => void;
 }
 
 export default function HomeScreen({
@@ -112,6 +114,7 @@ export default function HomeScreen({
   onCompleteEarTraining,
   onCompletePhonemeClinic,
   onCompleteSyntaxRadar,
+  onCompleteRapidRetort,
 }: Props) {
   const [activeCapsule, setActiveCapsule] = useState<GrammarCapsule | null>(null);
   const [activeStory, setActiveStory] = useState<StoryScenario | null>(null);
@@ -136,6 +139,7 @@ export default function HomeScreen({
   const [isEarTrainerOpen, setIsEarTrainerOpen] = useState(false);
   const [isPhonemeClinicOpen, setIsPhonemeClinicOpen] = useState(false);
   const [isSyntaxRadarOpen, setIsSyntaxRadarOpen] = useState(false);
+  const [isRapidRetortOpen, setIsRapidRetortOpen] = useState(false);
   const [activeBuildingMissionId, setActiveBuildingMissionId] = useState<string | undefined>();
   const [viewMode, setViewMode] = useState<'list' | 'map'>('list');
   const [roleplayIdx, setRoleplayIdx] = useState(0);
@@ -287,6 +291,16 @@ export default function HomeScreen({
             onCompleteSyntaxRadar?.(earnedXp);
           }}
           onClose={() => setIsSyntaxRadarOpen(false)}
+        />
+        {/* Rapid Retort Conversational Duel Modal */}
+        <RapidRetortModal
+          visible={isRapidRetortOpen}
+          course={course}
+          onFinish={(earnedXp) => {
+            setIsRapidRetortOpen(false);
+            onCompleteRapidRetort?.(earnedXp);
+          }}
+          onClose={() => setIsRapidRetortOpen(false)}
         />
         {activeRoleplay && (
           <RoleplayModal
@@ -565,6 +579,21 @@ export default function HomeScreen({
           <View style={{ flex: 1 }}>
             <Text style={s.companionTitle}>Syntax Radar & Dependency Tree</Text>
             <Text style={s.companionSub}>Cognitive sentence parsing, case governance & COD</Text>
+          </View>
+          <Text style={s.companionArrow}>›</Text>
+        </Pressable>
+
+        <Pressable
+          style={s.companionBtn}
+          onPress={() => {
+            void triggerHaptic('selection');
+            setIsRapidRetortOpen(true);
+          }}
+        >
+          <Text style={s.companionIcon}>⚡</Text>
+          <View style={{ flex: 1 }}>
+            <Text style={s.companionTitle}>Rapid Retort Conversational Duel</Text>
+            <Text style={s.companionSub}>10-second countdown, banter comeback & discourse fillers</Text>
           </View>
           <Text style={s.companionArrow}>›</Text>
         </Pressable>
@@ -1262,6 +1291,17 @@ export default function HomeScreen({
           onCompleteSyntaxRadar?.(earnedXp);
         }}
         onClose={() => setIsSyntaxRadarOpen(false)}
+      />
+
+      {/* Rapid Retort Conversational Duel Modal */}
+      <RapidRetortModal
+        visible={isRapidRetortOpen}
+        course={course}
+        onFinish={(earnedXp) => {
+          setIsRapidRetortOpen(false);
+          onCompleteRapidRetort?.(earnedXp);
+        }}
+        onClose={() => setIsRapidRetortOpen(false)}
       />
     </ScrollView>
   );

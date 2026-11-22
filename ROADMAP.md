@@ -152,6 +152,12 @@
 * **Syntax Radar Drill:** `SyntaxRadarModal.tsx` challenging learners to identify governing syntactic constituents under case constraints with instant feedback and XP bounties.
 * **Status:** **COMPLETED**
 
+### Phase 8.11.0 — Rapid Retort Conversational Duel & Discourse Fillers (Pressure Drills)
+* **High-Pressure Conversational Scenarios:** `src/coach/rapidRetort.ts` presenting realistic social challenges (late arrivals, bill disputes, unexpected weather, train cancellations) across the European Triad.
+* **Discourse Filler Recognition & Scoring Engine:** Automated recognition of authentic spoken fillers (*du coup, en fait, halt, na ja, a ver, o sea*) that award Fluency Velocity bonuses and defuse conversational tension.
+* **10-Second Duel Modal:** `RapidRetortModal.tsx` featuring animated real-time countdown timer bars, rapid speech prompts, and speed-weighted scoring.
+* **Status:** **COMPLETED**
+
 ---
 
 ## ORRALI 8.0 Master Development Architecture
