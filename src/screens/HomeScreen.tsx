@@ -27,6 +27,7 @@ import WritingLabModal from './WritingLabModal';
 import VideoLoungeModal from './VideoLoungeModal';
 import MatrixDrillModal from './MatrixDrillModal';
 import CharacterLoungeModal from './CharacterLoungeModal';
+import EarTrainerModal from './EarTrainerModal';
 import WorldMapView from '../world/WorldMapView';
 import { InteractiveMapBuilding } from '../world/types';
 import { createMissionCompletionEvents } from '../missions/engine';
@@ -76,6 +77,7 @@ interface Props {
   onCompleteWritingLab?: (result: { challengeId: string; correction: WritingCorrectionResult }) => void;
   onCompleteVideoLounge?: (earnedXp: number) => void;
   onCompleteMatrixDrill?: (earnedXp: number) => void;
+  onCompleteEarTraining?: (earnedXp: number) => void;
 }
 
 export default function HomeScreen({
@@ -103,6 +105,7 @@ export default function HomeScreen({
   onCompleteWritingLab,
   onCompleteVideoLounge,
   onCompleteMatrixDrill,
+  onCompleteEarTraining,
 }: Props) {
   const [activeCapsule, setActiveCapsule] = useState<GrammarCapsule | null>(null);
   const [activeStory, setActiveStory] = useState<StoryScenario | null>(null);
@@ -124,6 +127,7 @@ export default function HomeScreen({
   const [isVideoLoungeOpen, setIsVideoLoungeOpen] = useState(false);
   const [isMatrixDrillOpen, setIsMatrixDrillOpen] = useState(false);
   const [isCharacterLoungeOpen, setIsCharacterLoungeOpen] = useState(false);
+  const [isEarTrainerOpen, setIsEarTrainerOpen] = useState(false);
   const [activeBuildingMissionId, setActiveBuildingMissionId] = useState<string | undefined>();
   const [viewMode, setViewMode] = useState<'list' | 'map'>('list');
   const [roleplayIdx, setRoleplayIdx] = useState(0);
@@ -245,6 +249,16 @@ export default function HomeScreen({
           currentLang={course.code}
           progress={progress}
           onClose={() => setIsCharacterLoungeOpen(false)}
+        />
+        {/* Fast Native Ear Trainer Modal */}
+        <EarTrainerModal
+          visible={isEarTrainerOpen}
+          course={course}
+          onFinish={(earnedXp) => {
+            setIsEarTrainerOpen(false);
+            onCompleteEarTraining?.(earnedXp);
+          }}
+          onClose={() => setIsEarTrainerOpen(false)}
         />
         {activeRoleplay && (
           <RoleplayModal
@@ -478,6 +492,21 @@ export default function HomeScreen({
           <View style={{ flex: 1 }}>
             <Text style={s.companionTitle}>Character Friendship Lounge</Text>
             <Text style={s.companionSub}>European Triad backstories, secrets & voice greetings</Text>
+          </View>
+          <Text style={s.companionArrow}>›</Text>
+        </Pressable>
+
+        <Pressable
+          style={s.companionBtn}
+          onPress={() => {
+            void triggerHaptic('selection');
+            setIsEarTrainerOpen(true);
+          }}
+        >
+          <Text style={s.companionIcon}>🎧</Text>
+          <View style={{ flex: 1 }}>
+            <Text style={s.companionTitle}>Fast Native Ear Trainer</Text>
+            <Text style={s.companionSub}>1.25x/1.5x street speed & background city noise</Text>
           </View>
           <Text style={s.companionArrow}>›</Text>
         </Pressable>
@@ -1142,6 +1171,17 @@ export default function HomeScreen({
         currentLang={course.code}
         progress={progress}
         onClose={() => setIsCharacterLoungeOpen(false)}
+      />
+
+      {/* Fast Native Ear Trainer Modal */}
+      <EarTrainerModal
+        visible={isEarTrainerOpen}
+        course={course}
+        onFinish={(earnedXp) => {
+          setIsEarTrainerOpen(false);
+          onCompleteEarTraining?.(earnedXp);
+        }}
+        onClose={() => setIsEarTrainerOpen(false)}
       />
     </ScrollView>
   );

@@ -134,6 +134,12 @@
 * **Interactive Character Lounge:** `CharacterLoungeModal.tsx` providing a multi-language visual portrait gallery, dynamic mood rings, regional etiquette tips, and emotional TTS greetings.
 * **Status:** **COMPLETED**
 
+### Phase 8.8.0 — Fast Native Speech & Street Noise Ear Trainer (Listening World 2.0)
+* **Acoustic Speech Rate Scaling:** Variable speed playback (`src/audio/acousticEarTrainer.ts`) supporting 0.75x (articulated learner), 1.0x (standard), 1.25x (fast street speech), and 1.5x (blazing native street speaker).
+* **Phonetic Liaison & Boundary Engine:** Automated detection and explanation of French mandatory/optional liaisons, German Knacklaut glottal stops, and Spanish sinalefa vowel mergers across word boundaries.
+* **Interactive Ear Trainer Modal:** `EarTrainerModal.tsx` simulating real-world street environments (Café Clatter, Metro Rumble, Street Rain) with masked comprehension drills and speed bonus XP.
+* **Status:** **COMPLETED**
+
 ---
 
 ## ORRALI 8.0 Master Development Architecture
