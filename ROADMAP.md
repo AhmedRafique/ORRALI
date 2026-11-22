@@ -97,6 +97,12 @@
 * **Acoustic Asset Mapping:** 72 new physical audio assets and audio map registrations in `src/audioMap.ts`.
 * **Status:** **COMPLETED**
 
+### Phase 8.2.0 — Android APK/AAB Packaging & CI/CD Pipeline Verification
+* **Dual Deliverables Pipeline:** EAS and GitHub Actions configured for both standalone Release APK (`dist-apk/ORRALI-8.2.0.apk`) and Google Play Bundle (`ORRALI-8.2.0.aab`).
+* **Hardware Readiness:** Increment `versionCode: 19`, full Android background audio permissions (`RECORD_AUDIO`, `MODIFY_AUDIO_SETTINGS`, `FOREGROUND_SERVICE`), and verified Proguard rules.
+* **Automated Pipeline Audit:** TDD suite in `build-verification.test.ts` verifying asset integrity, manifest parity, and GitHub release automation.
+* **Status:** **COMPLETED**
+
 ---
 
 ## ORRALI 8.0 Master Development Architecture
