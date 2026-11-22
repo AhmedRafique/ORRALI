@@ -140,6 +140,12 @@
 * **Interactive Ear Trainer Modal:** `EarTrainerModal.tsx` simulating real-world street environments (Café Clatter, Metro Rumble, Street Rain) with masked comprehension drills and speed bonus XP.
 * **Status:** **COMPLETED**
 
+### Phase 8.9.0 — Minimal Pairs & Phoneme Diagnostic Clinic (Muscle Memory)
+* **European Triad Minimal Pairs Catalog:** `src/audio/phonemeClinic.ts` targeting fine-grained phonological distinctions: French nasal vowels (/ɛ̃/ vs /ɑ̃/ vs /ɔ̃/) and rounded vowels (/y/ vs /u/), German umlauts (/øː/ vs /oː/) and Ich/Ach-Laut (/ç/ vs /x/), and Spanish alveolar tap vs trill (/ɾ/ vs /r/) and palatals (/n/ vs /ɲ/).
+* **Acoustic Discrimination & Mouth Mechanics:** Real-time feedback debriefs with articulatory guidance (tongue height, lip rounding posture, vocal cord vibration, and airflow mechanics).
+* **Interactive Clinic Modal:** `PhonemeClinicModal.tsx` featuring 5-round sprint drills, normal and turtle playback, in-sentence context audio, and XP rewards.
+* **Status:** **COMPLETED**
+
 ---
 
 ## ORRALI 8.0 Master Development Architecture

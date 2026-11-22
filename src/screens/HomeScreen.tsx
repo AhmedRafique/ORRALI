@@ -28,6 +28,7 @@ import VideoLoungeModal from './VideoLoungeModal';
 import MatrixDrillModal from './MatrixDrillModal';
 import CharacterLoungeModal from './CharacterLoungeModal';
 import EarTrainerModal from './EarTrainerModal';
+import PhonemeClinicModal from './PhonemeClinicModal';
 import WorldMapView from '../world/WorldMapView';
 import { InteractiveMapBuilding } from '../world/types';
 import { createMissionCompletionEvents } from '../missions/engine';
@@ -78,6 +79,7 @@ interface Props {
   onCompleteVideoLounge?: (earnedXp: number) => void;
   onCompleteMatrixDrill?: (earnedXp: number) => void;
   onCompleteEarTraining?: (earnedXp: number) => void;
+  onCompletePhonemeClinic?: (earnedXp: number) => void;
 }
 
 export default function HomeScreen({
@@ -106,6 +108,7 @@ export default function HomeScreen({
   onCompleteVideoLounge,
   onCompleteMatrixDrill,
   onCompleteEarTraining,
+  onCompletePhonemeClinic,
 }: Props) {
   const [activeCapsule, setActiveCapsule] = useState<GrammarCapsule | null>(null);
   const [activeStory, setActiveStory] = useState<StoryScenario | null>(null);
@@ -128,6 +131,7 @@ export default function HomeScreen({
   const [isMatrixDrillOpen, setIsMatrixDrillOpen] = useState(false);
   const [isCharacterLoungeOpen, setIsCharacterLoungeOpen] = useState(false);
   const [isEarTrainerOpen, setIsEarTrainerOpen] = useState(false);
+  const [isPhonemeClinicOpen, setIsPhonemeClinicOpen] = useState(false);
   const [activeBuildingMissionId, setActiveBuildingMissionId] = useState<string | undefined>();
   const [viewMode, setViewMode] = useState<'list' | 'map'>('list');
   const [roleplayIdx, setRoleplayIdx] = useState(0);
@@ -259,6 +263,16 @@ export default function HomeScreen({
             onCompleteEarTraining?.(earnedXp);
           }}
           onClose={() => setIsEarTrainerOpen(false)}
+        />
+        {/* Phoneme Diagnostic Clinic Modal */}
+        <PhonemeClinicModal
+          visible={isPhonemeClinicOpen}
+          course={course}
+          onFinish={(earnedXp) => {
+            setIsPhonemeClinicOpen(false);
+            onCompletePhonemeClinic?.(earnedXp);
+          }}
+          onClose={() => setIsPhonemeClinicOpen(false)}
         />
         {activeRoleplay && (
           <RoleplayModal
@@ -507,6 +521,21 @@ export default function HomeScreen({
           <View style={{ flex: 1 }}>
             <Text style={s.companionTitle}>Fast Native Ear Trainer</Text>
             <Text style={s.companionSub}>1.25x/1.5x street speed & background city noise</Text>
+          </View>
+          <Text style={s.companionArrow}>›</Text>
+        </Pressable>
+
+        <Pressable
+          style={s.companionBtn}
+          onPress={() => {
+            void triggerHaptic('selection');
+            setIsPhonemeClinicOpen(true);
+          }}
+        >
+          <Text style={s.companionIcon}>👄</Text>
+          <View style={{ flex: 1 }}>
+            <Text style={s.companionTitle}>Phoneme Diagnostic Clinic</Text>
+            <Text style={s.companionSub}>Minimal pairs, nasal vowels & mouth mechanics</Text>
           </View>
           <Text style={s.companionArrow}>›</Text>
         </Pressable>
@@ -1182,6 +1211,17 @@ export default function HomeScreen({
           onCompleteEarTraining?.(earnedXp);
         }}
         onClose={() => setIsEarTrainerOpen(false)}
+      />
+
+      {/* Phoneme Diagnostic Clinic Modal */}
+      <PhonemeClinicModal
+        visible={isPhonemeClinicOpen}
+        course={course}
+        onFinish={(earnedXp) => {
+          setIsPhonemeClinicOpen(false);
+          onCompletePhonemeClinic?.(earnedXp);
+        }}
+        onClose={() => setIsPhonemeClinicOpen(false)}
       />
     </ScrollView>
   );

@@ -197,6 +197,13 @@ Speech Rate Scaling & Phonetic Liaison Engine] as AcousticEarTrainerEngine
 Fast Native Speed & Ambient Noise Drill View] as EarTrainerModalView
 }
 
+package "Phoneme Diagnostic Clinic & Muscle Memory (Phase 8.9)" {
+  [audio/phonemeClinic.ts
+Minimal Pairs Catalog & Mouth Mechanics Engine] as PhonemeClinicEngine
+  [screens/PhonemeClinicModal.tsx
+Auditory Discrimination & Articulation Feedback View] as PhonemeClinicModalView
+}
+
 package "Video Immersion Lounge & Cooperative Goals (Phase 7.5)" {
   [video/loungeEngine.ts
 Interactive Subtitles & Community Milestones] as VideoLoungeEngine
@@ -250,6 +257,7 @@ HomeScreen --> VideoLoungeModalView
 HomeScreen --> MatrixDrillModalView
 HomeScreen --> CharacterLoungeModalView
 HomeScreen --> EarTrainerModalView
+HomeScreen --> PhonemeClinicModalView
 
 ' Modals to Engines
 CharacterLoungeModalView --> PersonaBackstories
@@ -257,6 +265,8 @@ CharacterLoungeModalView --> VisualAvatarView
 CharacterLoungeModalView --> EmotionalTtsEngine
 EarTrainerModalView --> AcousticEarTrainerEngine
 EarTrainerModalView --> EmotionalTtsEngine
+PhonemeClinicModalView --> PhonemeClinicEngine
+PhonemeClinicModalView --> EmotionalTtsEngine
 MilestoneModal --> MilestoneEngine
 SpeedModal --> SpeedEngine
 SpeedModal --> EarconEngine
