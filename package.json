@@ -1,6 +1,6 @@
 {
   "name": "orrali",
-  "version": "8.9.0",
+  "version": "8.10.0",
   "main": "index.ts",
   "dependencies": {
     "@react-native-async-storage/async-storage": "^2.2.0",

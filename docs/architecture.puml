@@ -204,6 +204,13 @@ Minimal Pairs Catalog & Mouth Mechanics Engine] as PhonemeClinicEngine
 Auditory Discrimination & Articulation Feedback View] as PhonemeClinicModalView
 }
 
+package "Visual Grammar Dependency Tree & Syntax Radar (Phase 8.10)" {
+  [grammar/dependencyTree.ts
+Dependency Tree Catalog & Syntactic Constituents Engine] as DependencyTreeEngine
+  [screens/SyntaxRadarModal.tsx
+Interactive Tree Inspector & Governance Drill View] as SyntaxRadarModalView
+}
+
 package "Video Immersion Lounge & Cooperative Goals (Phase 7.5)" {
   [video/loungeEngine.ts
 Interactive Subtitles & Community Milestones] as VideoLoungeEngine
@@ -258,6 +265,7 @@ HomeScreen --> MatrixDrillModalView
 HomeScreen --> CharacterLoungeModalView
 HomeScreen --> EarTrainerModalView
 HomeScreen --> PhonemeClinicModalView
+HomeScreen --> SyntaxRadarModalView
 
 ' Modals to Engines
 CharacterLoungeModalView --> PersonaBackstories
@@ -267,6 +275,8 @@ EarTrainerModalView --> AcousticEarTrainerEngine
 EarTrainerModalView --> EmotionalTtsEngine
 PhonemeClinicModalView --> PhonemeClinicEngine
 PhonemeClinicModalView --> EmotionalTtsEngine
+SyntaxRadarModalView --> DependencyTreeEngine
+SyntaxRadarModalView --> EmotionalTtsEngine
 MilestoneModal --> MilestoneEngine
 SpeedModal --> SpeedEngine
 SpeedModal --> EarconEngine

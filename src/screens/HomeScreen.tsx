@@ -29,6 +29,7 @@ import MatrixDrillModal from './MatrixDrillModal';
 import CharacterLoungeModal from './CharacterLoungeModal';
 import EarTrainerModal from './EarTrainerModal';
 import PhonemeClinicModal from './PhonemeClinicModal';
+import SyntaxRadarModal from './SyntaxRadarModal';
 import WorldMapView from '../world/WorldMapView';
 import { InteractiveMapBuilding } from '../world/types';
 import { createMissionCompletionEvents } from '../missions/engine';
@@ -80,6 +81,7 @@ interface Props {
   onCompleteMatrixDrill?: (earnedXp: number) => void;
   onCompleteEarTraining?: (earnedXp: number) => void;
   onCompletePhonemeClinic?: (earnedXp: number) => void;
+  onCompleteSyntaxRadar?: (earnedXp: number) => void;
 }
 
 export default function HomeScreen({
@@ -109,6 +111,7 @@ export default function HomeScreen({
   onCompleteMatrixDrill,
   onCompleteEarTraining,
   onCompletePhonemeClinic,
+  onCompleteSyntaxRadar,
 }: Props) {
   const [activeCapsule, setActiveCapsule] = useState<GrammarCapsule | null>(null);
   const [activeStory, setActiveStory] = useState<StoryScenario | null>(null);
@@ -132,6 +135,7 @@ export default function HomeScreen({
   const [isCharacterLoungeOpen, setIsCharacterLoungeOpen] = useState(false);
   const [isEarTrainerOpen, setIsEarTrainerOpen] = useState(false);
   const [isPhonemeClinicOpen, setIsPhonemeClinicOpen] = useState(false);
+  const [isSyntaxRadarOpen, setIsSyntaxRadarOpen] = useState(false);
   const [activeBuildingMissionId, setActiveBuildingMissionId] = useState<string | undefined>();
   const [viewMode, setViewMode] = useState<'list' | 'map'>('list');
   const [roleplayIdx, setRoleplayIdx] = useState(0);
@@ -273,6 +277,16 @@ export default function HomeScreen({
             onCompletePhonemeClinic?.(earnedXp);
           }}
           onClose={() => setIsPhonemeClinicOpen(false)}
+        />
+        {/* Visual Grammar Dependency Tree & Syntax Radar Modal */}
+        <SyntaxRadarModal
+          visible={isSyntaxRadarOpen}
+          course={course}
+          onFinish={(earnedXp) => {
+            setIsSyntaxRadarOpen(false);
+            onCompleteSyntaxRadar?.(earnedXp);
+          }}
+          onClose={() => setIsSyntaxRadarOpen(false)}
         />
         {activeRoleplay && (
           <RoleplayModal
@@ -536,6 +550,21 @@ export default function HomeScreen({
           <View style={{ flex: 1 }}>
             <Text style={s.companionTitle}>Phoneme Diagnostic Clinic</Text>
             <Text style={s.companionSub}>Minimal pairs, nasal vowels & mouth mechanics</Text>
+          </View>
+          <Text style={s.companionArrow}>›</Text>
+        </Pressable>
+
+        <Pressable
+          style={s.companionBtn}
+          onPress={() => {
+            void triggerHaptic('selection');
+            setIsSyntaxRadarOpen(true);
+          }}
+        >
+          <Text style={s.companionIcon}>🌳</Text>
+          <View style={{ flex: 1 }}>
+            <Text style={s.companionTitle}>Syntax Radar & Dependency Tree</Text>
+            <Text style={s.companionSub}>Cognitive sentence parsing, case governance & COD</Text>
           </View>
           <Text style={s.companionArrow}>›</Text>
         </Pressable>
@@ -1222,6 +1251,17 @@ export default function HomeScreen({
           onCompletePhonemeClinic?.(earnedXp);
         }}
         onClose={() => setIsPhonemeClinicOpen(false)}
+      />
+
+      {/* Visual Grammar Dependency Tree & Syntax Radar Modal */}
+      <SyntaxRadarModal
+        visible={isSyntaxRadarOpen}
+        course={course}
+        onFinish={(earnedXp) => {
+          setIsSyntaxRadarOpen(false);
+          onCompleteSyntaxRadar?.(earnedXp);
+        }}
+        onClose={() => setIsSyntaxRadarOpen(false)}
       />
     </ScrollView>
   );

@@ -146,6 +146,12 @@
 * **Interactive Clinic Modal:** `PhonemeClinicModal.tsx` featuring 5-round sprint drills, normal and turtle playback, in-sentence context audio, and XP rewards.
 * **Status:** **COMPLETED**
 
+### Phase 8.10.0 — Visual Grammar Dependency Tree & Syntax Radar
+* **Constituent Dependency Catalog:** `src/grammar/dependencyTree.ts` modeling deep syntactic trees across French (preceding COD agreement, clitic order), German (subordinate verb-final order, two-way preposition case governance), and Spanish (emotive subjunctive triggers, spurious *se* dissimilation).
+* **Interactive Tree Inspector:** Tap-to-inspect constituent nodes revealing lemma, dependency relation, and case governance.
+* **Syntax Radar Drill:** `SyntaxRadarModal.tsx` challenging learners to identify governing syntactic constituents under case constraints with instant feedback and XP bounties.
+* **Status:** **COMPLETED**
+
 ---
 
 ## ORRALI 8.0 Master Development Architecture
