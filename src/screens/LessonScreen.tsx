@@ -28,6 +28,7 @@ import { detectWordGender, getGenderPalette } from '../gender';
 import { playEarcon } from '../earcons';
 import { evaluatePronunciation } from '../scoring';
 import { triggerHaptic } from '../sensory';
+import QuestionCompanion from '../personas/QuestionCompanion';
 import { Course, Exercise, Item, LessonCheckpoint, PronunciationResult } from '../types';
 
 const C = {
@@ -425,6 +426,18 @@ export default function LessonScreen({
       ? 'Listen carefully and type what you hear'
       : `Translate into ${course.name}`;
 
+  const companionState: 'waiting' | 'evaluating' | 'correct' | 'incorrect' = isRecording
+    ? 'evaluating'
+    : feedback !== null
+    ? feedback.ok
+      ? 'correct'
+      : 'incorrect'
+    : pronunciation !== null
+    ? pronunciation.passed
+      ? 'correct'
+      : 'incorrect'
+    : 'waiting';
+
   return (
     <KeyboardAvoidingView
       style={s.keyboardView}
@@ -448,6 +461,16 @@ export default function LessonScreen({
         </View>
 
         <Text style={s.chapter}>{title.toUpperCase()}</Text>
+
+        {/* Visual Question Companion Card */}
+        <QuestionCompanion
+          courseCode={course.code}
+          exerciseKind={ex.kind}
+          state={companionState}
+          characterIndex={index}
+          onPress={() => speak(ex.item, false)}
+        />
+
         <Text style={s.prompt}>{prompt}</Text>
         {ex.kind !== 'listen' && ex.kind !== 'intro' && ex.kind !== 'speak' && (
           <Text style={s.meaning}>{ex.item.en}</Text>
