@@ -278,6 +278,19 @@ export function evaluateRetortSubmission(
   const isSpeedy = elapsedSeconds <= 5.0;
   const isTimeOut = elapsedSeconds > 10.0;
 
+  if (isTimeOut) {
+    return {
+      isSuccessful: false,
+      speedSeconds: elapsedSeconds,
+      detectedFiller,
+      fluencyScore: 20,
+      earnedXp: 5,
+      feedback:
+        'Time freeze! Native speakers move forward if you hesitate past 10 seconds. Buy time with discourse fillers.',
+      nativeAlternative: scenario.idealRetort,
+    };
+  }
+
   if (matchedOption) {
     if (matchedOption.isNaturalComeback) {
       const speedBonus = isSpeedy ? 15 : 5;

@@ -311,6 +311,17 @@ export const MISSIONS_CATALOG: Mission[] = [
         validAlternatives: ['La première étape est terminée et nous sommes dans les temps', 'Nous avançons bien'],
         hints: ['Nous sommes dans les temps', 'La première phase est terminée'],
       },
+      {
+        id: 'fr_prof_turn_2',
+        speaker: 'Chef de Projet',
+        speakerRole: 'npc',
+        promptText: 'Parfait. Avez-vous besoin d’aide supplémentaire ou de ressources particulières ?',
+        promptTranslation: 'Perfect. Do you need any additional help or specific resources?',
+        expectedIntent: 'State that everything is under control or request a quick review.',
+        communicativeKeywords: ['tout', 'controle', 'revue', 'besoin', 'merci', 'equipe'],
+        validAlternatives: ['Tout est sous contrôle pour l’instant, merci', 'Une brève revue de code serait utile'],
+        hints: ['Tout est sous contrôle', 'Non merci, tout va bien'],
+      },
     ],
     unexpectedEvent: {
       title: 'API Integration Delay Curveball',

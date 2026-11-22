@@ -500,7 +500,7 @@ export function conjugateSpanishVerb(
   }
 
   // Subjunctive Present
-  if (tense === 'subjunctive_present') {
+  if (tense === 'subjunctive_present' || (tense as string) === 'subjunctive') {
     if (inf === 'ser') {
       const map: Record<GrammarPerson, string> = {
         '1s': 'sea',
@@ -509,6 +509,17 @@ export function conjugateSpanishVerb(
         '1p': 'seamos',
         '2p': 'seáis',
         '3p': 'sean',
+      };
+      return map[person];
+    }
+    if (inf === 'venir') {
+      const map: Record<GrammarPerson, string> = {
+        '1s': 'venga',
+        '2s': 'vengas',
+        '3s': 'venga',
+        '1p': 'vengamos',
+        '2p': 'vengáis',
+        '3p': 'vengan',
       };
       return map[person];
     }

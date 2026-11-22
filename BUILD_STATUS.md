@@ -1,4 +1,4 @@
-# Build status — ORRALI 8.0.0 (The Living Immersion Release)
+# Build status — ORRALI 9.0.0 (The Master Fluency Certification Release)
 
 | Check | Result |
 |---|---|
@@ -6,7 +6,18 @@
 | TypeScript syntax transpilation | PASS — zero syntax diagnostics |
 | JSON configuration parsing | PASS — `app.json`, `package.json`, `eas.json` valid |
 | Full TypeScript typecheck | PASS — `tsc --noEmit` 0 errors |
-| Automated Unit & Logic Tests | PASS — 322 passing tests across 154 suites covering full ecosystem |
+| Automated Unit & Logic Tests | PASS — 444 passing tests across 221 suites covering full ecosystem |
+| 3-Round Adversarial Quality Audit | **PASS — 100% clean across Content Parity, Scoring/Morphology Engines, and State/Checkpoints** |
+| Master Fluency Certification (Phase 9.0) | **PASS — 4-pillar CEFR simulation exams, cryptographic seals, and official Master Diplomas** |
+| Rapid Retort Conversational Duel (Phase 8.11) | **PASS — 10-second countdown comebacks, social curveballs, and discourse filler velocity scoring** |
+| Visual Grammar Dependency Tree (Phase 8.10) | **PASS — Deep syntactic constituent parsing, case governance, and interactive tree inspector** |
+| Minimal Pairs & Phoneme Clinic (Phase 8.9) | **PASS — Auditory discrimination sprints, articulatory mouth mechanics, and nasal vowel drills** |
+| Fast Native Speech Ear Trainer (Phase 8.8) | **PASS — Variable acoustic scaling 0.75x–1.5x, city background ambiance, and liaison boundary detection** |
+| Character Friendship Lounge (Phase 8.7) | **PASS — European Triad cultural dossiers, 4 relationship tiers, and native voice greetings** |
+| 3,000+ Street Phrase Lexicon Bank (Phase 8.6) | **PASS — 8 survival domains with accent-lenient query search, interactive chips, and SRS integration** |
+| Combinatorial Sentence Matrix (Phase 8.5) | **PASS — Generative syntax slots, trilingual morphological agreement engine, and Sentence Forge modal** |
+| Real-World Street Fluency (Phase 8.4) | **PASS — Units 26–30 covering street slang, discourse fillers, urban survival, and witty banter** |
+| Live Generative AI Coach (Phase 8.3) | **PASS — Multi-provider routing (Gemini/OpenAI) + local heuristic fallback and CEFR calibration** |
 | CEFR C1 Advanced Fluency Tier | **PASS — Exhaustive C1 curriculum across French, German, Spanish with official C1 Milestone Exam and Gold Diploma (+75 XP)** |
 | Interactive 2D World Map | **PASS — Spatial navigation across 6 European Triad city districts with 4-phase day/night lighting cycles** |
 | Visual Personas & Emotion Engine | **PASS — 9 character personas with chromatic glowing mood rings and performance-driven facial reactions** |

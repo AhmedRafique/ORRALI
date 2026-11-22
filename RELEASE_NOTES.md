@@ -1,3 +1,17 @@
+# ORRALI 9.0.0 — The Master Fluency Certification Release
+
+## Summary
+The master 9.0.0 release achieves complete ecosystem maturity, culminating in multi-pillar CEFR simulation diplomas, high-pressure conversational retort duels, deep syntactic dependency tree visualization, minimal pairs phoneme clinics, and an exhaustive 3-round adversarial audit verifying 100% bug-free operation across 444 passing tests.
+
+## What's New
+- **Master Fluency Certification Ecosystem (Phase 9.0):** Official multi-pillar CEFR simulation diplomas (A1–C1) evaluating Acoustic Speed Listening, Syntax Tree Governance, Written Composition/Morphology, and Retort Cadence, sealed with cryptographic verification hashes and honors tiers (Honors, Gold, Silver).
+- **Rapid Retort Conversational Duel & Pressure Drills (Phase 8.11):** 10-second countdown comebacks simulating native social curveballs (late arrivals, bill disputes, transit cancellations) with automated discourse filler recognition (*du coup, en fait, halt, na ja, a ver, o sea*) awarding Fluency Velocity bonuses.
+- **Visual Grammar Dependency Tree & Syntax Radar (Phase 8.10):** Cognitive sentence parsing decomposing complex European Triad phrases into Subject, Predicate, COD/IO, and Subordinate clauses, featuring case governance highlights (German two-way prepositions, French preceding COD agreement, Spanish subjunctive triggers).
+- **Minimal Pairs & Phoneme Diagnostic Clinic (Phase 8.9):** High-definition auditory discrimination sprints targeting language-specific phonetic pitfalls (French nasal vowels and rounded /y/ vs /u/, German umlauts and Ich/Ach-Laut, Spanish tap vs trill /ɾ/ vs /r/) with actionable mouth mechanics feedback.
+- **3-Round Adversarial Full-Project Audit:** 100% clean verification across all 540 curriculum items, 90 grammar capsules, physical audio/earcon parity, morphology engines, state lifecycle, and SQLite/checkpoint persistence with 444 passing tests across 221 suites.
+
+---
+
 # ORRALI 8.0.0 — The Living Immersion
 
 ## Summary
