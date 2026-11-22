@@ -31,6 +31,8 @@ import EarTrainerModal from './EarTrainerModal';
 import PhonemeClinicModal from './PhonemeClinicModal';
 import SyntaxRadarModal from './SyntaxRadarModal';
 import RapidRetortModal from './RapidRetortModal';
+import MasterCertificationModal from './MasterCertificationModal';
+import { MasterDiplomaCertificate } from '../milestones/certification';
 import WorldMapView from '../world/WorldMapView';
 import { InteractiveMapBuilding } from '../world/types';
 import { createMissionCompletionEvents } from '../missions/engine';
@@ -84,6 +86,7 @@ interface Props {
   onCompletePhonemeClinic?: (earnedXp: number) => void;
   onCompleteSyntaxRadar?: (earnedXp: number) => void;
   onCompleteRapidRetort?: (earnedXp: number) => void;
+  onAwardCertificate?: (certificate: MasterDiplomaCertificate, earnedXp: number) => void;
 }
 
 export default function HomeScreen({
@@ -115,6 +118,7 @@ export default function HomeScreen({
   onCompletePhonemeClinic,
   onCompleteSyntaxRadar,
   onCompleteRapidRetort,
+  onAwardCertificate,
 }: Props) {
   const [activeCapsule, setActiveCapsule] = useState<GrammarCapsule | null>(null);
   const [activeStory, setActiveStory] = useState<StoryScenario | null>(null);
@@ -140,6 +144,7 @@ export default function HomeScreen({
   const [isPhonemeClinicOpen, setIsPhonemeClinicOpen] = useState(false);
   const [isSyntaxRadarOpen, setIsSyntaxRadarOpen] = useState(false);
   const [isRapidRetortOpen, setIsRapidRetortOpen] = useState(false);
+  const [isCertificationOpen, setIsCertificationOpen] = useState(false);
   const [activeBuildingMissionId, setActiveBuildingMissionId] = useState<string | undefined>();
   const [viewMode, setViewMode] = useState<'list' | 'map'>('list');
   const [roleplayIdx, setRoleplayIdx] = useState(0);
@@ -301,6 +306,17 @@ export default function HomeScreen({
             onCompleteRapidRetort?.(earnedXp);
           }}
           onClose={() => setIsRapidRetortOpen(false)}
+        />
+        {/* Master Fluency Certification Modal */}
+        <MasterCertificationModal
+          visible={isCertificationOpen}
+          course={course}
+          progress={progress}
+          onAwardCertificate={(cert, xp) => {
+            setIsCertificationOpen(false);
+            onAwardCertificate?.(cert, xp);
+          }}
+          onClose={() => setIsCertificationOpen(false)}
         />
         {activeRoleplay && (
           <RoleplayModal
@@ -594,6 +610,21 @@ export default function HomeScreen({
           <View style={{ flex: 1 }}>
             <Text style={s.companionTitle}>Rapid Retort Conversational Duel</Text>
             <Text style={s.companionSub}>10-second countdown, banter comeback & discourse fillers</Text>
+          </View>
+          <Text style={s.companionArrow}>›</Text>
+        </Pressable>
+
+        <Pressable
+          style={s.companionBtn}
+          onPress={() => {
+            void triggerHaptic('selection');
+            setIsCertificationOpen(true);
+          }}
+        >
+          <Text style={s.companionIcon}>🎓</Text>
+          <View style={{ flex: 1 }}>
+            <Text style={s.companionTitle}>Master Fluency Certification</Text>
+            <Text style={s.companionSub}>Accredited CEFR diplomas across 4 mastery pillars</Text>
           </View>
           <Text style={s.companionArrow}>›</Text>
         </Pressable>
@@ -1302,6 +1333,18 @@ export default function HomeScreen({
           onCompleteRapidRetort?.(earnedXp);
         }}
         onClose={() => setIsRapidRetortOpen(false)}
+      />
+
+      {/* Master Fluency Certification Modal */}
+      <MasterCertificationModal
+        visible={isCertificationOpen}
+        course={course}
+        progress={progress}
+        onAwardCertificate={(cert, xp) => {
+          setIsCertificationOpen(false);
+          onAwardCertificate?.(cert, xp);
+        }}
+        onClose={() => setIsCertificationOpen(false)}
       />
     </ScrollView>
   );

@@ -218,6 +218,13 @@ package "Rapid Retort Conversational Duel & Pressure Drills (Phase 8.11)" {
 Real-Time Turn-Taking & Comeback Duel View] as RapidRetortModalView
 }
 
+package "Master Fluency Certification Ecosystem (Phase 9.0)" {
+  [milestones/certification.ts
+4-Pillar CEFR Simulation & Cryptographic Seal Engine] as MasterCertificationEngine
+  [screens/MasterCertificationModal.tsx
+Accredited Diploma & Relational Analytics View] as MasterCertificationModalView
+}
+
 package "Video Immersion Lounge & Cooperative Goals (Phase 7.5)" {
   [video/loungeEngine.ts
 Interactive Subtitles & Community Milestones] as VideoLoungeEngine
@@ -274,6 +281,7 @@ HomeScreen --> EarTrainerModalView
 HomeScreen --> PhonemeClinicModalView
 HomeScreen --> SyntaxRadarModalView
 HomeScreen --> RapidRetortModalView
+HomeScreen --> MasterCertificationModalView
 
 ' Modals to Engines
 CharacterLoungeModalView --> PersonaBackstories
@@ -287,6 +295,7 @@ SyntaxRadarModalView --> DependencyTreeEngine
 SyntaxRadarModalView --> EmotionalTtsEngine
 RapidRetortModalView --> RapidRetortEngine
 RapidRetortModalView --> EmotionalTtsEngine
+MasterCertificationModalView --> MasterCertificationEngine
 MilestoneModal --> MilestoneEngine
 SpeedModal --> SpeedEngine
 SpeedModal --> EarconEngine
