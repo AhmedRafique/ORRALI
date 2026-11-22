@@ -26,6 +26,7 @@ import MissionModal from './MissionModal';
 import WritingLabModal from './WritingLabModal';
 import VideoLoungeModal from './VideoLoungeModal';
 import MatrixDrillModal from './MatrixDrillModal';
+import CharacterLoungeModal from './CharacterLoungeModal';
 import WorldMapView from '../world/WorldMapView';
 import { InteractiveMapBuilding } from '../world/types';
 import { createMissionCompletionEvents } from '../missions/engine';
@@ -122,6 +123,7 @@ export default function HomeScreen({
   const [isWritingLabOpen, setIsWritingLabOpen] = useState(false);
   const [isVideoLoungeOpen, setIsVideoLoungeOpen] = useState(false);
   const [isMatrixDrillOpen, setIsMatrixDrillOpen] = useState(false);
+  const [isCharacterLoungeOpen, setIsCharacterLoungeOpen] = useState(false);
   const [activeBuildingMissionId, setActiveBuildingMissionId] = useState<string | undefined>();
   const [viewMode, setViewMode] = useState<'list' | 'map'>('list');
   const [roleplayIdx, setRoleplayIdx] = useState(0);
@@ -236,6 +238,13 @@ export default function HomeScreen({
             onCompleteMatrixDrill?.(earnedXp);
           }}
           onClose={() => setIsMatrixDrillOpen(false)}
+        />
+        {/* Character Friendship Lounge Modal */}
+        <CharacterLoungeModal
+          visible={isCharacterLoungeOpen}
+          currentLang={course.code}
+          progress={progress}
+          onClose={() => setIsCharacterLoungeOpen(false)}
         />
         {activeRoleplay && (
           <RoleplayModal
@@ -454,6 +463,21 @@ export default function HomeScreen({
           <View style={{ flex: 1 }}>
             <Text style={s.companionTitle}>Sentence Forge · Matrix Drill</Text>
             <Text style={s.companionSub}>Combinatorial slot substitution & zero-gap morphology</Text>
+          </View>
+          <Text style={s.companionArrow}>›</Text>
+        </Pressable>
+
+        <Pressable
+          style={s.companionBtn}
+          onPress={() => {
+            void triggerHaptic('selection');
+            setIsCharacterLoungeOpen(true);
+          }}
+        >
+          <Text style={s.companionIcon}>👥</Text>
+          <View style={{ flex: 1 }}>
+            <Text style={s.companionTitle}>Character Friendship Lounge</Text>
+            <Text style={s.companionSub}>European Triad backstories, secrets & voice greetings</Text>
           </View>
           <Text style={s.companionArrow}>›</Text>
         </Pressable>
@@ -1110,6 +1134,14 @@ export default function HomeScreen({
           onCompleteMatrixDrill?.(earnedXp);
         }}
         onClose={() => setIsMatrixDrillOpen(false)}
+      />
+
+      {/* Character Friendship Lounge Modal */}
+      <CharacterLoungeModal
+        visible={isCharacterLoungeOpen}
+        currentLang={course.code}
+        progress={progress}
+        onClose={() => setIsCharacterLoungeOpen(false)}
       />
     </ScrollView>
   );

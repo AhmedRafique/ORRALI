@@ -163,11 +163,15 @@ Multi-Format Writing Catalog] as WritingCatalog
 Interactive Writing Desk Modal] as WritingLabModalView
 }
 
-package "Visual Personas & Emotion Engine (Phase 7.2)" {
+package "Visual Personas & Friendship Lounge (Phase 7.2 & 8.7)" {
   [personas/roster.ts
 European Triad Character Personas] as PersonaRoster
   [personas/emotionEngine.ts
 Performance-Driven Emotion Engine & Tiers] as EmotionEngine
+  [personas/backstories.ts
+Cultural Backstories & Unlocked Anecdotes] as PersonaBackstories
+  [screens/CharacterLoungeModal.tsx
+European Triad Friendship Lounge View] as CharacterLoungeModalView
   [personas/VisualAvatar.tsx
 Visual Portrait & Animated Mood Ring] as VisualAvatarView
 }
@@ -237,8 +241,12 @@ HomeScreen --> WritingLabModalView
 HomeScreen --> WorldMapView
 HomeScreen --> VideoLoungeModalView
 HomeScreen --> MatrixDrillModalView
+HomeScreen --> CharacterLoungeModalView
 
 ' Modals to Engines
+CharacterLoungeModalView --> PersonaBackstories
+CharacterLoungeModalView --> VisualAvatarView
+CharacterLoungeModalView --> EmotionalTtsEngine
 MilestoneModal --> MilestoneEngine
 SpeedModal --> SpeedEngine
 SpeedModal --> EarconEngine

@@ -128,6 +128,12 @@
 * **Seamless SRS Integration:** Core `getLexiconEntries()` dynamically bridges domain street phrases into spaced repetition tracking and stumbles remediation.
 * **Status:** **COMPLETED**
 
+### Phase 8.7.0 — Character Friendship Lounge & Cultural Backstory Hub
+* **European Triad Roster Backstories:** Complete cultural dossiers (`src/personas/backstories.ts`) for all 9 characters with origin cities, passions, secret street etiquette tips, and progressive anecdotes.
+* **Progressive Relationship Unlocking:** 4 tiers of relationship rewards (Acquaintance -> Friendly Regular -> Trusted Confidant -> Lifelong Partner) unlocking voice greetings and personal stories.
+* **Interactive Character Lounge:** `CharacterLoungeModal.tsx` providing a multi-language visual portrait gallery, dynamic mood rings, regional etiquette tips, and emotional TTS greetings.
+* **Status:** **COMPLETED**
+
 ---
 
 ## ORRALI 8.0 Master Development Architecture
