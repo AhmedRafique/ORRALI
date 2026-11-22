@@ -8,8 +8,8 @@ describe('CEFR B2 Upper-Intermediate & Professional Fluency Expansion (TDD)', ()
   const de = courses.find((c) => c.code === 'de')!;
 
   describe('1. B2 Curriculum Scale & Professional Units', () => {
-    it('French course includes 25 progressive units (A1, A2, B1, B2, and C1)', () => {
-      assert.equal(fr.lessons.length, 25);
+    it('French course includes 30 progressive units (A1, A2, B1, B2, and C1)', () => {
+      assert.equal(fr.lessons.length, 30);
 
       const b2Lessons = fr.lessons.filter((l) => l.level?.startsWith('B2'));
       assert.equal(b2Lessons.length, 6);
@@ -19,8 +19,8 @@ describe('CEFR B2 Upper-Intermediate & Professional Fluency Expansion (TDD)', ()
       assert.ok(b2Lessons.some((l) => l.title.includes('Débats')));
     });
 
-    it('German course includes 25 progressive units (A1, A2, B1, B2, and C1)', () => {
-      assert.equal(de.lessons.length, 25);
+    it('German course includes 30 progressive units (A1, A2, B1, B2, and C1)', () => {
+      assert.equal(de.lessons.length, 30);
 
       const b2Lessons = de.lessons.filter((l) => l.level?.startsWith('B2'));
       assert.equal(b2Lessons.length, 6);
@@ -38,7 +38,7 @@ describe('CEFR B2 Upper-Intermediate & Professional Fluency Expansion (TDD)', ()
           total += lesson.items.length;
         }
       }
-      assert.equal(total, 300); // 25 * 6 (FR) + 25 * 6 (DE)
+      assert.equal(total, 360); // 30 * 6 (FR) + 30 * 6 (DE)
     });
   });
 

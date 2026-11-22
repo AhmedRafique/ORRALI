@@ -1,5 +1,6 @@
 import { Course } from '../../types';
 import { esC1Units } from './c1Units';
+import { esStreetUnits } from './streetUnits';
 
 export const esCourse: Course = {
     code: 'es',
@@ -1415,5 +1416,6 @@ export const esCourse: Course = {
         ],
       },
       ...esC1Units,
+      ...esStreetUnits,
     ]
 };

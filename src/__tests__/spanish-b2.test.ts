@@ -7,8 +7,8 @@ describe('Spanish B1 & B2 Symmetrical Expansion (TDD)', () => {
   const es = courses.find((c) => c.code === 'es')!;
 
   describe('1. Course Scale & European Triad Symmetry', () => {
-    it('Spanish course contains 25 progressive units spanning A1, A2, B1, B2, and C1', () => {
-      assert.equal(es.lessons.length, 25);
+    it('Spanish course contains 30 progressive units spanning A1, A2, B1, B2, and C1', () => {
+      assert.equal(es.lessons.length, 30);
 
       const levels = new Set(es.lessons.map((l) => l.level?.split(' · ')[0]));
       assert.ok(levels.has('A1'), 'Missing A1 in Spanish');
@@ -18,13 +18,13 @@ describe('Spanish B1 & B2 Symmetrical Expansion (TDD)', () => {
       assert.ok(levels.has('C1'), 'Missing C1 in Spanish');
     });
 
-    it('all 25 Spanish units contain exactly 6 items (150 total phrases)', () => {
+    it('all 30 Spanish units contain exactly 6 items (180 total phrases)', () => {
       let total = 0;
       for (const lesson of es.lessons) {
         assert.equal(lesson.items.length, 6, `Lesson ${lesson.id} does not have 6 items`);
         total += lesson.items.length;
       }
-      assert.equal(total, 150);
+      assert.equal(total, 180);
     });
   });
 

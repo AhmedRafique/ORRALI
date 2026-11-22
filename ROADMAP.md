@@ -109,6 +109,13 @@
 * **Pedagogical Memory Injection:** Dynamic prompt enrichment with learner's `ConversationMemoryContext`, past stumbles, and cultural preferences.
 * **Status:** **COMPLETED**
 
+### Phase 8.4.0 — Real-World Street Fluency & Conversational Mastery
+* **Authentic Street Curriculum:** Units 26 to 30 deployed across French, German, and Spanish (`streetUnits.ts`), expanding the curriculum to 30 units and 180 verified phrases per language (540 total curriculum phrases).
+* **Colloquial Spoken Nuances:** Street slang & verlan (Unit 26), spontaneous transit small talk (Unit 27), natural discourse fillers like *du coup*, *halt*, and *en plan* (Unit 28), urban survival & ATM/transit problem solving (Unit 29), and witty banter & pub humor (Unit 30).
+* **Acoustic Asset Mapping:** 90 new physical audio assets and registrations in `src/audioMap.ts`.
+* **Automated Audit:** TDD suite in `street-fluency.test.ts` verifying all colloquial elision rules, discourse rhythms, and 30-unit European Triad symmetry.
+* **Status:** **COMPLETED**
+
 ---
 
 ## ORRALI 8.0 Master Development Architecture

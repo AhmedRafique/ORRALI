@@ -34,7 +34,7 @@ describe('CEFR A2 & B1 Curriculum Expansion (TDD)', () => {
           total += lesson.items.length;
         }
       }
-      assert.equal(total, 300);
+      assert.equal(total, 360);
     });
   });
 
