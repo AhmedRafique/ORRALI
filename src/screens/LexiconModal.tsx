@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import { Modal, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { playPhraseAudio, stopAllAudio } from '../audio';
 import { buildFlashcardDeck, filterLexicon, getLexiconEntries, MasteryStatus } from '../lexicon';
+import { getDomainStatistics, StreetDomain } from '../lexicon/index';
 import { detectWordGender, getGenderPalette } from '../gender';
 import { Course, Item, Progress } from '../types';
 
@@ -30,18 +31,24 @@ interface Props {
 export default function LexiconModal({ visible, course, progress, onClose }: Props) {
   const [query, setQuery] = useState('');
   const [activeFilter, setActiveFilter] = useState<MasteryStatus | 'all'>('all');
+  const [activeDomain, setActiveDomain] = useState<StreetDomain | 'all'>('all');
   const [isFlashcardMode, setIsFlashcardMode] = useState(false);
   const [flashcardIndex, setFlashcardIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
 
   // Build all entries
   const allEntries = useMemo(() => getLexiconEntries(course, progress), [course, progress]);
+  const domainStats = useMemo(() => getDomainStatistics(course.code), [course.code]);
 
   // Filter entries
-  const filteredEntries = useMemo(
-    () => filterLexicon(allEntries, query, activeFilter),
-    [allEntries, query, activeFilter]
-  );
+  const filteredEntries = useMemo(() => {
+    let result = filterLexicon(allEntries, query, activeFilter);
+    if (activeDomain !== 'all') {
+      const match = activeDomain.replace(/_/g, ' ').toLowerCase();
+      result = result.filter((e) => e.lessonTitle.toLowerCase().includes(match));
+    }
+    return result;
+  }, [allEntries, query, activeFilter, activeDomain]);
 
   // Flashcard deck
   const flashcardDeck = useMemo(
@@ -228,6 +235,37 @@ export default function LexiconModal({ visible, course, progress, onClose }: Pro
                   </Pressable>
                 )}
               </View>
+
+              {/* Street Domain Filter Chips */}
+              <ScrollView
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                style={{ marginBottom: 10, flexGrow: 0 }}
+                contentContainerStyle={{ gap: 6, paddingHorizontal: 2 }}
+              >
+                <Pressable
+                  style={[s.filterChip, activeDomain === 'all' && s.filterChipActive]}
+                  onPress={() => setActiveDomain('all')}
+                >
+                  <Text style={[s.filterChipText, activeDomain === 'all' && s.filterChipTextActive]}>
+                    🌐 All Domains
+                  </Text>
+                </Pressable>
+                {domainStats.map((st) => {
+                  const isActive = activeDomain === st.domain;
+                  return (
+                    <Pressable
+                      key={st.domain}
+                      style={[s.filterChip, isActive && s.filterChipActive]}
+                      onPress={() => setActiveDomain(st.domain)}
+                    >
+                      <Text style={[s.filterChipText, isActive && s.filterChipTextActive]}>
+                        {st.icon} {st.label} ({st.count})
+                      </Text>
+                    </Pressable>
+                  );
+                })}
+              </ScrollView>
 
               {/* Filter Chips */}
               <ScrollView horizontal showsHorizontalScrollIndicator={false} style={s.filtersScroll}>

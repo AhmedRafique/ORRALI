@@ -1,6 +1,9 @@
 import { norm, stripAccents } from './exercises';
 import { isDue } from './srs';
 import { Course, Item, LangCode, Progress } from './types';
+import { getAllDomainPhrases } from './lexicon/index';
+
+export * from './lexicon/index';
 
 export type MasteryStatus = 'new' | 'learning' | 'mastered' | 'stumble';
 
@@ -57,6 +60,41 @@ export function getLexiconEntries(course: Course, progress: Progress): LexiconEn
         isDue: isDue(card),
       });
     }
+  }
+
+  const domainPhrases = getAllDomainPhrases(course.code);
+  for (const phrase of domainPhrases) {
+    const card = progress.cards[phrase.id];
+    const reps = card?.reps ?? 0;
+    const interval = card?.interval ?? 0;
+    const lapses = card?.lapses ?? 0;
+
+    let mastery: MasteryStatus = 'new';
+    if (lapses > 0 && interval < 7) {
+      mastery = 'stumble';
+    } else if (interval >= 21) {
+      mastery = 'mastered';
+    } else if (reps > 0) {
+      mastery = 'learning';
+    }
+
+    entries.push({
+      item: {
+        id: phrase.id,
+        target: phrase.target,
+        en: phrase.en,
+        phonetic: phrase.phonetic,
+        notes: phrase.notes,
+      },
+      lessonTitle: phrase.domain.replace(/_/g, ' ').toUpperCase(),
+      level: phrase.level,
+      courseCode: course.code,
+      mastery,
+      interval,
+      reps,
+      lapses,
+      isDue: isDue(card),
+    });
   }
 
   return entries;

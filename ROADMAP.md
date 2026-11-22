@@ -122,6 +122,12 @@
 * **Interactive Sentence Forge:** `MatrixDrillModal.tsx` allowing live slot substitution, real-time grammatical morphing, and interactive transformation challenges with instant pedagogical feedback.
 * **Status:** **COMPLETED**
 
+### Phase 8.6.0 — 3,000+ Real-World Street Phrase & Domain Lexicon Bank
+* **8 Essential Street Survival Domains:** Modular lexicon packs (`src/lexicon/`) covering Medical/Pharmacy, Housing/Rental, Public Admin/Visas, Transit/Breakdown, Romance/Social, Work/Tech/Finance, Gastronomy/Dining, and Urban Slang/Nuance across French, German, and Spanish.
+* **Interactive Domain Search & Flashcards:** `LexiconModal.tsx` enhanced with horizontal domain filter chips, real-time accent-lenient query search, and instant flashcard review.
+* **Seamless SRS Integration:** Core `getLexiconEntries()` dynamically bridges domain street phrases into spaced repetition tracking and stumbles remediation.
+* **Status:** **COMPLETED**
+
 ---
 
 ## ORRALI 8.0 Master Development Architecture
