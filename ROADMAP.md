@@ -116,6 +116,12 @@
 * **Automated Audit:** TDD suite in `street-fluency.test.ts` verifying all colloquial elision rules, discourse rhythms, and 30-unit European Triad symmetry.
 * **Status:** **COMPLETED**
 
+### Phase 8.5.0 — Combinatorial Sentence Matrix Engine & Zero-Gap Morphology
+* **Generative Sentence Matrix:** Morphological agreement engine (`src/matrix/morphology.ts`) handling French vowel elisions/agreements, German 4-case article and adjective inflections, and Spanish pro-drop/subjunctive triggers.
+* **Combinatorial Permutations:** Matrix templates across A1 to C1 producing thousands of grammatically verified sentence permutations from high-frequency lexicon lemmas.
+* **Interactive Sentence Forge:** `MatrixDrillModal.tsx` allowing live slot substitution, real-time grammatical morphing, and interactive transformation challenges with instant pedagogical feedback.
+* **Status:** **COMPLETED**
+
 ---
 
 ## ORRALI 8.0 Master Development Architecture

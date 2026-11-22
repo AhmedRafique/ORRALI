@@ -205,6 +205,19 @@ package "Generative AI Coach & Streaming Voice (Phase 8.3)" {
 Live LLM Provider Routing & Pedagogical Guardrails] as AiCoachService
 }
 
+package "Combinatorial Sentence Matrix (Phase 8.5)" {
+  [matrix/morphology.ts
+Trilingual Morphological Agreement Engine] as MatrixMorphology
+  [matrix/templates.ts
+Zero-Gap CEFR Sentence Matrix Templates] as MatrixTemplates
+  [matrix/generator.ts
+Sentence Permutation & Substitution Generator] as MatrixGenerator
+  [matrix/lexiconBank.ts
+2000+ Categorized Grammatical Lemmas] as MatrixLexicon
+  [MatrixDrillModal.tsx
+Sentence Forge & Live Matrix Substitution Modal] as MatrixDrillModalView
+}
+
 ' Navigation & Screen Wiring
 App --> HomeScreen
 App --> ProgressScreen
@@ -223,6 +236,7 @@ HomeScreen --> MissionModalView
 HomeScreen --> WritingLabModalView
 HomeScreen --> WorldMapView
 HomeScreen --> VideoLoungeModalView
+HomeScreen --> MatrixDrillModalView
 
 ' Modals to Engines
 MilestoneModal --> MilestoneEngine
@@ -251,6 +265,10 @@ WorldMapView --> WorldEnvironmentEngine
 WorldMapView --> CityMapCatalog
 VideoLoungeModalView --> VideoLoungeEngine
 VideoLoungeEngine --> VideoCatalog
+MatrixDrillModalView --> MatrixGenerator
+MatrixGenerator --> MatrixTemplates
+MatrixGenerator --> MatrixMorphology
+MatrixTemplates --> MatrixLexicon
 
 ' Screen to Domain
 LessonScreen --> Exercises

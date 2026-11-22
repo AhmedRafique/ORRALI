@@ -25,6 +25,7 @@ import PlacementTestModal from './PlacementTestModal';
 import MissionModal from './MissionModal';
 import WritingLabModal from './WritingLabModal';
 import VideoLoungeModal from './VideoLoungeModal';
+import MatrixDrillModal from './MatrixDrillModal';
 import WorldMapView from '../world/WorldMapView';
 import { InteractiveMapBuilding } from '../world/types';
 import { createMissionCompletionEvents } from '../missions/engine';
@@ -73,6 +74,7 @@ interface Props {
   onCompleteMission?: (result: { missionId: string; score: MissionScoreBreakdown }) => void;
   onCompleteWritingLab?: (result: { challengeId: string; correction: WritingCorrectionResult }) => void;
   onCompleteVideoLounge?: (earnedXp: number) => void;
+  onCompleteMatrixDrill?: (earnedXp: number) => void;
 }
 
 export default function HomeScreen({
@@ -99,6 +101,7 @@ export default function HomeScreen({
   onCompleteMission,
   onCompleteWritingLab,
   onCompleteVideoLounge,
+  onCompleteMatrixDrill,
 }: Props) {
   const [activeCapsule, setActiveCapsule] = useState<GrammarCapsule | null>(null);
   const [activeStory, setActiveStory] = useState<StoryScenario | null>(null);
@@ -118,6 +121,7 @@ export default function HomeScreen({
   const [isMissionsOpen, setIsMissionsOpen] = useState(false);
   const [isWritingLabOpen, setIsWritingLabOpen] = useState(false);
   const [isVideoLoungeOpen, setIsVideoLoungeOpen] = useState(false);
+  const [isMatrixDrillOpen, setIsMatrixDrillOpen] = useState(false);
   const [activeBuildingMissionId, setActiveBuildingMissionId] = useState<string | undefined>();
   const [viewMode, setViewMode] = useState<'list' | 'map'>('list');
   const [roleplayIdx, setRoleplayIdx] = useState(0);
@@ -222,6 +226,16 @@ export default function HomeScreen({
             onCompleteVideoLounge?.(earnedXp);
           }}
           onClose={() => setIsVideoLoungeOpen(false)}
+        />
+        {/* Sentence Forge Matrix Drill Modal */}
+        <MatrixDrillModal
+          visible={isMatrixDrillOpen}
+          course={course}
+          onFinishDrill={(earnedXp) => {
+            setIsMatrixDrillOpen(false);
+            onCompleteMatrixDrill?.(earnedXp);
+          }}
+          onClose={() => setIsMatrixDrillOpen(false)}
         />
         {activeRoleplay && (
           <RoleplayModal
@@ -425,6 +439,21 @@ export default function HomeScreen({
           <View style={{ flex: 1 }}>
             <Text style={s.companionTitle}>The Verb Gym</Text>
             <Text style={s.companionSub}>Conjugation slot-machine mastery</Text>
+          </View>
+          <Text style={s.companionArrow}>›</Text>
+        </Pressable>
+
+        <Pressable
+          style={s.companionBtn}
+          onPress={() => {
+            void triggerHaptic('selection');
+            setIsMatrixDrillOpen(true);
+          }}
+        >
+          <Text style={s.companionIcon}>⚡</Text>
+          <View style={{ flex: 1 }}>
+            <Text style={s.companionTitle}>Sentence Forge · Matrix Drill</Text>
+            <Text style={s.companionSub}>Combinatorial slot substitution & zero-gap morphology</Text>
           </View>
           <Text style={s.companionArrow}>›</Text>
         </Pressable>
@@ -1070,6 +1099,17 @@ export default function HomeScreen({
           onCompleteVideoLounge?.(earnedXp);
         }}
         onClose={() => setIsVideoLoungeOpen(false)}
+      />
+
+      {/* Sentence Forge Matrix Drill Modal */}
+      <MatrixDrillModal
+        visible={isMatrixDrillOpen}
+        course={course}
+        onFinishDrill={(earnedXp) => {
+          setIsMatrixDrillOpen(false);
+          onCompleteMatrixDrill?.(earnedXp);
+        }}
+        onClose={() => setIsMatrixDrillOpen(false)}
       />
     </ScrollView>
   );
