@@ -91,6 +91,12 @@
 * **Ecosystem Maturity:** The final convergence of visual personas, emotion engine, 2D map, generative TTS, video immersion, and C1 fluency.
 * **Status:** **COMPLETED**
 
+### Phase 8.1.0 — Massive Curriculum Scaling (Units 22–25 Full European Triad)
+* **Exhaustive C1 Content Injection:** Units 22 to 25 deployed across French, German, and Spanish (`c1Units.ts`), expanding the curriculum to 25 units and 150 verified phrases per language (450 total curriculum items).
+* **Rich Linguistic Domains:** Colloquial sarcasm/irony (Unit 22), literary/academic critique (Unit 23), treaty & international diplomacy (Unit 24), and timeless cultural proverbs (Unit 25).
+* **Acoustic Asset Mapping:** 72 new physical audio assets and audio map registrations in `src/audioMap.ts`.
+* **Status:** **COMPLETED**
+
 ---
 
 ## ORRALI 8.0 Master Development Architecture

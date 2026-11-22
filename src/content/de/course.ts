@@ -1,4 +1,5 @@
 import { Course } from '../../types';
+import { deC1Units } from './c1Units';
 
 export const deCourse: Course = {
     code: 'de',
@@ -1416,6 +1417,6 @@ export const deCourse: Course = {
           },
         ],
       },
-
+      ...deC1Units,
     ],
 };
